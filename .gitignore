@@ -1,0 +1,25 @@
+# System
+.DS_Store
+*.log
+*.tmp
+*.swp
+*.swo
+
+# Env
+.env
+.env.*
+
+# Node / build
+node_modules/
+dist/
+build/
+out/
+coverage/
+.turbo/
+.cache/
+.remotion/
+
+# Remotion generated artifacts
+remotion/.cache/
+remotion/.remotion/
+remotion/public/**/audio/segments/**

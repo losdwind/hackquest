@@ -1,0 +1,1381 @@
+[
+  {
+    "text": "This is a short excerpt from my upcoming Foundry course.",
+    "startMs": 60,
+    "endMs": 3400,
+    "timestampMs": 60,
+    "confidence": null
+  },
+  {
+    "text": "In this video, and in the full course, you will learn",
+    "startMs": 3400,
+    "endMs": 6380,
+    "timestampMs": 3400,
+    "confidence": null
+  },
+  {
+    "text": "how to build your own stablecoin using advanced smart contract techniques.",
+    "startMs": 6380,
+    "endMs": 10920,
+    "timestampMs": 6380,
+    "confidence": null
+  },
+  {
+    "text": "So buckle up.",
+    "startMs": 10920,
+    "endMs": 11760,
+    "timestampMs": 10920,
+    "confidence": null
+  },
+  {
+    "text": "We are going to touch advanced fuzzing and testing,",
+    "startMs": 11760,
+    "endMs": 15320,
+    "timestampMs": 11760,
+    "confidence": null
+  },
+  {
+    "text": "and I will give you a real feel for",
+    "startMs": 15320,
+    "endMs": 17030,
+    "timestampMs": 15320,
+    "confidence": null
+  },
+  {
+    "text": "how these systems work.",
+    "startMs": 17030,
+    "endMs": 18760,
+    "timestampMs": 17030,
+    "confidence": null
+  },
+  {
+    "text": "Also, yes, I have not shaved or slept.",
+    "startMs": 18760,
+    "endMs": 23020,
+    "timestampMs": 18760,
+    "confidence": null
+  },
+  {
+    "text": "That is why I look a little rough today.",
+    "startMs": 23020,
+    "endMs": 24680,
+    "timestampMs": 23020,
+    "confidence": null
+  },
+  {
+    "text": "All right, welcome back, and welcome",
+    "startMs": 24680,
+    "endMs": 27170,
+    "timestampMs": 24680,
+    "confidence": null
+  },
+  {
+    "text": "to the DeFi section of this course.",
+    "startMs": 27170,
+    "endMs": 30360,
+    "timestampMs": 27170,
+    "confidence": null
+  },
+  {
+    "text": "If we scroll down to the Foundry DeFi section,",
+    "startMs": 30360,
+    "endMs": 33800,
+    "timestampMs": 30360,
+    "confidence": null
+  },
+  {
+    "text": "you will see the code we are going",
+    "startMs": 33800,
+    "endMs": 35200,
+    "timestampMs": 33800,
+    "confidence": null
+  },
+  {
+    "text": "to use throughout the course.",
+    "startMs": 35200,
+    "endMs": 36920,
+    "timestampMs": 35200,
+    "confidence": null
+  },
+  {
+    "text": "Now, I have to say this up front.",
+    "startMs": 36920,
+    "endMs": 38560,
+    "timestampMs": 36920,
+    "confidence": null
+  },
+  {
+    "text": "DeFi is a massive topic.",
+    "startMs": 38560,
+    "endMs": 40520,
+    "timestampMs": 38560,
+    "confidence": null
+  },
+  {
+    "text": "It deserves its own full video.",
+    "startMs": 40520,
+    "endMs": 43360,
+    "timestampMs": 40520,
+    "confidence": null
+  },
+  {
+    "text": "So here we are, just doing a quick, practical overview.",
+    "startMs": 43360,
+    "endMs": 47240,
+    "timestampMs": 43360,
+    "confidence": null
+  },
+  {
+    "text": "We will cover what DeFi is,",
+    "startMs": 47240,
+    "endMs": 50880,
+    "timestampMs": 47240,
+    "confidence": null
+  },
+  {
+    "text": "what you can do with it,",
+    "startMs": 50880,
+    "endMs": 52600,
+    "timestampMs": 50880,
+    "confidence": null
+  },
+  {
+    "text": "and a few of the most popular apps.",
+    "startMs": 52600,
+    "endMs": 54240,
+    "timestampMs": 52600,
+    "confidence": null
+  },
+  {
+    "text": "A great place to get a snapshot of the ecosystem is DeFi Llama.",
+    "startMs": 54280,
+    "endMs": 58000,
+    "timestampMs": 54280,
+    "confidence": null
+  },
+  {
+    "text": "There you can see the total value locked, the dominant apps,",
+    "startMs": 58000,
+    "endMs": 62270,
+    "timestampMs": 58000,
+    "confidence": null
+  },
+  {
+    "text": "and the leading protocols.",
+    "startMs": 62270,
+    "endMs": 63880,
+    "timestampMs": 62270,
+    "confidence": null
+  },
+  {
+    "text": "Let us look at the current top five.",
+    "startMs": 63880,
+    "endMs": 65520,
+    "timestampMs": 63880,
+    "confidence": null
+  },
+  {
+    "text": "Lido is a liquid staking platform.",
+    "startMs": 65520,
+    "endMs": 68040,
+    "timestampMs": 65520,
+    "confidence": null
+  },
+  {
+    "text": "Maker Dao is a CDP protocol that creates stablecoins.",
+    "startMs": 68040,
+    "endMs": 71960,
+    "timestampMs": 68040,
+    "confidence": null
+  },
+  {
+    "text": "That is exactly what we will build.",
+    "startMs": 71960,
+    "endMs": 74120,
+    "timestampMs": 71960,
+    "confidence": null
+  },
+  {
+    "text": "Ave is a lending and borrowing protocol.",
+    "startMs": 74120,
+    "endMs": 77440,
+    "timestampMs": 74120,
+    "confidence": null
+  },
+  {
+    "text": "Like an open source, decentralized bank.",
+    "startMs": 77440,
+    "endMs": 80480,
+    "timestampMs": 77440,
+    "confidence": null
+  },
+  {
+    "text": "Curve is a decentralized exchange that specializes in stablecoin swaps.",
+    "startMs": 80480,
+    "endMs": 84880,
+    "timestampMs": 80480,
+    "confidence": null
+  },
+  {
+    "text": "Uniswap is the general purpose exchange for swapping tokens and all kinds of assets.",
+    "startMs": 84880,
+    "endMs": 89200,
+    "timestampMs": 84880,
+    "confidence": null
+  },
+  {
+    "text": "If you understand a handful of these top protocols,",
+    "startMs": 89200,
+    "endMs": 92800,
+    "timestampMs": 89200,
+    "confidence": null
+  },
+  {
+    "text": "the rest of the list becomes easier to navigate.",
+    "startMs": 92800,
+    "endMs": 96240,
+    "timestampMs": 92800,
+    "confidence": null
+  },
+  {
+    "text": "You start to see more specialized categories",
+    "startMs": 96240,
+    "endMs": 98640,
+    "timestampMs": 96240,
+    "confidence": null
+  },
+  {
+    "text": "and more advanced designs as you go deeper.",
+    "startMs": 98640,
+    "endMs": 101680,
+    "timestampMs": 98640,
+    "confidence": null
+  },
+  {
+    "text": "The beauty of DeFi is that it gives you access",
+    "startMs": 101680,
+    "endMs": 103840,
+    "timestampMs": 101680,
+    "confidence": null
+  },
+  {
+    "text": "to sophisticated financial tools in a decentralized",
+    "startMs": 103840,
+    "endMs": 108400,
+    "timestampMs": 103840,
+    "confidence": null
+  },
+  {
+    "text": "setting.",
+    "startMs": 108400,
+    "endMs": 108960,
+    "timestampMs": 108400,
+    "confidence": null
+  },
+  {
+    "text": "If financial terms are new to you,",
+    "startMs": 108960,
+    "endMs": 110960,
+    "timestampMs": 108960,
+    "confidence": null
+  },
+  {
+    "text": "some of this may feel dense at first,",
+    "startMs": 111060,
+    "endMs": 113040,
+    "timestampMs": 111060,
+    "confidence": null
+  },
+  {
+    "text": "but it is a fascinating rabbit hole, and honestly,",
+    "startMs": 113040,
+    "endMs": 116090,
+    "timestampMs": 113040,
+    "confidence": null
+  },
+  {
+    "text": "it is a lot of fun.",
+    "startMs": 116090,
+    "endMs": 117240,
+    "timestampMs": 116090,
+    "confidence": null
+  },
+  {
+    "text": "DeFi is, in my view, one of the most important areas",
+    "startMs": 117240,
+    "endMs": 120800,
+    "timestampMs": 117240,
+    "confidence": null
+  },
+  {
+    "text": "that smart contracts enable some great places to learn are bankless",
+    "startMs": 120800,
+    "endMs": 124850,
+    "timestampMs": 120800,
+    "confidence": null
+  },
+  {
+    "text": "and MetaMask.",
+    "startMs": 124850,
+    "endMs": 126240,
+    "timestampMs": 124850,
+    "confidence": null
+  },
+  {
+    "text": "Learn for wallet basics and safety.",
+    "startMs": 126240,
+    "endMs": 129080,
+    "timestampMs": 126240,
+    "confidence": null
+  },
+  {
+    "text": "And a lot of concepts from Web2 Finance Transfer really well into DeFi.",
+    "startMs": 129080,
+    "endMs": 134120,
+    "timestampMs": 129080,
+    "confidence": null
+  },
+  {
+    "text": "One of my favorite suggestions is to try Ave and Uniswap directly.",
+    "startMs": 134120,
+    "endMs": 138880,
+    "timestampMs": 134120,
+    "confidence": null
+  },
+  {
+    "text": "Let us scroll down and open the Ave app.",
+    "startMs": 138940,
+    "endMs": 142120,
+    "timestampMs": 138940,
+    "confidence": null
+  },
+  {
+    "text": "We can connect a wallet.",
+    "startMs": 142120,
+    "endMs": 144280,
+    "timestampMs": 142120,
+    "confidence": null
+  },
+  {
+    "text": "I am on the Sipoli testnet right now.",
+    "startMs": 144280,
+    "endMs": 147360,
+    "timestampMs": 144280,
+    "confidence": null
+  },
+  {
+    "text": "Notice the small IPYFUS indicator in Brave.",
+    "startMs": 147360,
+    "endMs": 150640,
+    "timestampMs": 147360,
+    "confidence": null
+  },
+  {
+    "text": "That means this site is also hosted on IPFUS.",
+    "startMs": 150640,
+    "endMs": 154160,
+    "timestampMs": 150640,
+    "confidence": null
+  },
+  {
+    "text": "Web3 is all about decentralization.",
+    "startMs": 154160,
+    "endMs": 156960,
+    "timestampMs": 154160,
+    "confidence": null
+  },
+  {
+    "text": "And this is a great example of it in practice.",
+    "startMs": 156960,
+    "endMs": 159040,
+    "timestampMs": 156960,
+    "confidence": null
+  },
+  {
+    "text": "If we scroll down, we can supply assets and earn interest on them.",
+    "startMs": 159040,
+    "endMs": 162880,
+    "timestampMs": 159040,
+    "confidence": null
+  },
+  {
+    "text": "For example, if we supply USDC,",
+    "startMs": 162880,
+    "endMs": 166220,
+    "timestampMs": 162880,
+    "confidence": null
+  },
+  {
+    "text": "a dollar pegged stablecoin, we might earn a few percent.",
+    "startMs": 166220,
+    "endMs": 169400,
+    "timestampMs": 166220,
+    "confidence": null
+  },
+  {
+    "text": "That is similar to how a bank account works.",
+    "startMs": 169400,
+    "endMs": 171760,
+    "timestampMs": 169400,
+    "confidence": null
+  },
+  {
+    "text": "The interest comes from people borrowing those assets.",
+    "startMs": 171760,
+    "endMs": 174680,
+    "timestampMs": 171760,
+    "confidence": null
+  },
+  {
+    "text": "So if you supply assets, you earn interest.",
+    "startMs": 174680,
+    "endMs": 178520,
+    "timestampMs": 174680,
+    "confidence": null
+  },
+  {
+    "text": "If you borrow assets, you pay interest.",
+    "startMs": 178520,
+    "endMs": 181040,
+    "timestampMs": 178520,
+    "confidence": null
+  },
+  {
+    "text": "That is why this is so cool.",
+    "startMs": 181040,
+    "endMs": 183040,
+    "timestampMs": 181040,
+    "confidence": null
+  },
+  {
+    "text": "It is permissionless banking open to anyone.",
+    "startMs": 183040,
+    "endMs": 187480,
+    "timestampMs": 183040,
+    "confidence": null
+  },
+  {
+    "text": "Now Uniswap is another great app.",
+    "startMs": 187480,
+    "endMs": 190840,
+    "timestampMs": 187480,
+    "confidence": null
+  },
+  {
+    "text": "It lets you swap tokens easily.",
+    "startMs": 190840,
+    "endMs": 192920,
+    "timestampMs": 190840,
+    "confidence": null
+  },
+  {
+    "text": "For example, you could swap ETH for the Ave governance token.",
+    "startMs": 192920,
+    "endMs": 197840,
+    "timestampMs": 192920,
+    "confidence": null
+  },
+  {
+    "text": "Uniswap is a permissionless,",
+    "startMs": 197840,
+    "endMs": 201860,
+    "timestampMs": 197840,
+    "confidence": null
+  },
+  {
+    "text": "decentralized exchange that opens access",
+    "startMs": 201860,
+    "endMs": 205330,
+    "timestampMs": 201860,
+    "confidence": null
+  },
+  {
+    "text": "to markets in a more transparent",
+    "startMs": 205330,
+    "endMs": 209480,
+    "timestampMs": 205330,
+    "confidence": null
+  },
+  {
+    "text": "and fair way.",
+    "startMs": 209480,
+    "endMs": 210320,
+    "timestampMs": 209480,
+    "confidence": null
+  },
+  {
+    "text": "For beginners, I strongly recommend trying these apps on testnets first.",
+    "startMs": 210320,
+    "endMs": 215320,
+    "timestampMs": 210320,
+    "confidence": null
+  },
+  {
+    "text": "Not everything is available on testnets, but it is a safe place to learn.",
+    "startMs": 215320,
+    "endMs": 220120,
+    "timestampMs": 215320,
+    "confidence": null
+  },
+  {
+    "text": "I also have videos on advanced strategies like leverage,",
+    "startMs": 220120,
+    "endMs": 223790,
+    "timestampMs": 220120,
+    "confidence": null
+  },
+  {
+    "text": "quant-style trades, and flash loans on Ave.",
+    "startMs": 223790,
+    "endMs": 227040,
+    "timestampMs": 223790,
+    "confidence": null
+  },
+  {
+    "text": "Those are powerful tools, but they are definitely advanced.",
+    "startMs": 227040,
+    "endMs": 230400,
+    "timestampMs": 227040,
+    "confidence": null
+  },
+  {
+    "text": "Also, do not do heavy DeFi activity on either a mainnet unless you have to.",
+    "startMs": 230400,
+    "endMs": 235520,
+    "timestampMs": 230400,
+    "confidence": null
+  },
+  {
+    "text": "Fees can be high.",
+    "startMs": 235520,
+    "endMs": 236520,
+    "timestampMs": 235520,
+    "confidence": null
+  },
+  {
+    "text": "Instead, use cheaper networks like polygon, optimism,",
+    "startMs": 236520,
+    "endMs": 240760,
+    "timestampMs": 236520,
+    "confidence": null
+  },
+  {
+    "text": "or arbitrom.",
+    "startMs": 240760,
+    "endMs": 242160,
+    "timestampMs": 240760,
+    "confidence": null
+  },
+  {
+    "text": "That is why layer twos exist.",
+    "startMs": 242160,
+    "endMs": 244280,
+    "timestampMs": 242160,
+    "confidence": null
+  },
+  {
+    "text": "They make transactions far more affordable.",
+    "startMs": 244280,
+    "endMs": 246480,
+    "timestampMs": 244280,
+    "confidence": null
+  },
+  {
+    "text": "Another important topic in DeFi is MEV or maximal extractable value.",
+    "startMs": 246480,
+    "endMs": 251640,
+    "timestampMs": 246480,
+    "confidence": null
+  },
+  {
+    "text": "The idea is that validators can reorder transactions inside a block",
+    "startMs": 251770,
+    "endMs": 255790,
+    "timestampMs": 251770,
+    "confidence": null
+  },
+  {
+    "text": "to extract profit.",
+    "startMs": 255790,
+    "endMs": 257120,
+    "timestampMs": 255790,
+    "confidence": null
+  },
+  {
+    "text": "There are many approaches to make MEV fairer",
+    "startMs": 257120,
+    "endMs": 259640,
+    "timestampMs": 257120,
+    "confidence": null
+  },
+  {
+    "text": "and protocols like flashbots are leading that research.",
+    "startMs": 259640,
+    "endMs": 262960,
+    "timestampMs": 259640,
+    "confidence": null
+  },
+  {
+    "text": "If you want to go deeper, check out the flashbots new to MEV resources.",
+    "startMs": 262960,
+    "endMs": 267240,
+    "timestampMs": 262960,
+    "confidence": null
+  },
+  {
+    "text": "They are excellent.",
+    "startMs": 267240,
+    "endMs": 268560,
+    "timestampMs": 267240,
+    "confidence": null
+  },
+  {
+    "text": "Now, the big project we will build in this course is a stablecoin.",
+    "startMs": 268560,
+    "endMs": 272440,
+    "timestampMs": 268560,
+    "confidence": null
+  },
+  {
+    "text": "Stablecoins are a bit advanced, so we will watch a separate video on what they really are.",
+    "startMs": 272440,
+    "endMs": 277240,
+    "timestampMs": 272440,
+    "confidence": null
+  },
+  {
+    "text": "That will help us clear up a lot of misconceptions you might have seen in the media.",
+    "startMs": 277240,
+    "endMs": 280800,
+    "timestampMs": 277240,
+    "confidence": null
+  },
+  {
+    "text": "Our project is loosely based on Maker, DAO, and DIE,",
+    "startMs": 280890,
+    "endMs": 283880,
+    "timestampMs": 280890,
+    "confidence": null
+  },
+  {
+    "text": "the most famous decentralized stablecoin system.",
+    "startMs": 283880,
+    "endMs": 287680,
+    "timestampMs": 283880,
+    "confidence": null
+  },
+  {
+    "text": "I plan to audit this project after the course is released.",
+    "startMs": 287680,
+    "endMs": 291080,
+    "timestampMs": 287680,
+    "confidence": null
+  },
+  {
+    "text": "It is the most advanced project in the course.",
+    "startMs": 291080,
+    "endMs": 293880,
+    "timestampMs": 291080,
+    "confidence": null
+  },
+  {
+    "text": "Even after we cover upgrades, governance, and security,",
+    "startMs": 293880,
+    "endMs": 297920,
+    "timestampMs": 293880,
+    "confidence": null
+  },
+  {
+    "text": "if you finish it and truly understand it,",
+    "startMs": 297920,
+    "endMs": 300960,
+    "timestampMs": 297920,
+    "confidence": null
+  },
+  {
+    "text": "you should feel proud.",
+    "startMs": 300960,
+    "endMs": 303080,
+    "timestampMs": 300960,
+    "confidence": null
+  },
+  {
+    "text": "It is not easy.",
+    "startMs": 303080,
+    "endMs": 305120,
+    "timestampMs": 303080,
+    "confidence": null
+  },
+  {
+    "text": "Go slow.",
+    "startMs": 305120,
+    "endMs": 306840,
+    "timestampMs": 305120,
+    "confidence": null
+  },
+  {
+    "text": "Take your time.",
+    "startMs": 306840,
+    "endMs": 308520,
+    "timestampMs": 306840,
+    "confidence": null
+  },
+  {
+    "text": "And do not overload yourself.",
+    "startMs": 308520,
+    "endMs": 310280,
+    "timestampMs": 308520,
+    "confidence": null
+  },
+  {
+    "text": "If DFI is totally new to you, pause this video",
+    "startMs": 310390,
+    "endMs": 313360,
+    "timestampMs": 310390,
+    "confidence": null
+  },
+  {
+    "text": "and spend 15 to 20 minutes researching.",
+    "startMs": 313360,
+    "endMs": 315880,
+    "timestampMs": 313360,
+    "confidence": null
+  },
+  {
+    "text": "Search for Learn DFI",
+    "startMs": 315880,
+    "endMs": 317270,
+    "timestampMs": 315880,
+    "confidence": null
+  },
+  {
+    "text": "and you will see good starting points like co-and-telegraph, medium articles,",
+    "startMs": 317270,
+    "endMs": 321530,
+    "timestampMs": 317270,
+    "confidence": null
+  },
+  {
+    "text": "Udemy, and Coinbase Learn.",
+    "startMs": 321530,
+    "endMs": 323520,
+    "timestampMs": 321530,
+    "confidence": null
+  },
+  {
+    "text": "DFI is permissionless open source finance.",
+    "startMs": 323520,
+    "endMs": 326960,
+    "timestampMs": 323520,
+    "confidence": null
+  },
+  {
+    "text": "It is, in my opinion, the best things smart contracts have enabled.",
+    "startMs": 326960,
+    "endMs": 331360,
+    "timestampMs": 326960,
+    "confidence": null
+  },
+  {
+    "text": "It gives us an alternative to opaque centralized institutions and products",
+    "startMs": 331360,
+    "endMs": 335330,
+    "timestampMs": 331360,
+    "confidence": null
+  },
+  {
+    "text": "that do not serve users well.",
+    "startMs": 335330,
+    "endMs": 336920,
+    "timestampMs": 335330,
+    "confidence": null
+  },
+  {
+    "text": "That history is a big part of why DFI matters.",
+    "startMs": 336920,
+    "endMs": 340080,
+    "timestampMs": 336920,
+    "confidence": null
+  },
+  {
+    "text": "It is worth digging into.",
+    "startMs": 340130,
+    "endMs": 341680,
+    "timestampMs": 340130,
+    "confidence": null
+  },
+  {
+    "text": "All right, let us take a quick tour of the code, then jump into the stablecoin video.",
+    "startMs": 341680,
+    "endMs": 346800,
+    "timestampMs": 341680,
+    "confidence": null
+  },
+  {
+    "text": "In the repo inside SRC, you will find two main contracts.",
+    "startMs": 346800,
+    "endMs": 351120,
+    "timestampMs": 346800,
+    "confidence": null
+  },
+  {
+    "text": "The first is decentralized stablecoin.sull,",
+    "startMs": 351120,
+    "endMs": 354120,
+    "timestampMs": 351120,
+    "confidence": null
+  },
+  {
+    "text": "a minimal ERC20 with burn and mint features.",
+    "startMs": 354120,
+    "endMs": 357240,
+    "timestampMs": 354120,
+    "confidence": null
+  },
+  {
+    "text": "The main logic lives in DSC Engine.sull.",
+    "startMs": 357240,
+    "endMs": 361880,
+    "timestampMs": 357240,
+    "confidence": null
+  },
+  {
+    "text": "It controls how the stablecoin works.",
+    "startMs": 361880,
+    "endMs": 364360,
+    "timestampMs": 361880,
+    "confidence": null
+  },
+  {
+    "text": "You deposit collateral, mint DSC, redeem collateral,",
+    "startMs": 364410,
+    "endMs": 368340,
+    "timestampMs": 364410,
+    "confidence": null
+  },
+  {
+    "text": "burn DSC and handle liquidations.",
+    "startMs": 368340,
+    "endMs": 371720,
+    "timestampMs": 368340,
+    "confidence": null
+  },
+  {
+    "text": "If you see lots of comments and nat spec that is intentional, they explain the system.",
+    "startMs": 371720,
+    "endMs": 376560,
+    "timestampMs": 371720,
+    "confidence": null
+  },
+  {
+    "text": "There is a test folder with unit tests, oracle utilities,",
+    "startMs": 376560,
+    "endMs": 381090,
+    "timestampMs": 376560,
+    "confidence": null
+  },
+  {
+    "text": "mocks, and fuzz tests.",
+    "startMs": 381090,
+    "endMs": 383480,
+    "timestampMs": 381090,
+    "confidence": null
+  },
+  {
+    "text": "We also have invariant tests,",
+    "startMs": 383480,
+    "endMs": 385800,
+    "timestampMs": 383480,
+    "confidence": null
+  },
+  {
+    "text": "those separate average solidity devs from truly advanced ones.",
+    "startMs": 385800,
+    "endMs": 389520,
+    "timestampMs": 385800,
+    "confidence": null
+  },
+  {
+    "text": "The scripts are simple and mostly handle deployment.",
+    "startMs": 389520,
+    "endMs": 392800,
+    "timestampMs": 389520,
+    "confidence": null
+  },
+  {
+    "text": "We use Chainlink price feeds to value the collateral.",
+    "startMs": 392870,
+    "endMs": 396200,
+    "timestampMs": 392870,
+    "confidence": null
+  },
+  {
+    "text": "That is the high-level overview.",
+    "startMs": 396200,
+    "endMs": 397960,
+    "timestampMs": 396200,
+    "confidence": null
+  },
+  {
+    "text": "Everything you need is in the repo, and you should ask lots of questions.",
+    "startMs": 397960,
+    "endMs": 402040,
+    "timestampMs": 397960,
+    "confidence": null
+  },
+  {
+    "text": "One reason I care about stablecoins is that they are a core DFI primitive.",
+    "startMs": 402040,
+    "endMs": 406440,
+    "timestampMs": 402040,
+    "confidence": null
+  },
+  {
+    "text": "Web3 needs a better, more reliable money layer.",
+    "startMs": 406440,
+    "endMs": 409920,
+    "timestampMs": 406440,
+    "confidence": null
+  },
+  {
+    "text": "The current solutions are not good enough yet.",
+    "startMs": 409920,
+    "endMs": 412600,
+    "timestampMs": 409920,
+    "confidence": null
+  },
+  {
+    "text": "I hope this motivates some of you to build something better.",
+    "startMs": 412600,
+    "endMs": 415360,
+    "timestampMs": 412600,
+    "confidence": null
+  },
+  {
+    "text": "Now, let us jump into the stablecoin explainer",
+    "startMs": 415360,
+    "endMs": 418320,
+    "timestampMs": 415360,
+    "confidence": null
+  },
+  {
+    "text": "and take it slow when you research stablecoins.",
+    "startMs": 418320,
+    "endMs": 420800,
+    "timestampMs": 418320,
+    "confidence": null
+  },
+  {
+    "text": "You will see a lot of misleading information.",
+    "startMs": 420890,
+    "endMs": 423000,
+    "timestampMs": 420890,
+    "confidence": null
+  },
+  {
+    "text": "We are here to clear that up.",
+    "startMs": 423000,
+    "endMs": 424360,
+    "timestampMs": 423000,
+    "confidence": null
+  },
+  {
+    "text": "We will cover what stablecoins are, why they matter,",
+    "startMs": 424360,
+    "endMs": 427370,
+    "timestampMs": 424360,
+    "confidence": null
+  },
+  {
+    "text": "the main categories, and how the top designs work.",
+    "startMs": 427370,
+    "endMs": 430440,
+    "timestampMs": 427370,
+    "confidence": null
+  },
+  {
+    "text": "This video is for everyone technical or not.",
+    "startMs": 430440,
+    "endMs": 434400,
+    "timestampMs": 430440,
+    "confidence": null
+  },
+  {
+    "text": "Do not get discouraged if something is confusing on the first pass.",
+    "startMs": 434400,
+    "endMs": 438840,
+    "timestampMs": 434400,
+    "confidence": null
+  },
+  {
+    "text": "Buckle up, we are going on a ride through the world of stability.",
+    "startMs": 438840,
+    "endMs": 443040,
+    "timestampMs": 438840,
+    "confidence": null
+  },
+  {
+    "text": "At the highest level,",
+    "startMs": 443040,
+    "endMs": 444600,
+    "timestampMs": 443040,
+    "confidence": null
+  },
+  {
+    "text": "a stablecoin is a crypto asset with relatively stable",
+    "startMs": 444600,
+    "endMs": 449300,
+    "timestampMs": 444600,
+    "confidence": null
+  },
+  {
+    "text": "purchasing power.",
+    "startMs": 449300,
+    "endMs": 450840,
+    "timestampMs": 449300,
+    "confidence": null
+  },
+  {
+    "text": "That is the key idea.",
+    "startMs": 450840,
+    "endMs": 452160,
+    "timestampMs": 450840,
+    "confidence": null
+  },
+  {
+    "text": "Purchasing power does not swing wildly from day to day.",
+    "startMs": 452160,
+    "endMs": 455200,
+    "timestampMs": 452160,
+    "confidence": null
+  },
+  {
+    "text": "You will often hear that stablecoins are pegged to a currency,",
+    "startMs": 455200,
+    "endMs": 459840,
+    "timestampMs": 455200,
+    "confidence": null
+  },
+  {
+    "text": "a commodity, or a financial instrument.",
+    "startMs": 459840,
+    "endMs": 462640,
+    "timestampMs": 459840,
+    "confidence": null
+  },
+  {
+    "text": "That description is a decent starting point, but it is not the full story.",
+    "startMs": 462640,
+    "endMs": 466080,
+    "timestampMs": 462640,
+    "confidence": null
+  },
+  {
+    "text": "Here is a simple example.",
+    "startMs": 466080,
+    "endMs": 467520,
+    "timestampMs": 466080,
+    "confidence": null
+  },
+  {
+    "text": "If you bought apples with Bitcoin six months ago, you would get a very different amount than today.",
+    "startMs": 467520,
+    "endMs": 472560,
+    "timestampMs": 467520,
+    "confidence": null
+  },
+  {
+    "text": "That is changing purchasing power.",
+    "startMs": 472560,
+    "endMs": 474560,
+    "timestampMs": 472560,
+    "confidence": null
+  },
+  {
+    "text": "It makes Bitcoin a poor unit for everyday pricing.",
+    "startMs": 474570,
+    "endMs": 477600,
+    "timestampMs": 474570,
+    "confidence": null
+  },
+  {
+    "text": "If you bought apples with dollars, you would likely get a similar amount over time.",
+    "startMs": 477600,
+    "endMs": 482080,
+    "timestampMs": 477600,
+    "confidence": null
+  },
+  {
+    "text": "That is what we mean by stable purchasing power.",
+    "startMs": 482080,
+    "endMs": 484480,
+    "timestampMs": 482080,
+    "confidence": null
+  },
+  {
+    "text": "Assets with wild price swings are bad examples of stable purchasing power.",
+    "startMs": 484480,
+    "endMs": 488720,
+    "timestampMs": 484480,
+    "confidence": null
+  },
+  {
+    "text": "Stablecoins aim to keep purchasing power relatively steady.",
+    "startMs": 488720,
+    "endMs": 493440,
+    "timestampMs": 488720,
+    "confidence": null
+  },
+  {
+    "text": "If that is the only thing you remember, you are already ahead.",
+    "startMs": 493440,
+    "endMs": 497200,
+    "timestampMs": 493440,
+    "confidence": null
+  },
+  {
+    "text": "Now, why do we care about stablecoins?",
+    "startMs": 497200,
+    "endMs": 499760,
+    "timestampMs": 497200,
+    "confidence": null
+  },
+  {
+    "text": "Because money matters.",
+    "startMs": 499760,
+    "endMs": 501360,
+    "timestampMs": 499760,
+    "confidence": null
+  },
+  {
+    "text": "Not an greedy way, but in the practical way that everyday life depends on it.",
+    "startMs": 501360,
+    "endMs": 505680,
+    "timestampMs": 501360,
+    "confidence": null
+  },
+  {
+    "text": "In society, we need low volatility money to do three things well.",
+    "startMs": 505680,
+    "endMs": 509680,
+    "timestampMs": 505680,
+    "confidence": null
+  },
+  {
+    "text": "In Web 3, we need a crypto version of the same thing.",
+    "startMs": 509680,
+    "endMs": 512800,
+    "timestampMs": 509680,
+    "confidence": null
+  },
+  {
+    "text": "The three functions of money are store of value,",
+    "startMs": 512800,
+    "endMs": 515890,
+    "timestampMs": 512800,
+    "confidence": null
+  },
+  {
+    "text": "unit of account, and medium of exchange.",
+    "startMs": 515890,
+    "endMs": 518800,
+    "timestampMs": 515890,
+    "confidence": null
+  },
+  {
+    "text": "Store of value means you can keep wealth over time.",
+    "startMs": 518800,
+    "endMs": 521680,
+    "timestampMs": 518800,
+    "confidence": null
+  },
+  {
+    "text": "A bank account, stocks, and crypto are all examples.",
+    "startMs": 521680,
+    "endMs": 526560,
+    "timestampMs": 521680,
+    "confidence": null
+  },
+  {
+    "text": "Apples are a bad store of value because they rot.",
+    "startMs": 526560,
+    "endMs": 531760,
+    "timestampMs": 526560,
+    "confidence": null
+  },
+  {
+    "text": "Unit of account means we price things in a consistent way.",
+    "startMs": 531880,
+    "endMs": 535360,
+    "timestampMs": 531880,
+    "confidence": null
+  },
+  {
+    "text": "We price groceries in dollars.",
+    "startMs": 535360,
+    "endMs": 537280,
+    "timestampMs": 535360,
+    "confidence": null
+  },
+  {
+    "text": "Pricing in Bitcoin would be chaotic, because it fluctuates so much.",
+    "startMs": 537280,
+    "endMs": 541120,
+    "timestampMs": 537280,
+    "confidence": null
+  },
+  {
+    "text": "Medium of exchange means we use money to trade with each other.",
+    "startMs": 541120,
+    "endMs": 544480,
+    "timestampMs": 541120,
+    "confidence": null
+  },
+  {
+    "text": "Buying groceries with dollars is easy.",
+    "startMs": 544480,
+    "endMs": 546640,
+    "timestampMs": 544480,
+    "confidence": null
+  },
+  {
+    "text": "Buying groceries with car tires is not.",
+    "startMs": 546640,
+    "endMs": 549040,
+    "timestampMs": 546640,
+    "confidence": null
+  },
+  {
+    "text": "For everyday life to work, money needs to serve all three roles.",
+    "startMs": 549040,
+    "endMs": 553040,
+    "timestampMs": 549040,
+    "confidence": null
+  },
+  {
+    "text": "In Web 3, we need a decentralized money that can do the same.",
+    "startMs": 553040,
+    "endMs": 557200,
+    "timestampMs": 553040,
+    "confidence": null
+  },
+  {
+    "text": "We need to price things without wild swings.",
+    "startMs": 557200,
+    "endMs": 559840,
+    "timestampMs": 557200,
+    "confidence": null
+  },
+  {
+    "text": "Store wealth safely.",
+    "startMs": 559840,
+    "endMs": 561600,
+    "timestampMs": 559840,
+    "confidence": null
+  },
+  {
+    "text": "And trade smoothly.",
+    "startMs": 561740,
+    "endMs": 562720,
+    "timestampMs": 561740,
+    "confidence": null
+  },
+  {
+    "text": "Ethereum is a strong store of value, and a great medium of exchange.",
+    "startMs": 562720,
+    "endMs": 567920,
+    "timestampMs": 562720,
+    "confidence": null
+  },
+  {
+    "text": "But it is not a great unit of account yet,",
+    "startMs": 567920,
+    "endMs": 571200,
+    "timestampMs": 567920,
+    "confidence": null
+  },
+  {
+    "text": "because its purchasing power still moves around too much.",
+    "startMs": 571200,
+    "endMs": 574720,
+    "timestampMs": 571200,
+    "confidence": null
+  },
+  {
+    "text": "Maybe in the future, as either an adoption grows,",
+    "startMs": 574720,
+    "endMs": 577840,
+    "timestampMs": 574720,
+    "confidence": null
+  },
+  {
+    "text": "it becomes stable enough on its own.",
+    "startMs": 577840,
+    "endMs": 580880,
+    "timestampMs": 577840,
+    "confidence": null
+  },
+  {
+    "text": "If that happens, we might not need stablecoins.",
+    "startMs": 580880,
+    "endMs": 583680,
+    "timestampMs": 580880,
+    "confidence": null
+  },
+  {
+    "text": "But today, it is still too volatile for everyday pricing.",
+    "startMs": 583680,
+    "endMs": 588080,
+    "timestampMs": 583680,
+    "confidence": null
+  },
+  {
+    "text": "I still call either year.",
+    "startMs": 588080,
+    "endMs": 590640,
+    "timestampMs": 588080,
+    "confidence": null
+  },
+  {
+    "text": "Umm, ultrasound money.",
+    "startMs": 591120,
+    "endMs": 592720,
+    "timestampMs": 591120,
+    "confidence": null
+  },
+  {
+    "text": "Because I think it is a fantastic store of value.",
+    "startMs": 592720,
+    "endMs": 596640,
+    "timestampMs": 592720,
+    "confidence": null
+  },
+  {
+    "text": "That is a conversation for another time.",
+    "startMs": 596640,
+    "endMs": 598880,
+    "timestampMs": 596640,
+    "confidence": null
+  },
+  {
+    "text": "Thanks for watching.",
+    "startMs": 598880,
+    "endMs": 599920,
+    "timestampMs": 598880,
+    "confidence": null
+  },
+  {
+    "text": "If you are enjoying the content, please like and subscribe.",
+    "startMs": 599920,
+    "endMs": 603040,
+    "timestampMs": 599920,
+    "confidence": null
+  },
+  {
+    "text": "We are just getting started.",
+    "startMs": 603040,
+    "endMs": 604560,
+    "timestampMs": 603040,
+    "confidence": null
+  }
+]

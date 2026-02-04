@@ -1,0 +1,36 @@
+{
+  "name": "hackquest-remotion",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "start": "remotion studio src/index.tsx",
+    "render": "remotion render",
+    "upgrade": "remotion upgrade",
+    "captions": "bun scripts/build-captions.mjs",
+    "segments": "bun scripts/segment-voiceover.mjs",
+    "tts:google": "bun scripts/tts-google.mjs",
+    "merge:voiceover": "bun scripts/merge-voiceover.mjs",
+    "transcribe:voiceover": "bun scripts/transcribe-voiceover.mjs",
+    "captions:voiceover": "bun scripts/build-line-captions.mjs",
+    "captions:phrases": "bun scripts/chunk-captions.mjs"
+  },
+  "dependencies": {
+    "@google-cloud/text-to-speech": "^5.1.0",
+    "@remotion/captions": "^4.0.0",
+    "@remotion/cli": "^4.0.0",
+    "@remotion/google-fonts": "^4.0.0",
+    "@remotion/install-whisper-cpp": "^4.0.0",
+    "@remotion/layout-utils": "4.0.417",
+    "@remotion/media": "^4.0.0",
+    "@remotion/transitions": "4.0.417",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "remotion": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.20",
+    "@types/react-dom": "^18.2.7",
+    "typescript": "^5.2.2"
+  }
+}
