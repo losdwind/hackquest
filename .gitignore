@@ -1,0 +1,28 @@
+# Root repo ignores (HackQuest monorepo)
+
+# Local scratch
+.tmp/
+
+# Optional local tooling
+.claude/
+
+# OS / editor
+.DS_Store
+*.swp
+*.swo
+
+# Dependencies
+**/node_modules/
+
+# Remotion public sync output (generated)
+remotion/.hq-public/
+
+# Lesson generated artifacts (audio, captions, timings, etc.)
+**/generated/
+
+# Large or local-only work (do not push)
+projects/
+
+# Logs
+*.log
+

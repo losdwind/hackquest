@@ -1,0 +1,26 @@
+node_modules/
+.DS_Store
+out/
+client_secret_*.json
+gen-lang-client-*.json
+# System
+.DS_Store
+*.log
+*.tmp
+*.swp
+*.swo
+
+# Env
+.env
+.env.*
+
+# Node / build
+node_modules/
+dist/
+build/
+out/
+coverage/
+.turbo/
+.cache/
+projects/
+.hq-public/

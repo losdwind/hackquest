@@ -1,0 +1,47 @@
+{
+  "name": "hackquest-remotion",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "start": "bun scripts/sync-public-dir.mjs && remotion studio src/index.tsx --public-dir .hq-public",
+    "render": "bun scripts/sync-public-dir.mjs && remotion render --public-dir .hq-public",
+    "upgrade": "remotion upgrade",
+    "lessons:manifest": "bun scripts/build-lesson-manifest.mjs",
+    "lesson:segments": "bun scripts/build-segments-from-script.mjs",
+    "lesson:validate": "bun scripts/validate-script.mjs",
+    "lesson:components": "bun scripts/list-storyboard-components.mjs --format=md",
+    "lesson:components:write": "bun scripts/list-storyboard-components.mjs --format=md > src/storyboard/COMPONENTS.md",
+    "lesson:build": "bun scripts/lesson-build.mjs",
+    "lesson:migrate": "bun scripts/migrate-md-to-script.mjs",
+    "lesson:migrate:json-to-md": "bun scripts/migrate-script-json-to-md.mjs",
+    "public:sync": "bun scripts/sync-public-dir.mjs",
+    "captions": "bun scripts/build-line-captions.mjs",
+    "segments": "bun scripts/build-segments-from-script.mjs",
+    "tts:google": "bun scripts/tts-google.mjs",
+    "merge:voiceover": "bun scripts/merge-voiceover.mjs",
+    "segments:timings": "bun scripts/build-segment-timings.mjs",
+    "courses:kebab": "bun scripts/rename-courses-kebab.mjs"
+  },
+  "dependencies": {
+    "@google-cloud/text-to-speech": "^5.1.0",
+    "@remotion/captions": "^4.0.0",
+    "@remotion/cli": "^4.0.0",
+    "@remotion/fonts": "4.0.417",
+    "@remotion/google-fonts": "^4.0.0",
+    "@remotion/install-whisper-cpp": "^4.0.0",
+    "@remotion/layout-utils": "4.0.417",
+    "@remotion/media": "^4.0.0",
+    "@remotion/transitions": "4.0.417",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "remotion": "^4.0.0",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.28",
+    "@types/react-dom": "^18.2.7",
+    "playwright": "^1.58.2",
+    "typescript": "^5.2.2"
+  }
+}

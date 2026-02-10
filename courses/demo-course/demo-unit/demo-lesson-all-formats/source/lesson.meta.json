@@ -1,0 +1,46 @@
+{
+  "schema_version": "1.0.0",
+  "id": "demo-lesson-all-formats",
+  "courseId": "demo-course",
+  "unitId": "demo-unit",
+  "lessonId": "demo-lesson-all-formats",
+  "title": "Demo Lesson: All Formats",
+  "unitLabel": "Demo Unit · Component Coverage",
+  "courseLabel": "Demo Course · HackQuest Video System",
+  "fps": 30,
+  "accentColor": "#7CFF7A",
+  "resolution": {
+    "width": 1920,
+    "height": 1080
+  },
+  "cover": {
+    "enabled": true,
+    "durationFrames": 90,
+    "lessonLabel": "Demo Lesson",
+    "lessonTitle": "All Formats",
+    "heroFile": "cover/hero.svg"
+  },
+  "outro": {
+    "enabled": true,
+    "durationFrames": 90,
+    "lessonLabel": "Demo Lesson",
+    "lessonTitle": "All Formats",
+    "titleLines": ["Lesson Complete", "All Formats"],
+    "nextLessonLabel": "Next",
+    "nextLessonTitle": "Component Optimization Sprint",
+    "heroFile": "cover/hero.svg"
+  },
+  "sections": [
+  ],
+  "assets": {
+    "audioMerged": "generated/audio/voiceover.mp3",
+    "segmentTimings": "generated/voiceover-en-segment-timings.json",
+    "captionsLines": "generated/captions/lines.json",
+    "audioSegmentsDir": "generated/audio/segments"
+  },
+  "transitions": {
+    "enabled": true,
+    "durationFrames": 30
+  },
+  "scriptFile": "source/script.md"
+}

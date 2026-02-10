@@ -1,0 +1,43 @@
+{
+  "languageCode": "en-US",
+  "voiceName": "en-US-Standard-C",
+  "speakingRate": 1.06,
+  "pitch": 0,
+  "volumeGainDb": 0,
+  "audioEncoding": "MP3",
+  "useSsml": true,
+  "breaksMs": {
+    "comma": 120,
+    "dash": 160,
+    "sentence": 260,
+    "semicolon": 180
+  },
+  "emphasisLevel": "moderate",
+  "emphasisMode": "tag",
+  "emphasisPitch": "+1st",
+  "emphasisRate": "medium",
+  "emphasisWords": ["deterministic", "tokens", "components", "overflow", "motion"],
+  "pronunciations": {
+    "DeFi": "dee-fye",
+    "HackQuest": "hack-quest",
+    "Remotion": "ree-motion",
+    "MEV": "em-ee-vee",
+    "Flashbots": "flash-bots",
+    "Layer 2": "layer two",
+    "Layer 2s": "layer twos",
+    "ERC20": "E R C twenty"
+  },
+  "prosodyRules": [
+    {
+      "pattern": "^(Now|But|So|Alright|Here)\\b",
+      "pitch": "+1st",
+      "rate": "medium"
+    },
+    {
+      "pattern": "\\?$",
+      "pitch": "+1st",
+      "rate": "medium"
+    }
+  ],
+  "outputDir": "generated/audio/segments"
+}
