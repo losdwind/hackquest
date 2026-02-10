@@ -1,28 +1,41 @@
-# Root repo ignores (HackQuest monorepo)
+#
+# HackQuest monorepo ignore rules
+#
 
-# Local scratch
-.tmp/
-
-# Optional local tooling
-.claude/
-
-# OS / editor
+# System / editor
 .DS_Store
+*.log
+*.tmp
 *.swp
 *.swo
 
-# Dependencies
-**/node_modules/
+# Env
+.env
+.env.*
 
-# Remotion public sync output (generated)
+# Scratch / local tooling
+.tmp/
+.claude/
+
+# Node / build
+**/node_modules/
+dist/
+build/
+out/
+coverage/
+.turbo/
+.cache/
+.remotion/
+
+# Remotion generated artifacts
+remotion/.cache/
+remotion/.remotion/
 remotion/.hq-public/
+remotion/public/**/audio/**
+remotion/public/**/captions/**
 
 # Lesson generated artifacts (audio, captions, timings, etc.)
 **/generated/
 
 # Large or local-only work (do not push)
 projects/
-
-# Logs
-*.log
-

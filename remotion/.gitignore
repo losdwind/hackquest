@@ -3,8 +3,8 @@ node_modules/
 out/
 client_secret_*.json
 gen-lang-client-*.json
-# System
-.DS_Store
+
+# Logs / temp
 *.log
 *.tmp
 *.swp
@@ -14,13 +14,14 @@ gen-lang-client-*.json
 .env
 .env.*
 
-# Node / build
-node_modules/
+# Build / cache
 dist/
 build/
-out/
 coverage/
 .turbo/
 .cache/
-projects/
+.remotion/
+
+# Generated outputs
 .hq-public/
+.cache/
