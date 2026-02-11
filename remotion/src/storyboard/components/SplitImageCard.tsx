@@ -76,7 +76,7 @@ export const SplitImageCard: React.FC<
             ) : null
           }
         >
-          <div style={{display: 'flex', flexDirection: 'column', gap: 12}}>
+          <div style={{display: 'flex', flexDirection: 'column', gap: 16}}>
             {bullets.map((b, idx) => (
               <div
                 key={`${idx}-${b.text}`}
@@ -85,9 +85,9 @@ export const SplitImageCard: React.FC<
                   gap: 12,
                   alignItems: 'flex-start',
                   fontFamily: fonts.body,
-                  fontSize: 22,
+                  fontSize: 28,
                   color: b.tone === 'muted' ? colors.muted : colors.text,
-                  lineHeight: 1.25,
+                  lineHeight: 1.3,
                 }}
               >
                 <span style={{color: b.tone === 'accent' ? colors.text : colors.muted}}>
@@ -100,14 +100,14 @@ export const SplitImageCard: React.FC<
           {note ? (
             <div
               style={{
-                marginTop: 14,
-                padding: '12px 14px',
+                marginTop: 16,
+                padding: '16px 18px',
                 borderRadius: 18,
                 backgroundColor: colors.panelSoft,
                 fontFamily: fonts.body,
-                fontSize: 18,
+                fontSize: 24,
                 color: colors.muted,
-                lineHeight: 1.25,
+                lineHeight: 1.3,
               }}
             >
               {note}

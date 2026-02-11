@@ -44,10 +44,10 @@ export const WarningCard: React.FC<
               style={{
                 borderRadius: 22,
                 backgroundColor: colors.accentSoft,
-                padding: '18px 18px',
+                padding: '22px 22px',
                 fontFamily: fonts.body,
-                fontSize: 18,
-                lineHeight: 1.3,
+                fontSize: 24,
+                lineHeight: 1.35,
                 color: colors.text,
               }}
             >
@@ -56,7 +56,7 @@ export const WarningCard: React.FC<
           }
         >
           {bullets.length ? (
-            <div style={{display: 'flex', flexDirection: 'column', gap: 12}}>
+            <div style={{display: 'flex', flexDirection: 'column', gap: 16}}>
               {bullets.map((b, idx) => (
                 <div
                   key={`${idx}-${b}`}
@@ -65,9 +65,9 @@ export const WarningCard: React.FC<
                     gap: 12,
                     alignItems: 'flex-start',
                     fontFamily: fonts.body,
-                    fontSize: 22,
+                    fontSize: 28,
                     color: colors.text,
-                    lineHeight: 1.25,
+                    lineHeight: 1.3,
                   }}
                 >
                   <span style={{color: colors.muted}}>–</span>

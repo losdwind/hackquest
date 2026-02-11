@@ -44,17 +44,17 @@ export const GlossaryCard: React.FC<
         <CardShell eyebrow={eyebrow} title={title}>
           <div
             style={{
-              marginTop: 8,
+              marginTop: 12,
               display: 'grid',
               gridTemplateColumns: '1fr 1fr',
-              gap: 14,
+              gap: 18,
             }}
           >
             {items.map((it, idx) => (
               <div
                 key={`${idx}-${it.cn}-${it.en}`}
                 style={{
-                  padding: '14px 14px',
+                  padding: '18px 18px',
                   borderRadius: 20,
                   backgroundColor: colors.panelSoft,
                   display: 'flex',
@@ -65,7 +65,7 @@ export const GlossaryCard: React.FC<
                 <div
                   style={{
                     fontFamily: fonts.display,
-                    fontSize: 28,
+                    fontSize: 34,
                     fontWeight: 900,
                     color: colors.text,
                     lineHeight: 1.05,
@@ -76,7 +76,7 @@ export const GlossaryCard: React.FC<
                 <div
                   style={{
                     fontFamily: fonts.body,
-                    fontSize: 18,
+                    fontSize: 24,
                     color: colors.muted,
                     letterSpacing: '0.02em',
                   }}

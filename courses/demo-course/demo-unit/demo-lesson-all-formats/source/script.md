@@ -2,54 +2,56 @@
 
 ## Segment 01
 Voiceover:
-This demo lesson is a production-style walkthrough. The topic is liquidation guardrails. The goal is to test layout, typography, and timing under dense, realistic content.
+This demo is a component usage guide. Each segment maps one component to its ideal use case, with props that are ready for production.
 
-Component: BulletCard
+Component: CalloutScene
 ```json
 {
   "props": {
-    "title": "Liquidation Guardrails",
-    "subtitle": "A full-pipeline demo for the Remotion lesson system.",
-    "bullets": [
-      {"text": "Deterministic layout with structured inputs", "tone": "accent", "icon": "1"},
-      {"text": "Charts + tables are JSON, not screenshots", "tone": "default", "icon": "2"},
-      {"text": "Full-screen recordings with overlays", "tone": "default", "icon": "3"},
-      {"text": "Engineering tone, advanced assumptions", "tone": "muted", "icon": "4"}
-    ],
-    "note": "Content is intentionally dense to surface spacing and overflow issues."
+    "eyebrow": "Style Guide",
+    "title": "CalloutScene",
+    "body": "Use this for one critical statement when you need direct, low-noise emphasis."
   }
 }
 ```
 
 ## Segment 02
 Voiceover:
-Constraint check. Assume blockchain basics. Prefer precise statements. If risk or monitoring is unclear, the lesson is not shippable.
+Use BulletCard for unordered points. It is best for checklists, constraints, and recap when reading order is simple.
 
-Component: CalloutScene
+Component: BulletCard
 ```json
 {
   "props": {
-    "title": "Constraint Check",
-    "body": "Advanced audience. Engineering tone. No marketing CTA. Risk and monitoring are part of the system."
+    "eyebrow": "Component",
+    "title": "BulletCard",
+    "subtitle": "Best for concise, scannable lists.",
+    "bullets": [
+      {"text": "One idea per bullet", "tone": "accent", "icon": "1"},
+      {"text": "Parallel phrasing across lines", "tone": "default", "icon": "2"},
+      {"text": "Muted tone only for context", "tone": "muted", "icon": "3"}
+    ],
+    "note": "Choose this when sequence is not the main story."
   }
 }
 ```
 
 ## Segment 03
 Voiceover:
-Here is the workflow. Content ships structured inputs. Design ships tokens and components. Rendering is deterministic, so QA is repeatable.
+Use StepsCard when sequence matters. Active step makes the viewer understand exactly where they are in a process.
 
 Component: StepsCard
 ```json
 {
   "props": {
-    "title": "Workflow",
-    "subtitle": "Inputs in. Predictable output out.",
+    "eyebrow": "Component",
+    "title": "StepsCard",
+    "subtitle": "Designed for procedural walkthroughs.",
     "steps": [
-      {"title": "Script + Data", "detail": "voiceover, chart JSON, asset refs"},
-      {"title": "Components", "detail": "cards, overlays, safe areas"},
-      {"title": "Timing", "detail": "segment timings, captions, transitions"},
-      {"title": "Render + QA", "detail": "deterministic output and checklist"}
+      {"title": "Declare", "detail": "state the target and constraints"},
+      {"title": "Assemble", "detail": "set props with valid schema"},
+      {"title": "Render", "detail": "verify layout and timing"},
+      {"title": "Review", "detail": "approve readability and QA"}
     ],
     "activeStep": 2
   }
@@ -58,79 +60,90 @@ Component: StepsCard
 
 ## Segment 04
 Voiceover:
-Start with ecosystem context. A chart gives scale without paragraphs, and it keeps labels and motion standardized.
+Use DefinitionCard for terms that drive decisions. Put exact meaning first, then short implementation notes.
 
-Scene Type: Chart
-Scene Content: TVL by sector (mock data)
+Component: DefinitionCard
 ```json
 {
-  "title": "TVL By Sector (Mock Data)",
-  "series": [
-    {"label": "Lending", "value": 48},
-    {"label": "DEX", "value": 31},
-    {"label": "Liquid Staking", "value": 27},
-    {"label": "Derivatives", "value": 16},
-    {"label": "Stablecoin", "value": 22}
-  ],
-  "maxValue": 60
+  "props": {
+    "eyebrow": "Component",
+    "term": "DefinitionCard",
+    "definition": "A term-first component for precise concept framing.",
+    "notes": [
+      "Keep the definition auditable",
+      "List only implementation-relevant notes",
+      "Use before code or comparison scenes"
+    ]
+  }
 }
 ```
 
 ## Segment 05
 Voiceover:
-Pin down the trust boundary. This diagram tells us what is inside the protocol, and what is external risk.
+Use WarningCard for operational risk. The wording should stay calm and each bullet should be directly actionable.
 
-Component: SplitImageCard
-Asset Ref: assets/diagram-system-boundary.png
+Component: WarningCard
 ```json
 {
   "props": {
-    "title": "Trust Boundary",
-    "subtitle": "Boxes are trust zones. Arrows are data flows.",
+    "eyebrow": "Component",
+    "title": "WarningCard",
+    "message": "Use for risks that require explicit mitigation.",
     "bullets": [
-      {"text": "Execution layer owns liquidation rules", "tone": "accent"},
-      {"text": "Oracles and bridges are external dependencies", "tone": "default"},
-      {"text": "Monitoring belongs in the boundary", "tone": "muted"}
-    ],
-    "note": "If a dependency is outside the boundary, treat it as adversarial by default."
+      "Name the failure mode clearly",
+      "Attach one mitigation per line",
+      "Avoid vague warnings without owners"
+    ]
   }
 }
 ```
 
 ## Segment 06
 Voiceover:
-Define the metric that drives liquidation. Health factor is not a UI number. It is a decision boundary.
+Use CompareCard for structured tradeoffs. Both sides should use the same dimensions, then end with one clear verdict.
 
-Component: DefinitionCard
+Component: CompareCard
 ```json
 {
   "props": {
-    "term": "Health Factor",
-    "definition": "A unit-normalized ratio of collateral value to debt value.",
-    "notes": [
-      "Units and rounding rules must be explicit",
-      "Oracles decide the valuation surface",
-      "This number drives liquidation thresholds"
-    ]
+    "eyebrow": "Component",
+    "title": "CompareCard",
+    "left": {
+      "label": "When To Use",
+      "bullets": [
+        "Two valid options exist",
+        "Criteria can be matched one-to-one",
+        "Decision must be explicit"
+      ]
+    },
+    "right": {
+      "label": "When To Avoid",
+      "bullets": [
+        "Options are not comparable",
+        "Requirements are still unclear",
+        "No final decision is needed"
+      ]
+    },
+    "verdict": "Use CompareCard only when a concrete recommendation is part of the outcome."
   }
 }
 ```
 
 ## Segment 07
 Voiceover:
-Liquidation is parameterized. Tables work well here because they keep units visible and values plausible.
+Use GlossaryCard for bilingual or multi-term alignment. It prevents naming drift between script, UI, and narration.
 
-Component: TableCard
+Component: GlossaryCard
 ```json
 {
   "props": {
-    "title": "Liquidation Parameters",
-    "columns": ["Parameter", "Meaning", "Unit", "Example"],
-    "rows": [
-      ["LIQ_THRESHOLD", "Minimum safe health factor", "1e18", "1.05e18"],
-      ["LIQ_BONUS", "Liquidator incentive", "bps", "500"],
-      ["ORACLE_STALE", "Max age of price data", "sec", "3600"],
-      ["CAP_PER_BLOCK", "Circuit breaker cap", "tokens", "10,000"]
+    "eyebrow": "Component",
+    "title": "GlossaryCard",
+    "items": [
+      {"cn": "分镜", "en": "Storyboard"},
+      {"cn": "旁白", "en": "Voiceover"},
+      {"cn": "字幕行", "en": "Caption Line"},
+      {"cn": "组件", "en": "Component"}
     ]
   }
 }
@@ -138,20 +151,20 @@ Component: TableCard
 
 ## Segment 08
 Voiceover:
-Here is the decision logic. Highlight the lines that drive risk, not the scaffolding around them.
+Use TableCard when fields, units, and examples must stay aligned. Tables are ideal for parameter references and prop contracts.
 
-Component: CodeExplainCard
+Component: TableCard
 ```json
 {
   "props": {
-    "title": "Health Factor Check",
-    "language": "solidity",
-    "code": "function checkAndMaybeLiquidate(address user) external {\n  uint256 collateralValue = getCollateralValue(user);\n  uint256 debtValue = getDebtValue(user);\n  require(debtValue > 0, \"NO_DEBT\");\n\n  uint256 hf = (collateralValue * 1e18) / debtValue;\n  emit HealthFactorChecked(user, hf);\n\n  if (hf < LIQ_THRESHOLD) {\n    liquidate(user);\n  }\n}",
-    "highlights": [{"from": 7, "to": 10}],
-    "explain": [
-      "Normalize units before division.",
-      "Emit events for monitoring and audits.",
-      "Highlight the decision block, not every line."
+    "eyebrow": "Component",
+    "title": "TableCard",
+    "columns": ["Prop", "Purpose", "Type", "Example"],
+    "rows": [
+      ["title", "primary heading", "string", "\"TableCard\""],
+      ["columns", "header labels", "string[]", "[\"Prop\",\"Type\"]"],
+      ["rows", "table body", "string[][]", "[[\"a\",\"b\"]]"],
+      ["eyebrow", "context label", "string", "\"Component\""]
     ]
   }
 }
@@ -159,42 +172,51 @@ Component: CodeExplainCard
 
 ## Segment 09
 Voiceover:
-Risk is not abstract. Oracles can fail, go stale, or be manipulated. The contract needs a defined fallback, not hope.
+Use SplitImageCard when text and evidence must appear together. The image should support interpretation, not decoration.
 
-Component: WarningCard
+Component: SplitImageCard
+Asset Ref: assets/diagram-system-boundary.png
 ```json
 {
   "props": {
-    "title": "Oracle Assumptions",
-    "message": "Price data can be stale, wrong, or adversarial.",
+    "eyebrow": "Component",
+    "title": "SplitImageCard",
+    "subtitle": "Combines explanatory bullets with a supporting visual.",
     "bullets": [
-      "Reject stale data explicitly",
-      "Cap damage with circuit breakers",
-      "Alert on anomalies and missed updates"
-    ]
+      {"text": "Left side explains what to read", "tone": "default"},
+      {"text": "Right side shows the visual proof", "tone": "accent"},
+      {"text": "Note area captures review constraints", "tone": "muted"}
+    ],
+    "note": "Use this for architecture diagrams and annotated references."
   }
 }
 ```
 
 ## Segment 10
 Voiceover:
-Not all price signals are equal. Spot is fast but manipulable. TWAP is slower but more robust. The window is the tradeoff.
+Use CodeExplainCard for implementation details. Keep code compact, highlight decision lines, and explain intent beside the snippet.
 
-Component: CompareCard
+Component: CodeExplainCard
 ```json
 {
   "props": {
-    "title": "Spot Price vs TWAP Oracle",
-    "left": {"label": "Spot", "bullets": ["Low latency", "Easier integration", "More manipulable"]},
-    "right": {"label": "TWAP", "bullets": ["Resists manipulation", "Adds latency", "Needs window selection"]},
-    "verdict": "Use TWAP for liquidation thresholds. Keep spot for UI hints and debugging."
+    "eyebrow": "Component",
+    "title": "CodeExplainCard",
+    "language": "typescript",
+    "code": "function pickComponent(kind: 'list' | 'flow' | 'risk') {\n  if (kind === 'list') return 'BulletCard';\n  if (kind === 'flow') return 'StepsCard';\n  return 'WarningCard';\n}",
+    "highlights": [{"from": 2, "to": 4}],
+    "explain": [
+      "Branch by information shape, not preference.",
+      "Keep fallback deterministic.",
+      "Highlight only logic-bearing lines."
+    ]
   }
 }
 ```
 
 ## Segment 11
 Voiceover:
-Screen recordings should be full-screen. Overlays must stay readable. Callouts should point to exactly one decision.
+Use DemoOverlay for immersive screen recordings with light annotation. One title, one badge, one focus callout is usually enough.
 
 Scene Type: Video
 Component: DemoOverlay
@@ -202,330 +224,66 @@ Asset Ref: assets/fake-ide-walkthrough.mp4
 ```json
 {
   "props": {
-    "title": "Debugging the Decision Block"
+    "title": "DemoOverlay",
+    "badge": "Component",
+    "callouts": [
+      {"type": "rect", "x": 1080, "y": 220, "w": 620, "h": 340, "label": "Focus"}
+    ]
   }
 }
 ```
 
 ## Segment 12
 Voiceover:
-If the lesson is correct, you can verify it. We care about event logs, state transitions, and that monitoring can reconstruct what happened.
+Use CalloutVideoFrame when you need stronger framing around video content. It is better than raw overlays for dense UI walkthroughs.
 
 Scene Type: Video
-Component: DemoOverlay
+Component: CalloutVideoFrame
 Asset Ref: assets/fake-explorer-callout.mp4
 ```json
 {
   "props": {
-    "title": "Verifying Event Logs"
+    "badge": "Component",
+    "title": "CalloutVideoFrame",
+    "subtitle": "Framed video with optional blur and rectangle callouts.",
+    "callouts": [
+      {"type": "rect", "x": 180, "y": 120, "w": 560, "h": 300, "label": "Panel"},
+      {"type": "blur", "x": 860, "y": 150, "w": 900, "h": 220}
+    ]
   }
 }
 ```
 
 ## Segment 13
 Voiceover:
-Make monitoring explicit. Without signals, you are shipping a blind system.
+Recap. Choose component by narrative structure first, then tune visual style through props and tokens.
 
-Component: BulletCard
-```json
-{
-  "props": {
-    "title": "Monitoring Signals",
-    "bullets": [
-      {"text": "Oracle freshness and deviation", "tone": "accent", "icon": "A"},
-      {"text": "Health factor distribution by market", "tone": "default", "icon": "B"},
-      {"text": "Liquidation rate and bad-debt events", "tone": "default", "icon": "C"},
-      {"text": "Circuit breaker activations", "tone": "muted", "icon": "D"}
-    ],
-    "note": "If you cannot measure it, you cannot operate it."
-  }
-}
+PostGapMs: 1000
+Scene Type: Slide
+Scene Content: Recap
+```markdown
+### Recap
+
+Choose by information shape.
+
+- Unordered points: BulletCard
+- Ordered flow: StepsCard
+- Risk and mitigations: WarningCard
+- Evidence + text: SplitImageCard
 ```
 
 ## Segment 14
 Voiceover:
-Some invariants must always hold. Call them out explicitly. This is where QA can become systematic.
+Next, we can turn this into a reusable authoring handbook with per-component presets and prop templates for faster lesson production.
 
-Component: CalloutScene
-```json
-{
-  "props": {
-    "title": "Invariants",
-    "body": "No negative balances. No stale oracle usage. Every liquidation emits traceable events. Circuit breakers are reachable and testable."
-  }
-}
-```
+Scene Type: Slide
+Scene Content: What's Next
+```markdown
+### What's Next
 
-## Segment 15
-Voiceover:
-Tables also work for operational SLOs. The values are examples, but the shape of the agreement matters.
+Create reusable presets per component.
 
-Component: TableCard
-```json
-{
-  "props": {
-    "title": "Monitoring SLOs (Examples)",
-    "columns": ["Signal", "Threshold", "Window", "Action"],
-    "rows": [
-      ["Oracle stale", "> ORACLE_STALE", "1 min", "pause risky market"],
-      ["HF collapse", "p5 hf < 1.02", "5 min", "raise alerts + cap per block"],
-      ["Liquidation burst", "> 3x baseline", "10 min", "check oracle + MEV"],
-      ["Bad debt", "> 0", "instant", "incident process"]
-    ]
-  }
-}
-```
-
-## Segment 16
-Voiceover:
-This is a second code card. It shows a guardrail that should be boring, explicit, and tested.
-
-Component: CodeExplainCard
-```json
-{
-  "props": {
-    "title": "Oracle Staleness Guard",
-    "language": "solidity",
-    "code": "function requireFresh(uint256 updatedAt) internal view {\n  uint256 age = block.timestamp - updatedAt;\n  if (age > ORACLE_STALE) {\n    revert STALE_ORACLE(age);\n  }\n}",
-    "highlights": [{"from": 2, "to": 5}],
-    "explain": [
-      "Make staleness a hard failure.",
-      "Return age in the error for debugging."
-    ]
-  }
-}
-```
-
-## Segment 17
-Voiceover:
-Bridges are not free. They change finality, introduce delay, and add their own failure modes.
-
-Component: WarningCard
-```json
-{
-  "props": {
-    "title": "Bridge Assumptions",
-    "message": "Bridges introduce delay and different finality guarantees.",
-    "bullets": [
-      "Define confirmation depth explicitly",
-      "Cap max transfer value during incidents",
-      "Treat monitoring as part of security"
-    ]
-  }
-}
-```
-
-## Segment 18
-Voiceover:
-When something breaks, you need a runbook. Steps keep the procedure explicit and reduce decision debt.
-
-Component: StepsCard
-```json
-{
-  "props": {
-    "title": "Incident Runbook",
-    "subtitle": "Operational steps are part of protocol security.",
-    "steps": [
-      {"title": "Detect", "detail": "oracle stale, hf spikes, liquidation bursts"},
-      {"title": "Contain", "detail": "cap per block, pause risky markets"},
-      {"title": "Recover", "detail": "restore feeds, replay checks, reconcile"},
-      {"title": "Postmortem", "detail": "root cause, new monitors, new tests"}
-    ],
-    "activeStep": 2
-  }
-}
-```
-
-## Segment 19
-Voiceover:
-Tradeoffs are unavoidable. Use comparisons to make constraints explicit, not to win an argument.
-
-Component: CompareCard
-```json
-{
-  "props": {
-    "title": "Mainnet vs Layer 2 (For Liquidations)",
-    "left": {"label": "Mainnet", "bullets": ["Highest security", "Higher fees", "Simpler finality"]},
-    "right": {"label": "Layer 2", "bullets": ["Cheaper execution", "Bridge UX", "Derived finality"]},
-    "verdict": "Do labs on L2. Move critical risk paths to mainnet only when needed."
-  }
-}
-```
-
-## Segment 20
-Voiceover:
-Spacing and alignment are not aesthetics. They are legibility constraints. QA should test them like code.
-
-Component: BulletCard
-```json
-{
-  "props": {
-    "title": "Visual QA",
-    "bullets": [
-      {"text": "Safe areas: no collisions with overlays", "tone": "accent", "icon": "1"},
-      {"text": "Consistent left alignment across scenes", "tone": "default", "icon": "2"},
-      {"text": "Readable sizes at 1080p (no tiny text)", "tone": "default", "icon": "3"},
-      {"text": "No clipped content or overflow", "tone": "muted", "icon": "4"}
-    ],
-    "note": "Determinism makes regression testing possible."
-  }
-}
-```
-
-## Segment 21
-Voiceover:
-Content production should be incremental. Only changed segments should regenerate audio, and captions should split into short sentences.
-
-Component: StepsCard
-```json
-{
-  "props": {
-    "title": "Production Loop",
-    "subtitle": "Make iteration cheap and predictable.",
-    "steps": [
-      {"title": "Validate", "detail": "schema, missing assets, basic checks"},
-      {"title": "Segments", "detail": "voiceover-en-segments.json"},
-      {"title": "TTS", "detail": "only changed segments"},
-      {"title": "Captions", "detail": "lines.json with short sentences"}
-    ],
-    "activeStep": 3
-  }
-}
-```
-
-## Segment 22
-Voiceover:
-Charts can also communicate operational load. This is mock data, but it shows how we keep visualizations consistent.
-
-Scene Type: Chart
-Scene Content: Incidents by category (mock data)
-```json
-{
-  "title": "Incidents By Category (Mock Data)",
-  "series": [
-    {"label": "Oracle", "value": 12},
-    {"label": "Bridge", "value": 7},
-    {"label": "Liquidity", "value": 9},
-    {"label": "Accounting", "value": 5},
-    {"label": "MEV", "value": 4}
-  ],
-  "maxValue": 14
-}
-```
-
-## Segment 23
-Voiceover:
-Use diagrams to close the loop. After code and parameters, show where the boundary sits and what depends on what.
-
-Component: SplitImageCard
-Asset Ref: assets/diagram-system-boundary.png
-```json
-{
-  "props": {
-    "title": "Boundary Summary",
-    "subtitle": "One picture to anchor assumptions before reviews.",
-    "bullets": [
-      {"text": "User side: signing and UI constraints", "tone": "muted"},
-      {"text": "Execution: liquidation rules and thresholds", "tone": "accent"},
-      {"text": "Dependencies: oracle + bridge are external risk", "tone": "default"}
-    ],
-    "note": "If it is external, design for failure and observability."
-  }
-}
-```
-
-## Segment 24
-Voiceover:
-Avoid vague claims. If you cannot test it or observe it, do not ship it as a lesson requirement.
-
-Component: CalloutScene
-```json
-{
-  "props": {
-    "title": "Anti-Patterns",
-    "body": "No undefined fallbacks. No silent failures. No magic constants without units. No UI-only risk controls."
-  }
-}
-```
-
-## Segment 25
-Voiceover:
-The ship checklist is where review time is won or lost. Keep it short, concrete, and owned by engineering.
-
-Component: BulletCard
-```json
-{
-  "props": {
-    "title": "Ship Checklist",
-    "bullets": [
-      {"text": "Explicit units and rounding rules", "tone": "accent", "icon": "1"},
-      {"text": "Stale data rejection + fallback behavior", "tone": "default", "icon": "2"},
-      {"text": "Circuit breakers with clear thresholds", "tone": "default", "icon": "3"},
-      {"text": "Monitoring: events, dashboards, alerts", "tone": "muted", "icon": "4"}
-    ],
-    "note": "If the system is not explicit, the lesson cannot be reliable."
-  }
-}
-```
-
-## Segment 26
-Voiceover:
-One last pass: do we have air, alignment, and consistent typography? If not, it is a design bug, not a content bug.
-
-Component: StepsCard
-```json
-{
-  "props": {
-    "title": "Final QA Pass",
-    "subtitle": "Treat layout regressions like test failures.",
-    "steps": [
-      {"title": "Alignment", "detail": "left edges, safe areas, consistent gutters"},
-      {"title": "Typography", "detail": "no tiny text, consistent hierarchy"},
-      {"title": "Overflow", "detail": "wrapping, truncation, max lines"},
-      {"title": "Motion", "detail": "transition duration and readability"}
-    ],
-    "activeStep": 1
-  }
-}
-```
-
-## Segment 27
-Voiceover:
-Recap. A good lesson is structured inputs, consistent components, and a risk model that survives scrutiny.
-
-PostGapMs: 1000
-Component: BulletCard
-```json
-{
-  "props": {
-    "title": "Recap",
-    "bullets": [
-      {"text": "What: chart, diagram, code, table, video, runbook", "tone": "accent"},
-      {"text": "Why: deterministic renders and repeatable QA", "tone": "default"},
-      {"text": "Constraint: precise, testable claims", "tone": "muted"}
-    ],
-    "note": "If the system is not explicit, the lesson cannot be reliable."
-  }
-}
-```
-
-## Segment 28
-Voiceover:
-Next, we will convert this demo into an optimization sprint. We will tighten typography, safe areas, and component states, and we will standardize transitions.
-
-Component: StepsCard
-```json
-{
-  "props": {
-    "title": "What's Next",
-    "subtitle": "Turn the demo into a concrete backlog for design and engineering.",
-    "steps": [
-      {"title": "Typography", "detail": "sizes, line heights, CN/EN mixing"},
-      {"title": "Layout Rules", "detail": "safe areas, alignment, air and rhythm"},
-      {"title": "Component States", "detail": "overflow, empty, variants"},
-      {"title": "Motion Standards", "detail": "transition types and durations"}
-    ],
-    "activeStep": 1
-  }
-}
+- Standard prop templates
+- Copy guidelines by component type
+- Visual QA checklist per scene
 ```

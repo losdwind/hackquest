@@ -128,20 +128,23 @@ export const Intro: React.FC<IntroTemplateProps> = ({
         style={{
           position: 'absolute',
           left: 92,
-          bottom: 190,
-          maxWidth: 920,
+          top: 150,
+          maxWidth: 1100,
           opacity: labelsOpacity,
           transform: `translateY(${labelsTranslate}px)`,
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 10,
         }}
       >
         {resolvedCourse ? (
           <div
             style={{
               fontFamily: fonts.body,
-              fontSize: 16,
+              fontSize: 20,
               fontWeight: 700,
               textTransform: 'uppercase',
-              letterSpacing: '0.16em',
+              letterSpacing: '0.14em',
               color: colors.muted,
             }}
           >
@@ -151,12 +154,12 @@ export const Intro: React.FC<IntroTemplateProps> = ({
         {resolvedUnit ? (
           <div
             style={{
-              marginTop: 8,
               fontFamily: fonts.body,
-              fontSize: 18,
+              fontSize: 30,
               fontWeight: 700,
               letterSpacing: '0.02em',
               color: colors.text,
+              lineHeight: 1.15,
             }}
           >
             {resolvedUnit}
@@ -169,7 +172,7 @@ export const Intro: React.FC<IntroTemplateProps> = ({
           position: 'absolute',
           left: 92,
           bottom: 92,
-          maxWidth: 1320,
+          maxWidth: 1420,
           transform: `scale(${titleScale})`,
           transformOrigin: 'left bottom',
           opacity: titleOpacity,
@@ -177,42 +180,52 @@ export const Intro: React.FC<IntroTemplateProps> = ({
       >
         <div
           style={{
-            fontFamily: fonts.display,
-            fontSize: 74,
-            fontWeight: 900,
-            lineHeight: 1.02,
-            letterSpacing: '-0.02em',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'flex-start',
+            gap: 0,
           }}
         >
-          {resolvedLessonTitle}
+          {resolvedLessonLabel ? (
+            <span
+              style={{
+                padding: '10px 18px',
+                borderRadius: 999,
+                backgroundColor: accent,
+                fontFamily: fonts.brand,
+                fontSize: 18,
+                fontWeight: 900,
+                letterSpacing: '0.1em',
+                textTransform: 'uppercase',
+                color: colors.text,
+                transform: `scale(${badgeScale})`,
+                transformOrigin: 'left center',
+                opacity: badgeOpacity,
+                lineHeight: 1.1,
+                flexShrink: 0,
+                marginBottom: 18,
+              }}
+            >
+              {resolvedLessonLabel}
+            </span>
+          ) : null}
+          <span
+            style={{
+              fontFamily: fonts.display,
+              fontSize: 88,
+              fontWeight: 900,
+              lineHeight: 1.02,
+              letterSpacing: '-0.02em',
+              color: colors.text,
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+            }}
+          >
+            {resolvedLessonTitle}
+          </span>
         </div>
       </div>
-
-      {resolvedLessonLabel ? (
-        <div
-          style={{
-            position: 'absolute',
-            right: 92,
-            bottom: 92,
-            padding: '12px 18px',
-            borderRadius: 999,
-            border: `2px solid ${colors.border}`,
-            backgroundColor: accent,
-            fontFamily: fonts.brand,
-            fontSize: 14,
-            fontWeight: 900,
-            letterSpacing: '0.14em',
-            textTransform: 'uppercase',
-            color: colors.text,
-            transform: `scale(${badgeScale})`,
-            transformOrigin: 'right bottom',
-            opacity: badgeOpacity,
-          }}
-        >
-          {resolvedLessonLabel}
-        </div>
-      ) : null}
     </AbsoluteFill>
   );
 };
-

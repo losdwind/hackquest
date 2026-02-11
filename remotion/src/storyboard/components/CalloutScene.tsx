@@ -41,8 +41,8 @@ export const CalloutScene: React.FC<{
           <div
             style={{
               fontFamily: fonts.body,
-              fontSize: 26,
-              lineHeight: 1.35,
+              fontSize: 32,
+              lineHeight: 1.38,
               color: colors.text,
               maxWidth: 980,
             }}

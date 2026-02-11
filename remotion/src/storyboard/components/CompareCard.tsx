@@ -24,13 +24,13 @@ const Side: React.FC<{label: string; bullets: string[]}> = ({label, bullets}) =>
       style={{
         borderRadius: 22,
         backgroundColor: colors.panelSoft,
-        padding: '18px 18px',
+        padding: '24px 24px',
       }}
     >
       <div
         style={{
           fontFamily: fonts.display,
-          fontSize: 22,
+          fontSize: 28,
           fontWeight: 900,
           letterSpacing: '-0.01em',
           color: colors.text,
@@ -41,7 +41,7 @@ const Side: React.FC<{label: string; bullets: string[]}> = ({label, bullets}) =>
       >
         {label}
       </div>
-      <div style={{display: 'flex', flexDirection: 'column', gap: 10}}>
+      <div style={{display: 'flex', flexDirection: 'column', gap: 14}}>
         {bullets.map((b, idx) => (
           <div
             key={`${idx}-${b}`}
@@ -50,8 +50,8 @@ const Side: React.FC<{label: string; bullets: string[]}> = ({label, bullets}) =>
               gap: 12,
               alignItems: 'flex-start',
               fontFamily: fonts.body,
-              fontSize: 20,
-              lineHeight: 1.25,
+              fontSize: 26,
+              lineHeight: 1.3,
               color: colors.text,
             }}
           >
@@ -83,7 +83,7 @@ export const CompareCard: React.FC<
     >
       <div style={{transform: `translateY(${y}px)`, opacity}}>
         <CardShell eyebrow={eyebrow} title={title}>
-          <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 18}}>
+          <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24}}>
             <Side label={left.label} bullets={left.bullets} />
             <Side label={right.label} bullets={right.bullets} />
           </div>
@@ -95,8 +95,8 @@ export const CompareCard: React.FC<
                 borderRadius: 18,
                 backgroundColor: colors.accentSoft,
                 fontFamily: fonts.body,
-                fontSize: 20,
-                lineHeight: 1.25,
+                fontSize: 26,
+                lineHeight: 1.3,
                 color: colors.text,
               }}
             >

@@ -1,5 +1,5 @@
 import {AbsoluteFill, spring, useCurrentFrame, useVideoConfig} from 'remotion';
-import {colors, fonts} from '../theme';
+import {colors, fonts, motion, tokens} from '../theme';
 import type {ChartSeriesItem} from '../lesson-config';
 
 type ChartCardProps = {
@@ -23,9 +23,10 @@ export const ChartCard: React.FC<ChartCardProps> = ({
 }) => {
   const frame = useCurrentFrame();
   const {fps} = useVideoConfig();
-  const reveal = spring({frame, fps, config: {damping: 200}});
-  const width = size?.width ?? 1360;
-  const height = size?.height ?? 620;
+  const reveal = spring({frame, fps, config: motion.spring.standard});
+  const chart = tokens.storyboard.chart;
+  const width = size?.width ?? chart.defaultWidth;
+  const height = size?.height ?? chart.defaultHeight;
   const barAreaHeight = height - 90;
   const resolvedMax = Math.max(
     1,
@@ -36,7 +37,7 @@ export const ChartCard: React.FC<ChartCardProps> = ({
     <AbsoluteFill
       style={{
         backgroundColor: colors.background,
-        padding: 96,
+        padding: tokens.storyboard.canvasPadding,
         justifyContent: 'center',
         alignItems: 'flex-start',
       }}
@@ -44,9 +45,9 @@ export const ChartCard: React.FC<ChartCardProps> = ({
       <div
         style={{
           width: '100%',
-          maxWidth: 1440,
-          padding: '36px 48px',
-          borderRadius: 28,
+          maxWidth: chart.panelMaxWidth,
+          padding: `${chart.panelPadY}px ${chart.panelPadX}px`,
+          borderRadius: chart.panelRadius,
           backgroundColor: colors.panelSoft,
           border: 'none',
           boxShadow: 'none',
@@ -57,12 +58,12 @@ export const ChartCard: React.FC<ChartCardProps> = ({
         <div
           style={{
             fontFamily: fonts.brand,
-            fontSize: 12,
+            fontSize: chart.eyebrowSize,
             fontWeight: 900,
             letterSpacing: '0.16em',
             textTransform: 'uppercase',
             color: colors.muted,
-            marginBottom: 12,
+            marginBottom: chart.eyebrowMarginBottom,
           }}
         >
           Chart
@@ -70,12 +71,12 @@ export const ChartCard: React.FC<ChartCardProps> = ({
         <div
           style={{
             fontFamily: fonts.display,
-            fontSize: 44,
+            fontSize: chart.titleSize,
             fontWeight: 900,
             letterSpacing: '-0.01em',
             color: colors.text,
-            marginBottom: 22,
-            lineHeight: 1.05,
+            marginBottom: chart.titleMarginBottom,
+            lineHeight: chart.titleLineHeight,
           }}
         >
           {title}
@@ -87,13 +88,13 @@ export const ChartCard: React.FC<ChartCardProps> = ({
             maxWidth: '100%',
             height,
             display: 'flex',
-            gap: 22,
+            gap: chart.columnGap,
             alignItems: 'flex-end',
           }}
         >
           {series.map((item) => {
             const ratio = Math.min(1, item.value / resolvedMax);
-            const barHeight = Math.max(10, ratio * barAreaHeight * reveal);
+            const barHeight = Math.max(chart.minBarHeight, ratio * barAreaHeight * reveal);
             return (
               <div
                 key={item.label}
@@ -110,7 +111,7 @@ export const ChartCard: React.FC<ChartCardProps> = ({
                   style={{
                     width: '100%',
                     height: barHeight,
-                    borderRadius: 16,
+                    borderRadius: chart.barRadius,
                     background: `linear-gradient(180deg, ${accentColor}, rgba(255, 255, 255, 0.1))`,
                     boxShadow: 'none',
                   }}
@@ -118,10 +119,10 @@ export const ChartCard: React.FC<ChartCardProps> = ({
                 <div
                   style={{
                     fontFamily: fonts.body,
-                    fontSize: 18,
+                    fontSize: chart.labelSize,
                     fontWeight: 700,
                     color: colors.text,
-                    lineHeight: 1.15,
+                    lineHeight: chart.labelLineHeight,
                     textAlign: 'center',
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',

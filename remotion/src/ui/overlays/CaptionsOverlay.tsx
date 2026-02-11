@@ -1,8 +1,6 @@
 import {useCallback, useEffect, useMemo, useState} from 'react';
 import {
   AbsoluteFill,
-  interpolate,
-  spring,
   staticFile,
   useCurrentFrame,
   useDelayRender,
@@ -15,6 +13,7 @@ import {colors, fonts} from '../../theme';
 type CaptionLayerProps = {
   captionsFile: string;
   startAtFrame?: number;
+  leadMs?: number;
 };
 
 const findActiveCaption = (captions: Caption[], timeMs: number) => {
@@ -40,6 +39,7 @@ const findActiveCaption = (captions: Caption[], timeMs: number) => {
 export const CaptionsOverlay: React.FC<CaptionLayerProps> = ({
   captionsFile,
   startAtFrame = 0,
+  leadMs = 180,
 }) => {
   const [captions, setCaptions] = useState<Caption[] | null>(null);
   const {delayRender, continueRender, cancelRender} = useDelayRender();
@@ -64,21 +64,24 @@ export const CaptionsOverlay: React.FC<CaptionLayerProps> = ({
     return null;
   }
 
-  return <CaptionRenderer captions={captions} startAtFrame={startAtFrame} />;
+  return <CaptionRenderer captions={captions} startAtFrame={startAtFrame} leadMs={leadMs} />;
 };
 
 type CaptionRendererProps = {
   captions: Caption[];
 };
 
-const CaptionRenderer: React.FC<CaptionRendererProps & {startAtFrame: number}> = ({
+const CaptionRenderer: React.FC<
+  CaptionRendererProps & {startAtFrame: number; leadMs: number}
+> = ({
   captions,
   startAtFrame,
+  leadMs,
 }) => {
   const globalFrame = useCurrentFrame();
   const {fps} = useVideoConfig();
   const frame = Math.max(0, globalFrame - startAtFrame);
-  const timeMs = (frame / fps) * 1000;
+  const timeMs = Math.max(0, (frame / fps) * 1000 + leadMs);
 
   const caption = useMemo(
     () => findActiveCaption(captions, timeMs),
@@ -89,31 +92,6 @@ const CaptionRenderer: React.FC<CaptionRendererProps & {startAtFrame: number}> =
     return null;
   }
 
-  const localFrame = Math.max(
-    0,
-    ((timeMs - caption.startMs) / 1000) * fps,
-  );
-  const durationFrames = Math.max(
-    1,
-    ((caption.endMs - caption.startMs) / 1000) * fps,
-  );
-
-  const opacityIn = interpolate(localFrame, [0, 12], [0, 1], {
-    extrapolateLeft: 'clamp',
-    extrapolateRight: 'clamp',
-  });
-
-  const opacityOut = interpolate(
-    localFrame,
-    [durationFrames - 12, durationFrames],
-    [1, 0],
-    {
-      extrapolateLeft: 'clamp',
-      extrapolateRight: 'clamp',
-    },
-  );
-
-  const opacity = Math.min(opacityIn, opacityOut);
   const maxWidth = 1400;
   const paddingX = 40;
   const baseFontSize = 44;
@@ -134,7 +112,7 @@ const CaptionRenderer: React.FC<CaptionRendererProps & {startAtFrame: number}> =
       style={{
         justifyContent: 'flex-end',
         alignItems: 'center',
-        paddingBottom: 140,
+        paddingBottom: 96,
         pointerEvents: 'none',
       }}
     >
@@ -151,7 +129,6 @@ const CaptionRenderer: React.FC<CaptionRendererProps & {startAtFrame: number}> =
           fontWeight: 600,
           lineHeight: 1.25,
           whiteSpace: 'nowrap',
-          opacity,
         }}
       >
         {caption.text}

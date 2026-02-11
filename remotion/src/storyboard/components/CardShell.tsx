@@ -7,19 +7,23 @@ export const CardShell: React.FC<{
   rightSlot?: React.ReactNode;
   children?: React.ReactNode;
 }> = ({eyebrow, title, subtitle, rightSlot, children}) => {
+  const shell = tokens.storyboard.cardShell;
+
   return (
     <div
       style={{
         width: '100%',
-        maxWidth: tokens.layout.maxContentWidth,
-        padding: '40px 44px',
-        borderRadius: 28,
+        maxWidth: Math.min(shell.maxWidth, tokens.layout.maxContentWidth + 240),
+        padding: `${shell.paddingY}px ${shell.paddingX}px`,
+        borderRadius: shell.borderRadius,
         backgroundColor: colors.panelSoft,
         border: 'none',
         boxShadow: tokens.shadow.card,
         display: rightSlot ? 'grid' : 'block',
-        gridTemplateColumns: rightSlot ? '1.1fr 0.9fr' : undefined,
-        gap: rightSlot ? 28 : undefined,
+        gridTemplateColumns: rightSlot
+          ? `minmax(0, ${shell.leftFraction}fr) minmax(${shell.rightMinWidth}px, ${shell.rightFraction}fr)`
+          : undefined,
+        gap: rightSlot ? shell.gridGap : undefined,
         alignItems: 'start',
       }}
     >
@@ -28,12 +32,12 @@ export const CardShell: React.FC<{
         <div
           style={{
             fontFamily: fonts.brand,
-            fontSize: 12,
+            fontSize: shell.eyebrowSize,
             fontWeight: 800,
             letterSpacing: '0.16em',
             textTransform: 'uppercase',
             color: colors.muted,
-            marginBottom: 14,
+            marginBottom: shell.eyebrowMarginBottom,
             whiteSpace: 'pre',
             visibility: eyebrow ? 'visible' : 'hidden',
           }}
@@ -45,12 +49,12 @@ export const CardShell: React.FC<{
           <div
             style={{
               fontFamily: fonts.display,
-              fontSize: 56,
+              fontSize: shell.titleSize,
               fontWeight: 800,
               letterSpacing: '-0.01em',
               color: colors.text,
-              marginBottom: 12,
-              lineHeight: 1.05,
+              marginBottom: shell.titleMarginBottom,
+              lineHeight: shell.titleLineHeight,
             }}
           >
             {title}
@@ -61,11 +65,11 @@ export const CardShell: React.FC<{
           <div
             style={{
               fontFamily: fonts.body,
-              fontSize: 24,
-              lineHeight: 1.3,
+              fontSize: shell.subtitleSize,
+              lineHeight: shell.subtitleLineHeight,
               color: colors.muted,
-              marginBottom: 18,
-              maxWidth: 980,
+              marginBottom: shell.subtitleMarginBottom,
+              maxWidth: shell.subtitleMaxWidth,
             }}
           >
             {subtitle}

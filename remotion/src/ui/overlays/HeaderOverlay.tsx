@@ -23,47 +23,32 @@ export const HeaderOverlay: React.FC<{
         position: 'absolute',
         right: 80,
         top: 36,
-        display: 'flex',
+        display: 'inline-flex',
         flexDirection: 'column',
         alignItems: 'flex-end',
-        gap: 6,
+        gap: 4,
+        padding: '10px 14px',
+        borderRadius: 14,
+        backgroundColor: colors.panel,
         transform: `translateY(${translateY}px)`,
         opacity,
       }}
     >
-      {lessonLabel ? (
-        <span
-          style={{
-            padding: '4px 10px',
-            borderRadius: 999,
-            backgroundColor: colors.accent,
-            border: `1px solid ${colors.border}`,
-            fontFamily: fonts.body,
-            fontSize: 11,
-            fontWeight: 700,
-            letterSpacing: '0.14em',
-            textTransform: 'uppercase',
-            color: colors.text,
-          }}
-        >
-          {lessonLabel}
-        </span>
-      ) : null}
-
       <div
         style={{
           display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'flex-end',
-          gap: 2,
+          alignItems: 'center',
+          justifyContent: 'flex-end',
+          gap: 8,
           fontFamily: fonts.body,
           textTransform: 'uppercase',
-          letterSpacing: '0.16em',
+          letterSpacing: '0.1em',
         }}
       >
-        <span style={{fontSize: 12, fontWeight: 600, color: colors.text}}>
+        <span style={{fontSize: 12, fontWeight: 700, color: colors.text}}>
           {courseLabel}
         </span>
+
         <span style={{fontSize: 11, fontWeight: 600, color: colors.muted}}>
           {unitLabel}
         </span>
@@ -71,14 +56,49 @@ export const HeaderOverlay: React.FC<{
 
       <div
         style={{
-          marginTop: 6,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'flex-end',
+          gap: 8,
+          maxWidth: 700,
           fontFamily: fonts.body,
-          fontSize: 12,
-          fontWeight: 600,
-          color: colors.muted,
+          fontSize: 17,
+          fontWeight: 700,
+          color: colors.text,
+          lineHeight: 1.2,
+          whiteSpace: 'nowrap',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
         }}
       >
-        {lessonTitle}
+        {lessonLabel ? (
+          <span
+            style={{
+              padding: '3px 9px',
+              borderRadius: 999,
+              backgroundColor: colors.accent,
+              fontSize: 11,
+              fontWeight: 700,
+              color: colors.text,
+              lineHeight: 1.15,
+              textTransform: 'uppercase',
+              letterSpacing: '0.1em',
+              flexShrink: 0,
+            }}
+          >
+            {lessonLabel}
+          </span>
+        ) : null}
+        <span
+          style={{
+            minWidth: 0,
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+          }}
+        >
+          {lessonTitle}
+        </span>
       </div>
     </div>
   );

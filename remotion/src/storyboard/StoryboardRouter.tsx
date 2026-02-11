@@ -12,7 +12,7 @@ import {
 } from 'remotion';
 import {linearTiming, TransitionSeries} from '@remotion/transitions';
 import {fade} from '@remotion/transitions/fade';
-import {colors, fonts} from '../theme';
+import {colors, fonts, motion, tokens} from '../theme';
 import type {LessonBlockContext} from '../lesson-config';
 import {ChartCard} from '../templates/ChartCard';
 import {resolveLessonPublicPath} from '../lib/lesson-paths';
@@ -24,10 +24,6 @@ type SegmentTiming = {
   id: number;
   startMs: number;
   durationMs: number;
-};
-
-type LessonScript = {
-  segments: LessonScriptSegment[];
 };
 
 type ChartConfig = {
@@ -184,17 +180,24 @@ const SlideScene: React.FC<{
   const frame = useCurrentFrame();
   const {fps} = useVideoConfig();
 
-  const reveal = spring({frame, fps, config: {damping: 200}});
+  const reveal = spring({frame, fps, config: motion.spring.standard});
   const slideContent = parseSlideMarkdown(markdown, sceneContent);
+  const slide = tokens.storyboard.slide;
 
   return (
-    <AbsoluteFill style={{padding: 96, justifyContent: 'center', alignItems: 'flex-start'}}>
+    <AbsoluteFill
+      style={{
+        padding: tokens.storyboard.canvasPadding,
+        justifyContent: 'center',
+        alignItems: 'flex-start',
+      }}
+    >
       <div
         style={{
           width: '100%',
-          maxWidth: 1440,
-          padding: '36px 48px',
-          borderRadius: 28,
+          maxWidth: slide.panelMaxWidth,
+          padding: `${slide.panelPadY}px ${slide.panelPadX}px`,
+          borderRadius: slide.panelRadius,
           backgroundColor: colors.panelSoft,
           border: `1px solid ${colors.borderSoft}`,
           boxShadow: 'none',
@@ -203,7 +206,7 @@ const SlideScene: React.FC<{
           display: slideContent.layout === 'columns' || imageSrc ? 'grid' : 'block',
           gridTemplateColumns:
             slideContent.layout === 'columns' || imageSrc ? '1.1fr 0.9fr' : undefined,
-          gap: slideContent.layout === 'columns' || imageSrc ? 28 : undefined,
+          gap: slideContent.layout === 'columns' || imageSrc ? slide.panelGridGap : undefined,
           alignItems: 'start',
         }}
       >
@@ -212,10 +215,10 @@ const SlideScene: React.FC<{
             <div
               style={{
                 fontFamily: fonts.display,
-                fontSize: 54,
+                fontSize: slide.titleSize,
                 fontWeight: 750,
                 color: colors.text,
-                marginBottom: 10,
+                marginBottom: 14,
                 letterSpacing: '-0.01em',
               }}
             >
@@ -226,9 +229,9 @@ const SlideScene: React.FC<{
             <div
               style={{
                 fontFamily: fonts.body,
-                fontSize: 24,
+                fontSize: slide.subtitleSize,
                 color: colors.muted,
-                marginBottom: 18,
+                marginBottom: 22,
               }}
             >
               {slideContent.subtitle}
@@ -254,7 +257,7 @@ const SlideScene: React.FC<{
                   backgroundColor: colors.panelSoft,
                   borderBottom: `1px solid ${colors.borderSoft}`,
                   fontFamily: fonts.body,
-                  fontSize: 14,
+                  fontSize: slide.tableHeaderSize,
                   fontWeight: 800,
                   letterSpacing: '0.08em',
                   textTransform: 'uppercase',
@@ -278,7 +281,7 @@ const SlideScene: React.FC<{
                           ? 'none'
                           : `1px solid ${colors.borderSoft}`,
                       fontFamily: fonts.body,
-                      fontSize: 18,
+                      fontSize: slide.tableBodySize,
                       color: colors.text,
                     }}
                   >
@@ -297,7 +300,7 @@ const SlideScene: React.FC<{
                     key={paragraph}
                     style={{
                       fontFamily: fonts.body,
-                      fontSize: 20,
+                      fontSize: slide.bodySize,
                       color: colors.text,
                       marginBottom: 10,
                     }}
@@ -315,7 +318,7 @@ const SlideScene: React.FC<{
                           gap: 12,
                           alignItems: 'flex-start',
                           fontFamily: fonts.body,
-                          fontSize: 22,
+                          fontSize: slide.bulletSize,
                           color: colors.text,
                         }}
                       >
@@ -332,7 +335,7 @@ const SlideScene: React.FC<{
                     key={paragraph}
                     style={{
                       fontFamily: fonts.body,
-                      fontSize: 20,
+                      fontSize: slide.bodySize,
                       color: colors.text,
                       marginBottom: 10,
                     }}
@@ -350,7 +353,7 @@ const SlideScene: React.FC<{
                           gap: 12,
                           alignItems: 'flex-start',
                           fontFamily: fonts.body,
-                          fontSize: 22,
+                          fontSize: slide.bulletSize,
                           color: colors.text,
                         }}
                       >
@@ -369,7 +372,7 @@ const SlideScene: React.FC<{
                   key={paragraph}
                   style={{
                     fontFamily: fonts.body,
-                    fontSize: 20,
+                    fontSize: slide.bodySize,
                     color: colors.text,
                     marginBottom: 12,
                   }}
@@ -387,7 +390,7 @@ const SlideScene: React.FC<{
                         gap: 12,
                         alignItems: 'flex-start',
                         fontFamily: fonts.body,
-                        fontSize: 22,
+                        fontSize: slide.bulletSize,
                         color: colors.text,
                       }}
                     >
@@ -427,8 +430,7 @@ const SlideScene: React.FC<{
 
 const resolveChartConfig = (json?: Record<string, unknown>): ChartConfig | null => {
   if (!json) return null;
-  const chart = (json as {chart?: unknown}).chart;
-  const candidate = (chart ?? json) as Partial<ChartConfig>;
+  const candidate = json as Partial<ChartConfig>;
   if (!candidate || typeof candidate !== 'object') return null;
   if (!candidate.title || !candidate.series) return null;
   return candidate as ChartConfig;
@@ -436,30 +438,21 @@ const resolveChartConfig = (json?: Record<string, unknown>): ChartConfig | null 
 
 const resolveComponentProps = (
   json: Record<string, unknown> | undefined,
-  opts: {requireEnvelope: boolean; segmentId: number; componentName: string},
+  opts: {segmentId: number; componentName: string},
 ) => {
   if (!json || typeof json !== 'object') {
-    if (opts.requireEnvelope) {
-      throw new Error(
-        `Segment ${opts.segmentId}: Component ${opts.componentName} requires a JSON block with {"props": {...}}`,
-      );
-    }
-    return {};
+    throw new Error(
+      `Segment ${opts.segmentId}: Component ${opts.componentName} requires a JSON block with {"props": {...}}`,
+    );
   }
 
   if ('props' in json && typeof (json as {props?: unknown}).props === 'object') {
     return (json as {props: Record<string, unknown>}).props ?? {};
   }
 
-  if (opts.requireEnvelope) {
-    throw new Error(
-      `Segment ${opts.segmentId}: Component ${opts.componentName} requires JSON envelope {"props": {...}} (top-level props are not allowed)`,
-    );
-  }
-
-  // Chart and legacy segments may store data at top-level.
-  if ('chart' in json) return {};
-  return json as Record<string, unknown>;
+  throw new Error(
+    `Segment ${opts.segmentId}: Component ${opts.componentName} requires JSON envelope {"props": {...}} (top-level props are not allowed)`,
+  );
 };
 
 const isVideoRef = (assetRef?: string | null) =>
@@ -479,7 +472,7 @@ export const StoryboardRouter: React.FC<StoryboardRouterProps> = ({
   useTransitions = false,
   transitionDurationInFrames: transitionDurationOverride,
 }) => {
-  const [script, setScript] = useState<LessonScript | null>(null);
+  const [scriptSegments, setScriptSegments] = useState<LessonScriptSegment[] | null>(null);
   const [timings, setTimings] = useState<SegmentTiming[] | null>(null);
   const {delayRender, continueRender, cancelRender} = useDelayRender();
   const [handle] = useState(() => delayRender());
@@ -490,12 +483,15 @@ export const StoryboardRouter: React.FC<StoryboardRouterProps> = ({
         fetch(staticFile(scriptFile)),
         fetch(staticFile(timingsFile)),
       ]);
+      if (!scriptFile.toLowerCase().endsWith('.md')) {
+        throw new Error(
+          `StoryboardRouter only supports markdown script files. Got: ${scriptFile}`,
+        );
+      }
       const scriptText = await scriptRes.text();
-      const scriptJson: LessonScript = scriptFile.toLowerCase().endsWith('.md')
-        ? {segments: parseScriptMdShared(scriptText)}
-        : (JSON.parse(scriptText) as LessonScript);
+      const parsedSegments = parseScriptMdShared(scriptText);
       const timingsJson = (await timingsRes.json()) as SegmentTiming[];
-      setScript(scriptJson);
+      setScriptSegments(parsedSegments);
       setTimings(timingsJson);
       continueRender(handle);
     } catch (err) {
@@ -508,9 +504,9 @@ export const StoryboardRouter: React.FC<StoryboardRouterProps> = ({
   }, [fetchAll]);
 
   const resolved = useMemo(() => {
-    if (!script || !timings) return [];
+    if (!scriptSegments || !timings) return [];
     const timingsById = new Map(timings.map((t) => [Number(t.id), t]));
-    return script.segments
+    return scriptSegments
       .map((seg) => {
         const timing = timingsById.get(Number(seg.id));
         if (!timing) return null;
@@ -523,7 +519,7 @@ export const StoryboardRouter: React.FC<StoryboardRouterProps> = ({
       .filter(Boolean) as Array<
       LessonScriptSegment & {startMs: number; durationMs: number}
     >;
-  }, [script, timings]);
+  }, [scriptSegments, timings]);
 
   const globalFrame = useCurrentFrame();
   const {fps} = useVideoConfig();
@@ -570,16 +566,17 @@ export const StoryboardRouter: React.FC<StoryboardRouterProps> = ({
       : null;
     const segComponentName = segVisual.component;
     const segCustomComponent = segComponentName ? components?.[segComponentName] : null;
-    const segComponentProps = resolveComponentProps(segVisual.json, {
-      requireEnvelope: Boolean(segComponentName),
-      segmentId: seg.id,
-      componentName: segComponentName ?? 'Unknown',
-    });
     if (segComponentName && !segCustomComponent) {
       throw new Error(
         `Segment ${seg.id}: Unknown component "${segComponentName}". Add it to storyboard/registry.ts.`,
       );
     }
+    const segComponentProps = segComponentName
+      ? resolveComponentProps(segVisual.json, {
+          segmentId: seg.id,
+          componentName: segComponentName,
+        })
+      : {};
 
     const segChartConfig = resolveChartConfig(segVisual.json);
     const segShouldRenderComponent = Boolean(segCustomComponent);
@@ -609,10 +606,6 @@ export const StoryboardRouter: React.FC<StoryboardRouterProps> = ({
         Boolean(segVisual.markdown) ||
         Boolean(segVisual.sceneContent));
 
-    const withStyleDebug = (node: React.ReactNode) => {
-      return node;
-    };
-
     if (segShouldRenderComponent && segCustomComponent) {
       const Component = segCustomComponent;
       const segFrames =
@@ -634,7 +627,7 @@ export const StoryboardRouter: React.FC<StoryboardRouterProps> = ({
       if (schema) {
         try {
           const parsed = schema.parse(segComponentProps);
-          return withStyleDebug(<Component {...parsed} context={segContext} hq={injected} />);
+          return <Component {...parsed} context={segContext} hq={injected} />;
         } catch (err) {
           throw new Error(
             `Invalid props for component "${segComponentName}" (segment ${seg.id}). ${String(
@@ -644,11 +637,11 @@ export const StoryboardRouter: React.FC<StoryboardRouterProps> = ({
         }
       }
 
-      return withStyleDebug(<Component {...segComponentProps} context={segContext} hq={injected} />);
+      return <Component {...segComponentProps} context={segContext} hq={injected} />;
     }
 
     if (segShouldRenderChart && segChartConfig) {
-      return withStyleDebug(
+      return (
         <ChartCard
           title={segChartConfig.title}
           series={segChartConfig.series}
@@ -664,7 +657,7 @@ export const StoryboardRouter: React.FC<StoryboardRouterProps> = ({
       const src = /^https?:\/\//i.test(segResolvedAssetRef)
         ? segResolvedAssetRef
         : staticFile(segResolvedAssetRef);
-      return withStyleDebug(
+      return (
         <AbsoluteFill style={{backgroundColor: colors.background}}>
           <Video src={src} style={{width: '100%', height: '100%', objectFit: 'cover'}} />
         </AbsoluteFill>
@@ -675,7 +668,7 @@ export const StoryboardRouter: React.FC<StoryboardRouterProps> = ({
       const src = /^https?:\/\//i.test(segResolvedAssetRef)
         ? segResolvedAssetRef
         : staticFile(segResolvedAssetRef);
-      return withStyleDebug(
+      return (
         <AbsoluteFill style={{backgroundColor: colors.background}}>
           <img alt="" src={src} style={{width: '100%', height: '100%', objectFit: 'cover'}} />
         </AbsoluteFill>
@@ -690,7 +683,7 @@ export const StoryboardRouter: React.FC<StoryboardRouterProps> = ({
               : staticFile(segResolvedAssetRef))
           : null;
 
-      return withStyleDebug(
+      return (
         <SlideScene
           markdown={segVisual.markdown}
           sceneContent={segVisual.sceneContent}
@@ -699,13 +692,13 @@ export const StoryboardRouter: React.FC<StoryboardRouterProps> = ({
       );
     }
 
-    return withStyleDebug(
-      <AbsoluteFill style={{backgroundColor: colors.background, padding: 96, justifyContent: 'center', alignItems: 'center', fontFamily: fonts.body, color: colors.text}}>
+    return (
+      <AbsoluteFill style={{backgroundColor: colors.background, padding: tokens.storyboard.canvasPadding, justifyContent: 'center', alignItems: 'center', fontFamily: fonts.body, color: colors.text}}>
         <div style={{maxWidth: 1200, padding: '32px 40px', borderRadius: 20, backgroundColor: colors.panelSoft, border: `1px solid ${colors.borderSoft}`, boxShadow: 'none', textAlign: 'center'}}>
-          <div style={{fontSize: 18, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em', color: colors.muted, marginBottom: 12}}>
+          <div style={{fontSize: tokens.storyboard.slide.fallbackKickerSize, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em', color: colors.muted, marginBottom: 14}}>
             Missing Visual
           </div>
-          <div style={{fontSize: 24, fontWeight: 600}}>{segVisual.sceneContent ?? segAssetRef ?? 'Scene not configured.'}</div>
+          <div style={{fontSize: tokens.storyboard.slide.fallbackBodySize, fontWeight: 600}}>{segVisual.sceneContent ?? segAssetRef ?? 'Scene not configured.'}</div>
         </div>
       </AbsoluteFill>
     );

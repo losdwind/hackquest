@@ -37,7 +37,7 @@ export const DefinitionCard: React.FC<
       <div style={{transform: `translateY(${y}px)`, opacity}}>
         <CardShell eyebrow={eyebrow} title={term} subtitle={definition}>
           {notes.length ? (
-            <div style={{marginTop: 12, display: 'flex', flexDirection: 'column', gap: 12}}>
+            <div style={{marginTop: 14, display: 'flex', flexDirection: 'column', gap: 16}}>
               {notes.map((n, idx) => (
                 <div
                   key={`${idx}-${n}`}
@@ -46,9 +46,9 @@ export const DefinitionCard: React.FC<
                     gap: 12,
                     alignItems: 'flex-start',
                     fontFamily: fonts.body,
-                    fontSize: 22,
+                    fontSize: 28,
                     color: colors.text,
-                    lineHeight: 1.25,
+                    lineHeight: 1.3,
                   }}
                 >
                   <span style={{color: colors.muted}}>–</span>

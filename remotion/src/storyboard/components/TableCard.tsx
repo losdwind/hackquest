@@ -55,7 +55,7 @@ export const TableCard: React.FC<
         <CardShell eyebrow={eyebrow} title={title}>
           <div
             style={{
-              marginTop: 12,
+              marginTop: 16,
               borderRadius: 24,
               overflow: 'hidden',
               backgroundColor: colors.background,
@@ -68,10 +68,10 @@ export const TableCard: React.FC<
                 display: 'grid',
                 gridTemplateColumns: `repeat(${columns.length}, minmax(0, 1fr))`,
                 gap: 0,
-                padding: '16px 18px',
+                padding: '18px 22px',
                 backgroundColor: colors.accentSoft,
                 fontFamily: fonts.brand,
-                fontSize: 14,
+                fontSize: 17,
                 fontWeight: 900,
                 letterSpacing: '0.10em',
                 textTransform: 'uppercase',
@@ -93,10 +93,10 @@ export const TableCard: React.FC<
                     display: 'grid',
                     gridTemplateColumns: `repeat(${columns.length}, minmax(0, 1fr))`,
                     gap: 0,
-                    padding: '16px 18px',
+                    padding: '18px 22px',
                     fontFamily: fonts.body,
-                    fontSize: 20,
-                    lineHeight: 1.35,
+                    fontSize: 25,
+                    lineHeight: 1.4,
                     color: colors.text,
                     backgroundColor:
                       rowIdx % 2 === 0 ? colors.background : 'rgba(0, 0, 0, 0.03)',

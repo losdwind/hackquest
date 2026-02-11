@@ -19,13 +19,14 @@ export const ProgressBarOverlay: React.FC<ProgressBarProps> = ({
     <div
       style={{
         position: 'absolute',
-        left: 80,
-        right: 80,
-        bottom: 60,
-        height: 12,
-        borderRadius: 999,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        height: 8,
+        borderRadius: 0,
         backgroundColor: 'rgba(255, 255, 255, 0.3)',
         overflow: 'hidden',
+        pointerEvents: 'none',
       }}
     >
       <div

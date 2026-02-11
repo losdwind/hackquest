@@ -46,7 +46,7 @@ export const StepsCard: React.FC<
     >
       <div style={{transform: `translateY(${y}px)`, opacity}}>
         <CardShell eyebrow={eyebrow} title={title} subtitle={subtitle}>
-          <div style={{display: 'flex', flexDirection: 'column', gap: 14}}>
+          <div style={{display: 'flex', flexDirection: 'column', gap: 18}}>
             {steps.map((s, idx) => {
               const isActive = idx === activeIndex;
               return (
@@ -54,25 +54,25 @@ export const StepsCard: React.FC<
                   key={`${idx}-${s.title}`}
                   style={{
                     display: 'grid',
-                    gridTemplateColumns: '52px 1fr',
-                    gap: 16,
+                    gridTemplateColumns: '60px 1fr',
+                    gap: 20,
                     alignItems: 'start',
-                    padding: '14px 14px',
+                    padding: '18px 18px',
                     borderRadius: 20,
                     backgroundColor: isActive ? colors.accentSoft : colors.panelSoft,
                   }}
                 >
                   <div
                     style={{
-                      width: 52,
-                      height: 52,
+                      width: 60,
+                      height: 60,
                       borderRadius: 18,
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
                       backgroundColor: isActive ? colors.accent : colors.panelSoft,
                       fontFamily: fonts.brand,
-                      fontSize: 16,
+                      fontSize: 20,
                       fontWeight: 900,
                       color: colors.text,
                     }}
@@ -83,7 +83,7 @@ export const StepsCard: React.FC<
                     <div
                       style={{
                         fontFamily: fonts.display,
-                        fontSize: 26,
+                        fontSize: 34,
                         fontWeight: 800,
                         color: colors.text,
                         lineHeight: 1.15,
@@ -96,8 +96,8 @@ export const StepsCard: React.FC<
                       <div
                         style={{
                           fontFamily: fonts.body,
-                          fontSize: 20,
-                          lineHeight: 1.25,
+                          fontSize: 26,
+                          lineHeight: 1.3,
                           color: colors.muted,
                           maxWidth: 980,
                         }}

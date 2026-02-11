@@ -2,7 +2,7 @@ import {AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig} from
 import {z} from 'zod';
 
 import type {LessonBlockContext} from '../../lesson-config';
-import {colors, fonts} from '../../theme';
+import {colors, fonts, motion, tokens} from '../../theme';
 import {CodeBlock} from '../../ui/CodeBlock';
 import type {StoryboardInjected} from '../types';
 import {CardShell} from './CardShell';
@@ -27,15 +27,16 @@ export const CodeExplainCard: React.FC<
 > = ({eyebrow, title, language, code, highlights, explain}) => {
   const frame = useCurrentFrame();
   const {fps} = useVideoConfig();
-  const reveal = spring({frame, fps, config: {damping: 200}});
+  const reveal = spring({frame, fps, config: motion.spring.standard});
   const y = interpolate(reveal, [0, 1], [18, 0]);
   const opacity = interpolate(reveal, [0, 1], [0, 1]);
+  const explainTokens = tokens.storyboard.explain;
 
   return (
     <AbsoluteFill
       style={{
         backgroundColor: colors.background,
-        padding: 96,
+        padding: tokens.storyboard.canvasPadding,
         justifyContent: 'center',
       }}
     >
@@ -45,14 +46,14 @@ export const CodeExplainCard: React.FC<
             style={{
               display: 'grid',
               gridTemplateColumns: explain.length ? '1.2fr 0.8fr' : '1fr',
-              gap: 18,
+              gap: explainTokens.gap,
               alignItems: 'start',
             }}
           >
             <CodeBlock code={code} language={language ?? 'snippet'} highlights={highlights} />
 
             {explain.length ? (
-              <div style={{display: 'flex', flexDirection: 'column', gap: 12}}>
+              <div style={{display: 'flex', flexDirection: 'column', gap: explainTokens.listGap}}>
                 {explain.map((e, idx) => (
                   <div
                     key={`${idx}-${e}`}
@@ -61,8 +62,8 @@ export const CodeExplainCard: React.FC<
                       gap: 12,
                       alignItems: 'flex-start',
                       fontFamily: fonts.body,
-                      fontSize: 20,
-                      lineHeight: 1.25,
+                      fontSize: explainTokens.bodySize,
+                      lineHeight: explainTokens.bodyLineHeight,
                       color: colors.text,
                     }}
                   >

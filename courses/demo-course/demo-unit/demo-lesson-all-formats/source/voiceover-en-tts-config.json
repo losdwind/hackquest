@@ -1,11 +1,11 @@
 {
   "languageCode": "en-US",
-  "voiceName": "en-US-Standard-C",
+  "voiceName": "en-US-Chirp-HD-D",
   "speakingRate": 1.06,
   "pitch": 0,
   "volumeGainDb": 0,
   "audioEncoding": "MP3",
-  "useSsml": true,
+  "useSsml": false,
   "breaksMs": {
     "comma": 120,
     "dash": 160,

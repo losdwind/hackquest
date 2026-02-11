@@ -20,12 +20,13 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
   language = 'snippet',
   highlights = [],
 }) => {
+  const codeBlock = tokens.storyboard.codeBlock;
   const lines = code.split(/\r?\n/);
 
   return (
     <div
       style={{
-        borderRadius: 20,
+        borderRadius: codeBlock.borderRadius,
         backgroundColor: '#0B0B0B',
         color: '#FFFFFF',
         overflow: 'hidden',
@@ -33,9 +34,9 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
     >
       <div
         style={{
-          padding: '12px 14px',
+          padding: `${codeBlock.headerPadY}px ${codeBlock.headerPadX}px`,
           fontFamily: fonts.brand,
-          fontSize: 12,
+          fontSize: codeBlock.headerFontSize,
           fontWeight: 800,
           letterSpacing: '0.14em',
           textTransform: 'uppercase',
@@ -44,7 +45,7 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
       >
         {language}
       </div>
-      <div style={{padding: '14px 0'}}>
+      <div style={{padding: `${codeBlock.bodyPadY}px 0`}}>
         {lines.map((line, idx) => {
           const lineNo = idx + 1;
           const highlighted = isLineHighlighted(lineNo, highlights);
@@ -53,16 +54,16 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
               key={idx}
               style={{
                 display: 'grid',
-                gridTemplateColumns: '56px 1fr',
+                gridTemplateColumns: `${codeBlock.lineNumberColWidth}px 1fr`,
                 gap: 0,
-                padding: '2px 14px',
+                padding: `${codeBlock.linePadY}px ${codeBlock.linePadX}px`,
                 backgroundColor: highlighted ? tokens.colors.accentSoft : 'transparent',
               }}
             >
               <div
                 style={{
                   fontFamily: fonts.mono,
-                  fontSize: 14,
+                  fontSize: codeBlock.lineNumberFontSize,
                   color: 'rgba(255,255,255,0.44)',
                   textAlign: 'right',
                   paddingRight: 12,
@@ -74,7 +75,7 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
               <div
                 style={{
                   fontFamily: fonts.mono,
-                  fontSize: 14,
+                  fontSize: codeBlock.codeFontSize,
                   whiteSpace: 'pre',
                   color: '#FFFFFF',
                 }}

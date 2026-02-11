@@ -42,6 +42,8 @@ export const Outro: React.FC<OutroTemplateProps> = ({
   const fps = 30;
 
   const accent = accentColor ?? colors.accent;
+  const completionLabel = titleLines[0] ?? 'Lesson Complete';
+  const bodyTitleLines = titleLines.length > 1 ? titleLines.slice(1) : ['Thanks for Watching'];
   const coverArt = getArt(artFile);
   const heroSrc = heroFile ? staticFile(heroFile) : null;
   const lockupSrc = brandWordmarkFile
@@ -210,7 +212,7 @@ export const Outro: React.FC<OutroTemplateProps> = ({
         ) : null}
 
         <div style={{marginTop: 26, display: 'flex', flexDirection: 'column', gap: 10}}>
-          {titleLines.map((t) => (
+          {bodyTitleLines.map((t) => (
             <div
               key={t}
               style={{
@@ -223,6 +225,39 @@ export const Outro: React.FC<OutroTemplateProps> = ({
               {t}
             </div>
           ))}
+        </div>
+      </div>
+
+      <div
+        style={{
+          position: 'absolute',
+          right: 92,
+          top: 220,
+          width: 360,
+          height: 360,
+          borderRadius: 999,
+          backgroundColor: accent,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          textAlign: 'center',
+          padding: 28,
+          transform: `translateY(${badgeTranslate}px)`,
+          opacity: badgeOpacity,
+        }}
+      >
+        <div
+          style={{
+            fontFamily: fonts.brand,
+            fontSize: 44,
+            fontWeight: 900,
+            letterSpacing: '0.02em',
+            lineHeight: 1.06,
+            color: colors.text,
+            textTransform: 'uppercase',
+          }}
+        >
+          {completionLabel}
         </div>
       </div>
 

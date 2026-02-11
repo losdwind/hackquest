@@ -87,7 +87,7 @@ export const CalloutVideoFrame: React.FC<
                 justifyContent: 'center',
                 fontFamily: fonts.body,
                 color: 'rgba(255,255,255,0.6)',
-                fontSize: 22,
+                fontSize: 28,
               }}
             >
               Missing video asset
@@ -139,7 +139,7 @@ export const CalloutVideoFrame: React.FC<
                       backgroundColor: colors.accent,
                       border: `1px solid ${colors.border}`,
                       fontFamily: fonts.brand,
-                      fontSize: 12,
+                      fontSize: 14,
                       fontWeight: 900,
                       letterSpacing: '0.12em',
                       textTransform: 'uppercase',
@@ -157,8 +157,8 @@ export const CalloutVideoFrame: React.FC<
             <div
               style={{
                 position: 'absolute',
-                left: 26,
-                bottom: 26,
+                left: 30,
+                bottom: 30,
                 display: 'flex',
                 flexDirection: 'column',
                 gap: 8,
@@ -174,7 +174,7 @@ export const CalloutVideoFrame: React.FC<
                     backgroundColor: 'rgba(255,255,255,0.92)',
                     border: '1px solid rgba(255,255,255,0.18)',
                     fontFamily: fonts.brand,
-                    fontSize: 12,
+                    fontSize: 14,
                     fontWeight: 900,
                     letterSpacing: '0.14em',
                     textTransform: 'uppercase',
@@ -188,7 +188,7 @@ export const CalloutVideoFrame: React.FC<
                 <div
                   style={{
                     fontFamily: fonts.display,
-                    fontSize: 36,
+                    fontSize: 44,
                     fontWeight: 900,
                     lineHeight: 1.05,
                     color: '#FFFFFF',
@@ -202,9 +202,9 @@ export const CalloutVideoFrame: React.FC<
                 <div
                   style={{
                     fontFamily: fonts.body,
-                    fontSize: 18,
+                    fontSize: 24,
                     color: 'rgba(255,255,255,0.78)',
-                    lineHeight: 1.25,
+                    lineHeight: 1.3,
                     textShadow: '0 10px 28px rgba(0,0,0,0.45)',
                   }}
                 >

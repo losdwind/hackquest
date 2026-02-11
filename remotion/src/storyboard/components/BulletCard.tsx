@@ -63,11 +63,11 @@ export const BulletCard: React.FC<
                 style={{
                   borderRadius: 22,
                   backgroundColor: colors.panelSoft,
-                  padding: '18px 18px',
+                  padding: '22px 22px',
                   fontFamily: fonts.body,
                   color: colors.muted,
-                  fontSize: 18,
-                  lineHeight: 1.3,
+                  fontSize: 24,
+                  lineHeight: 1.35,
                 }}
               >
                 {note}
@@ -75,7 +75,7 @@ export const BulletCard: React.FC<
             ) : null
           }
         >
-          <div style={{display: 'flex', flexDirection: 'column', gap: 12}}>
+            <div style={{display: 'flex', flexDirection: 'column', gap: 16}}>
             {bullets.map((b, idx) => (
               <div
                 key={`${idx}-${b.text}`}
@@ -87,8 +87,8 @@ export const BulletCard: React.FC<
               >
                 <div
                   style={{
-                    width: 30,
-                    height: 30,
+                    width: 38,
+                    height: 38,
                     borderRadius: 10,
                     display: 'flex',
                     alignItems: 'center',
@@ -105,7 +105,7 @@ export const BulletCard: React.FC<
                 <div
                   style={{
                     fontFamily: fonts.body,
-                    fontSize: 24,
+                    fontSize: 30,
                     lineHeight: 1.25,
                     color: b.tone === 'muted' ? colors.muted : colors.text,
                   }}
