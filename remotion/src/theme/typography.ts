@@ -1,10 +1,10 @@
-import {notoSansSc, poppins} from '../fonts';
+import {nextBook} from './fonts';
 
 export const typography = {
   fonts: {
-    body: notoSansSc,
-    display: notoSansSc,
-    brand: poppins,
+    body: nextBook,
+    display: nextBook,
+    brand: nextBook,
     mono:
       'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace',
   },
@@ -28,4 +28,3 @@ export const typography = {
     relaxed: 1.4,
   },
 } as const;
-

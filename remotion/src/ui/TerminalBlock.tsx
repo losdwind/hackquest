@@ -1,78 +1,57 @@
-import type {CSSProperties} from 'react';
-
-import {fonts} from '../theme';
-import {tokens} from '../theme/tokens';
-
-export type TerminalChunk = {
-  type: 'command' | 'output';
-  text: string;
-};
+import {fonts, tokens} from '../theme';
 
 export type TerminalBlockProps = {
-  chunks: TerminalChunk[];
-  prompt?: string;
-  maxHeightPx?: number;
-  style?: CSSProperties;
+  title?: string;
+  commands: string[];
 };
 
 export const TerminalBlock: React.FC<TerminalBlockProps> = ({
-  chunks,
-  prompt = '$',
-  maxHeightPx = 420,
-  style,
+  title = 'terminal',
+  commands,
 }) => {
   return (
     <div
       style={{
-        borderRadius: tokens.radii.md,
-        border: `${tokens.stroke.hairline}px solid rgba(255,255,255,0.14)`,
-        backgroundColor: '#050505',
-        boxShadow: tokens.shadow.overlay,
+        borderRadius: 20,
+        backgroundColor: '#0B0B0B',
+        color: '#FFFFFF',
         overflow: 'hidden',
-        ...style,
       }}
     >
       <div
         style={{
-          padding: '10px 12px',
-          borderBottom: `${tokens.stroke.hairline}px solid rgba(255,255,255,0.10)`,
-          color: 'rgba(255,255,255,0.70)',
+          padding: '12px 14px',
           fontFamily: fonts.brand,
           fontSize: 12,
           fontWeight: 900,
-          letterSpacing: '0.12em',
+          letterSpacing: '0.14em',
           textTransform: 'uppercase',
+          color: 'rgba(255,255,255,0.72)',
         }}
       >
-        Terminal
+        {title}
       </div>
-      <div
-        style={{
-          maxHeight: maxHeightPx,
-          overflow: 'hidden',
-          padding: 12,
-          fontFamily: fonts.mono,
-          fontSize: 14,
-          lineHeight: 1.55,
-          color: 'rgba(255,255,255,0.86)',
-        }}
-      >
-        {chunks.map((c, idx) => {
-          const isCmd = c.type === 'command';
-          return (
-            // eslint-disable-next-line react/no-array-index-key
-            <div key={idx} style={{whiteSpace: 'pre-wrap'}}>
-              {isCmd ? (
-                <span style={{color: 'rgba(255,255,255,0.55)'}}>{prompt} </span>
-              ) : null}
-              <span style={{color: isCmd ? '#FFFFFF' : 'rgba(255,255,255,0.78)'}}>
-                {c.text}
-              </span>
-            </div>
-          );
-        })}
+
+      <div style={{padding: '14px'}}>
+        {commands.map((line, idx) => (
+          <div
+            key={idx}
+            style={{
+              display: 'grid',
+              gridTemplateColumns: '24px 1fr',
+              gap: 8,
+              alignItems: 'baseline',
+              fontFamily: fonts.mono,
+              fontSize: 14,
+              lineHeight: 1.45,
+              color: '#FFFFFF',
+            }}
+          >
+            <span style={{color: tokens.colors.accent}}>$</span>
+            <span style={{whiteSpace: 'pre-wrap'}}>{line}</span>
+          </div>
+        ))}
       </div>
     </div>
   );
 };
-

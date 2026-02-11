@@ -3,6 +3,7 @@ import {z} from 'zod';
 
 import type {LessonBlockContext} from '../../lesson-config';
 import {colors, fonts} from '../../theme';
+import {CodeBlock} from '../../ui/CodeBlock';
 import type {StoryboardInjected} from '../types';
 import {CardShell} from './CardShell';
 
@@ -21,10 +22,6 @@ export const CodeExplainCardPropsSchema = z
 
 export type CodeExplainCardProps = z.infer<typeof CodeExplainCardPropsSchema>;
 
-const isLineHighlighted = (lineNo: number, ranges: {from: number; to: number}[]) => {
-  return ranges.some((r) => lineNo >= r.from && lineNo <= r.to);
-};
-
 export const CodeExplainCard: React.FC<
   CodeExplainCardProps & {context: LessonBlockContext; hq?: StoryboardInjected}
 > = ({eyebrow, title, language, code, highlights, explain}) => {
@@ -33,8 +30,6 @@ export const CodeExplainCard: React.FC<
   const reveal = spring({frame, fps, config: {damping: 200}});
   const y = interpolate(reveal, [0, 1], [18, 0]);
   const opacity = interpolate(reveal, [0, 1], [0, 1]);
-
-  const lines = code.split(/\r?\n/);
 
   return (
     <AbsoluteFill
@@ -54,69 +49,7 @@ export const CodeExplainCard: React.FC<
               alignItems: 'start',
             }}
           >
-            <div
-              style={{
-                borderRadius: 20,
-                backgroundColor: '#0B0B0B',
-                color: '#FFFFFF',
-                overflow: 'hidden',
-              }}
-            >
-              <div
-                style={{
-                  padding: '12px 14px',
-                  fontFamily: fonts.brand,
-                  fontSize: 12,
-                  fontWeight: 800,
-                  letterSpacing: '0.14em',
-                  textTransform: 'uppercase',
-                  color: 'rgba(255,255,255,0.72)',
-                }}
-              >
-                {language ?? 'snippet'}
-              </div>
-              <div style={{padding: '14px 0'}}>
-                {lines.map((l, idx) => {
-                  const lineNo = idx + 1;
-                  const hl = isLineHighlighted(lineNo, highlights);
-                  return (
-                    <div
-                      key={idx}
-                      style={{
-                        display: 'grid',
-                        gridTemplateColumns: '56px 1fr',
-                        gap: 0,
-                        padding: '2px 14px',
-                        backgroundColor: hl ? 'rgba(255, 232, 102, 0.16)' : 'transparent',
-                      }}
-                    >
-                      <div
-                        style={{
-                          fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
-                          fontSize: 14,
-                          color: 'rgba(255,255,255,0.44)',
-                          textAlign: 'right',
-                          paddingRight: 12,
-                          userSelect: 'none',
-                        }}
-                      >
-                        {lineNo}
-                      </div>
-                      <div
-                        style={{
-                          fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
-                          fontSize: 14,
-                          whiteSpace: 'pre',
-                          color: '#FFFFFF',
-                        }}
-                      >
-                        {l}
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
+            <CodeBlock code={code} language={language ?? 'snippet'} highlights={highlights} />
 
             {explain.length ? (
               <div style={{display: 'flex', flexDirection: 'column', gap: 12}}>

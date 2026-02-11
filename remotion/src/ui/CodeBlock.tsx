@@ -1,99 +1,86 @@
-import type {CSSProperties} from 'react';
+import {fonts, tokens} from '../theme';
 
-import {fonts} from '../theme';
-import {tokens} from '../theme/tokens';
-import {typography} from '../theme/typography';
-
-export type CodeHighlightRange = {from: number; to: number};
+export type CodeHighlightRange = {
+  from: number;
+  to: number;
+};
 
 export type CodeBlockProps = {
   code: string;
   language?: string;
   highlights?: CodeHighlightRange[];
-  maxHeightPx?: number;
-  style?: CSSProperties;
 };
 
-const isHighlighted = (line: number, ranges: CodeHighlightRange[]) =>
-  ranges.some((r) => line >= r.from && line <= r.to);
+const isLineHighlighted = (lineNo: number, ranges: CodeHighlightRange[]) => {
+  return ranges.some((r) => lineNo >= r.from && lineNo <= r.to);
+};
 
 export const CodeBlock: React.FC<CodeBlockProps> = ({
   code,
-  language,
+  language = 'snippet',
   highlights = [],
-  maxHeightPx = 520,
-  style,
 }) => {
-  const lines = String(code ?? '').split('\n');
+  const lines = code.split(/\r?\n/);
 
   return (
     <div
       style={{
-        borderRadius: tokens.radii.md,
-        border: `${tokens.stroke.hairline}px solid rgba(255,255,255,0.14)`,
+        borderRadius: 20,
         backgroundColor: '#0B0B0B',
-        boxShadow: tokens.shadow.overlay,
+        color: '#FFFFFF',
         overflow: 'hidden',
-        ...style,
       }}
     >
       <div
         style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          padding: '10px 12px',
-          borderBottom: `${tokens.stroke.hairline}px solid rgba(255,255,255,0.10)`,
-          color: 'rgba(255,255,255,0.75)',
+          padding: '12px 14px',
           fontFamily: fonts.brand,
-          fontWeight: typography.weights.black,
-          fontSize: typography.typeScale.kicker,
-          letterSpacing: '0.12em',
+          fontSize: 12,
+          fontWeight: 800,
+          letterSpacing: '0.14em',
           textTransform: 'uppercase',
+          color: 'rgba(255,255,255,0.72)',
         }}
       >
-        <span>Code</span>
-        {language ? <span>{language}</span> : <span />}
+        {language}
       </div>
-      <div
-        style={{
-          maxHeight: maxHeightPx,
-          overflow: 'hidden',
-          padding: 12,
-          fontFamily: fonts.mono,
-          fontSize: 14,
-          lineHeight: 1.55,
-          color: 'rgba(255,255,255,0.86)',
-        }}
-      >
+      <div style={{padding: '14px 0'}}>
         {lines.map((line, idx) => {
           const lineNo = idx + 1;
-          const hit = isHighlighted(lineNo, highlights);
+          const highlighted = isLineHighlighted(lineNo, highlights);
           return (
-            // eslint-disable-next-line react/no-array-index-key
-            <div key={idx} style={{display: 'flex', gap: 12}}>
+            <div
+              key={idx}
+              style={{
+                display: 'grid',
+                gridTemplateColumns: '56px 1fr',
+                gap: 0,
+                padding: '2px 14px',
+                backgroundColor: highlighted ? tokens.colors.accentSoft : 'transparent',
+              }}
+            >
               <div
                 style={{
-                  width: 28,
+                  fontFamily: fonts.mono,
+                  fontSize: 14,
+                  color: 'rgba(255,255,255,0.44)',
                   textAlign: 'right',
-                  color: 'rgba(255,255,255,0.35)',
+                  paddingRight: 12,
                   userSelect: 'none',
                 }}
               >
                 {lineNo}
               </div>
-              <pre
+              <div
                 style={{
-                  margin: 0,
-                  whiteSpace: 'pre-wrap',
-                  flex: 1,
-                  padding: hit ? '0 6px' : 0,
-                  borderRadius: 8,
-                  backgroundColor: hit ? 'rgba(255, 232, 102, 0.18)' : 'transparent',
-                  outline: hit ? '1px solid rgba(255, 232, 102, 0.35)' : 'none',
+                  fontFamily: fonts.mono,
+                  fontSize: 14,
+                  whiteSpace: 'pre',
+                  color: '#FFFFFF',
                 }}
               >
-                {line.length ? line : ' '}
-              </pre>
+                {line}
+              </div>
             </div>
           );
         })}
@@ -101,4 +88,3 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
     </div>
   );
 };
-

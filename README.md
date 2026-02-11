@@ -4,6 +4,7 @@
 
 > 重要：请编辑仓库根目录的 `courses/.../source/script.md`。  
 > `remotion/.hq-public/...` 是 `bun run public:sync` 同步出来的预览目录，改了会被覆盖。
+> 说明：旧版 `remotion/src/courses/*` 已归档到 `docs/archive/remotion-src-courses/`，不再参与运行链路。
 
 ## 1) 安装与启动预览
 
@@ -127,6 +128,9 @@ bun scripts/list-storyboard-components.mjs --format=json
 
 ```bash
 cd remotion
+
+# 防回归：检查是否误引入旧链路 src/courses/*
+bun run check:legacy-imports
 
 # 只校验脚本与 props（最快）
 bun run lesson:validate -- --lesson-root ../courses/<course>/<unit>/<lesson>
