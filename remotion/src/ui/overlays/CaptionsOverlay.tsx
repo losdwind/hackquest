@@ -39,7 +39,7 @@ const findActiveCaption = (captions: Caption[], timeMs: number) => {
 export const CaptionsOverlay: React.FC<CaptionLayerProps> = ({
   captionsFile,
   startAtFrame = 0,
-  leadMs = 180,
+  leadMs = 0,
 }) => {
   const [captions, setCaptions] = useState<Caption[] | null>(null);
   const {delayRender, continueRender, cancelRender} = useDelayRender();

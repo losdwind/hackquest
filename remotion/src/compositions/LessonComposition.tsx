@@ -212,7 +212,6 @@ const LessonTimeline: React.FC<{
           audioMergedFile={resolvedAudioMerged}
           voiceoverVolume={voiceoverVolume}
           voiceoverFadeSec={voiceoverFadeSec}
-          startAtFrame={contentFromFrame}
         />
       </Sequence>
 
@@ -251,7 +250,6 @@ const LessonContent: React.FC<{
   audioMergedFile: string;
   voiceoverVolume: number;
   voiceoverFadeSec: number;
-  startAtFrame: number;
 }> = ({
   meta,
   metaFile,
@@ -263,11 +261,9 @@ const LessonContent: React.FC<{
   audioMergedFile,
   voiceoverVolume,
   voiceoverFadeSec,
-  startAtFrame,
 }) => {
   const {fps, durationInFrames} = useVideoConfig();
-  const globalFrame = useCurrentFrame();
-  const frame = Math.max(0, globalFrame - startAtFrame);
+  const frame = useCurrentFrame();
 
   const voiceoverFadeFrames = Math.max(1, voiceoverFadeSec * fps);
 
@@ -309,7 +305,6 @@ const LessonContent: React.FC<{
         componentSchemas={schemasMap}
         context={context}
         metaFile={metaFile}
-        startAtFrame={startAtFrame}
         useTransitions={meta.transitions?.enabled ?? false}
         transitionDurationInFrames={meta.transitions?.durationFrames}
       />
@@ -319,7 +314,6 @@ const LessonContent: React.FC<{
           sections={meta.sections}
           accentColor={accentColor}
           durationFrames={context.contentDurationFrames}
-          startAtFrame={startAtFrame}
         />
       ) : null}
 
@@ -328,10 +322,9 @@ const LessonContent: React.FC<{
         lessonTitle={meta.title}
         courseLabel={meta.courseLabel}
         lessonLabel={meta.cover?.lessonLabel}
-        startAtFrame={startAtFrame}
       />
 
-      <CaptionsOverlay captionsFile={captionsFile} startAtFrame={startAtFrame} />
+      <CaptionsOverlay captionsFile={captionsFile} />
 
       <ProgressBarOverlay progress={progress} accentColor={accentColor} />
     </AbsoluteFill>
