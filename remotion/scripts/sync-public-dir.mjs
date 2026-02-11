@@ -108,6 +108,22 @@ const main = async () => {
     await ensureSymlink(linkPath, targetRel);
   }
 
+  // Remove stale runtime links/directories that no longer exist in courses/.
+  // Keep only: brand + current course directory names.
+  const keep = new Set(['brand', ...courseDirs]);
+  const runtimeEntries = await fs.readdir(runtimePublicRoot, {withFileTypes: true});
+  for (const entry of runtimeEntries) {
+    if (keep.has(entry.name)) continue;
+    const abs = path.join(runtimePublicRoot, entry.name);
+    // Dangling symlinks should be unlinked explicitly.
+    // eslint-disable-next-line no-await-in-loop
+    const stat = await fs.lstat(abs);
+    // eslint-disable-next-line no-await-in-loop
+    if (stat.isSymbolicLink()) await fs.unlink(abs);
+    // eslint-disable-next-line no-await-in-loop
+    else await fs.rm(abs, {recursive: true, force: true});
+  }
+
   console.log(
     `Public dir ready: ${path.join('remotion', '.hq-public')} (linked ${courseDirs.length} course dirs + brand)`,
   );
