@@ -11,7 +11,6 @@
     "lesson:segments": "bun scripts/build-segments-from-script.mjs",
     "lesson:validate": "bun scripts/validate-script.mjs",
     "lesson:components": "bun scripts/list-storyboard-components.mjs --format=md",
-    "lesson:components:write": "bun scripts/list-storyboard-components.mjs --format=md > src/storyboard/COMPONENTS.md",
     "lesson:build": "bun scripts/lesson-build.mjs",
     "lesson:migrate": "bun scripts/migrate-md-to-script.mjs",
     "lesson:migrate:json-to-md": "bun scripts/migrate-script-json-to-md.mjs",

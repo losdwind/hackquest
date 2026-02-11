@@ -94,12 +94,11 @@ export type FormulaBlock = LessonBlockBase & {
   };
 };
 
-export type CustomBlock = LessonBlockBase & {
+export type CustomBlock<P extends Record<string, unknown> = Record<string, unknown>> =
+  LessonBlockBase & {
   type: 'custom';
-  component: ComponentType<{
-    context: LessonBlockContext;
-  }>;
-  props?: Record<string, unknown>;
+  component: ComponentType<P & {context: LessonBlockContext}>;
+  props?: P;
 };
 
 export type LessonBlock =
@@ -109,7 +108,7 @@ export type LessonBlock =
   | ProgressBarBlock
   | ChartBlock
   | FormulaBlock
-  | CustomBlock;
+  | CustomBlock<any>;
 
 export type LessonBlockContext = {
   contentDurationFrames: number;

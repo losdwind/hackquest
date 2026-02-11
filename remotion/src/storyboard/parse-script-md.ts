@@ -1,4 +1,20 @@
-const normalizeAssetRef = (value) => {
+export type LessonScriptSegment = {
+  id: number;
+  voiceover: {
+    text: string;
+    postGapMs?: number;
+  };
+  visual?: {
+    sceneType?: string;
+    sceneContent?: string;
+    assetRef?: string | null;
+    component?: string;
+    markdown?: string;
+    json?: Record<string, unknown>;
+  };
+};
+
+const normalizeAssetRef = (value?: string | null) => {
   if (!value) return null;
   const cleaned = String(value).trim();
   if (!cleaned) return null;
@@ -6,26 +22,24 @@ const normalizeAssetRef = (value) => {
   return cleaned;
 };
 
-const getFieldValue = (line, label) => {
+const getFieldValue = (line: string, label: string) => {
   const regex = new RegExp(`^${label}\\s*:\\s*(.+)$`, 'i');
   const match = regex.exec(line);
   return match ? match[1].trim() : null;
 };
 
-export const parseScriptMd = (markdown) => {
+export const parseScriptMd = (markdown: string): LessonScriptSegment[] => {
   const lines = String(markdown ?? '').split(/\r?\n/);
 
-  const segments = [];
-  let current = null;
-  let fence = null; // {lang, buffer[]}
-  let mode = null; // 'voiceover'
+  const segments: LessonScriptSegment[] = [];
+  let current: LessonScriptSegment | null = null;
+  let fence: {lang: string; buffer: string[]} | null = null;
+  let mode: 'voiceover' | null = null;
 
   const flush = () => {
     if (!current) return;
     if (current.voiceover?.text) {
-      current.voiceover.text = String(current.voiceover.text)
-        .replace(/\s+/g, ' ')
-        .trim();
+      current.voiceover.text = String(current.voiceover.text).replace(/\s+/g, ' ').trim();
     }
     segments.push(current);
   };
@@ -52,10 +66,12 @@ export const parseScriptMd = (markdown) => {
       if (/^```/.test(trimmed)) {
         const content = fence.buffer.join('\n').trim();
         if (fence.lang === 'markdown') {
+          current.visual = current.visual ?? {};
           current.visual.markdown = content;
         } else if (fence.lang === 'json') {
+          current.visual = current.visual ?? {};
           try {
-            current.visual.json = JSON.parse(content);
+            current.visual.json = JSON.parse(content) as Record<string, unknown>;
           } catch {
             current.visual.json = undefined;
           }
@@ -99,6 +115,7 @@ export const parseScriptMd = (markdown) => {
       getFieldValue(trimmed, 'Visual Type') ??
       getFieldValue(trimmed, 'Type');
     if (typeValue) {
+      current.visual = current.visual ?? {};
       current.visual.sceneType = typeValue;
       continue;
     }
@@ -108,6 +125,7 @@ export const parseScriptMd = (markdown) => {
       getFieldValue(trimmed, 'Visual Notes') ??
       getFieldValue(trimmed, 'Content');
     if (contentValue) {
+      current.visual = current.visual ?? {};
       current.visual.sceneContent = contentValue;
       continue;
     }
@@ -115,12 +133,14 @@ export const parseScriptMd = (markdown) => {
     const assetValue =
       getFieldValue(trimmed, 'Asset Ref') ?? getFieldValue(trimmed, 'Asset');
     if (assetValue) {
-      current.visual.assetRef = normalizeAssetRef(assetValue) ?? null;
+      current.visual = current.visual ?? {};
+      current.visual.assetRef = normalizeAssetRef(assetValue);
       continue;
     }
 
     const componentValue = getFieldValue(trimmed, 'Component');
     if (componentValue) {
+      current.visual = current.visual ?? {};
       current.visual.component = componentValue.trim();
       continue;
     }
@@ -128,8 +148,7 @@ export const parseScriptMd = (markdown) => {
     // Default: if voiceover mode is on, accumulate text.
     if (mode === 'voiceover') {
       current.voiceover.text +=
-        (current.voiceover.text && !current.voiceover.text.endsWith('\n') ? ' ' : '') +
-        trimmed;
+        (current.voiceover.text && !current.voiceover.text.endsWith('\n') ? ' ' : '') + trimmed;
       continue;
     }
   }

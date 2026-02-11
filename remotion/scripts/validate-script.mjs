@@ -2,7 +2,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 
-import {parseScriptMd} from './lib/parse-script-md.mjs';
+import {parseScriptMd} from '../src/storyboard/parse-script-md.ts';
 import {resolveDefaultLessonRoot} from './lib/default-lesson-root.mjs';
 import {resolveMetaFileAbsPath} from './lib/resolve-meta-path.mjs';
 import {z} from 'zod';

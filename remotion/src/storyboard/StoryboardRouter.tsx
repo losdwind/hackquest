@@ -17,27 +17,13 @@ import type {LessonBlockContext} from '../lesson-config';
 import {ChartCard} from '../templates/ChartCard';
 import {resolveLessonPublicPath} from '../lib/lesson-paths';
 import type {StoryboardInjected} from './types';
+import {parseScriptMd as parseScriptMdShared} from './parse-script-md';
+import type {LessonScriptSegment} from './parse-script-md';
 
 type SegmentTiming = {
   id: number;
   startMs: number;
   durationMs: number;
-};
-
-type LessonScriptSegment = {
-  id: number;
-  voiceover: {
-    text: string;
-    postGapMs?: number;
-  };
-  visual?: {
-    sceneType?: string;
-    sceneContent?: string;
-    assetRef?: string | null;
-    component?: string;
-    markdown?: string;
-    json?: Record<string, unknown>;
-  };
 };
 
 type LessonScript = {
@@ -498,156 +484,6 @@ export const StoryboardRouter: React.FC<StoryboardRouterProps> = ({
   const {delayRender, continueRender, cancelRender} = useDelayRender();
   const [handle] = useState(() => delayRender());
 
-  const parseScriptMd = useCallback((markdown: string): LessonScript => {
-    const lines = String(markdown ?? '').split(/\r?\n/);
-    const segments: LessonScriptSegment[] = [];
-    let current: LessonScriptSegment | null = null;
-    let fence: {lang: string; buffer: string[]} | null = null;
-    let mode: 'voiceover' | null = null;
-
-    const normalizeAssetRef = (value?: string | null) => {
-      if (!value) return null;
-      const cleaned = value.trim();
-      if (!cleaned) return null;
-      if (/^(none|n\/a|null)$/i.test(cleaned)) return null;
-      return cleaned;
-    };
-
-    const getFieldValue = (line: string, label: string) => {
-      const regex = new RegExp(`^${label}\\s*:\\s*(.+)$`, 'i');
-      const match = regex.exec(line);
-      return match ? match[1].trim() : null;
-    };
-
-    const flush = () => {
-      if (!current) return;
-      const text = String(current.voiceover?.text ?? '')
-        .replace(/\s+/g, ' ')
-        .trim();
-      current.voiceover.text = text;
-      // Drop empty visual.
-      if (current.visual) {
-        const hasVisual = Object.values(current.visual).some(
-          (v) => v !== undefined && v !== null && String(v).trim() !== '',
-        );
-        if (!hasVisual) {
-          delete current.visual;
-        }
-      }
-      segments.push(current);
-    };
-
-    for (const rawLine of lines) {
-      const line = rawLine.trimEnd();
-      const trimmed = line.trim();
-
-      const segmentMatch = /^##\s+Segment\s+(\d+)/i.exec(trimmed);
-      if (segmentMatch && !fence) {
-        flush();
-        current = {
-          id: Number(segmentMatch[1]),
-          voiceover: {text: ''},
-          visual: {},
-        };
-        mode = null;
-        continue;
-      }
-
-      if (!current) continue;
-
-      if (fence) {
-        if (/^```/.test(trimmed)) {
-          const content = fence.buffer.join('\n').trim();
-          if (fence.lang === 'markdown') {
-            current.visual = current.visual ?? {};
-            current.visual.markdown = content;
-          } else if (fence.lang === 'json') {
-            current.visual = current.visual ?? {};
-            try {
-              current.visual.json = JSON.parse(content) as Record<string, unknown>;
-            } catch {
-              current.visual.json = undefined;
-            }
-          }
-          fence = null;
-        } else {
-          fence.buffer.push(rawLine);
-        }
-        continue;
-      }
-
-      const fenceMatch = /^```(\w+)?/.exec(trimmed);
-      if (fenceMatch) {
-        fence = {lang: (fenceMatch[1] ?? '').toLowerCase(), buffer: []};
-        continue;
-      }
-
-      if (!trimmed) {
-        if (mode === 'voiceover') {
-          current.voiceover.text += '\n';
-        }
-        continue;
-      }
-
-      if (/^(voiceover|narration)\s*:\s*$/i.test(trimmed)) {
-        mode = 'voiceover';
-        continue;
-      }
-
-      const postGapValue =
-        getFieldValue(trimmed, 'Post Gap Ms') ??
-        getFieldValue(trimmed, 'PostGapMs');
-      if (postGapValue) {
-        const num = Number(postGapValue);
-        if (Number.isFinite(num)) current.voiceover.postGapMs = num;
-        continue;
-      }
-
-      const typeValue =
-        getFieldValue(trimmed, 'Scene Type') ??
-        getFieldValue(trimmed, 'Visual Type') ??
-        getFieldValue(trimmed, 'Type');
-      if (typeValue) {
-        current.visual = current.visual ?? {};
-        current.visual.sceneType = typeValue;
-        continue;
-      }
-
-      const contentValue =
-        getFieldValue(trimmed, 'Scene Content') ??
-        getFieldValue(trimmed, 'Visual Notes') ??
-        getFieldValue(trimmed, 'Content');
-      if (contentValue) {
-        current.visual = current.visual ?? {};
-        current.visual.sceneContent = contentValue;
-        continue;
-      }
-
-      const assetValue = getFieldValue(trimmed, 'Asset Ref') ?? getFieldValue(trimmed, 'Asset');
-      if (assetValue) {
-        current.visual = current.visual ?? {};
-        current.visual.assetRef = normalizeAssetRef(assetValue);
-        continue;
-      }
-
-      const componentValue = getFieldValue(trimmed, 'Component');
-      if (componentValue) {
-        current.visual = current.visual ?? {};
-        current.visual.component = componentValue.trim();
-        continue;
-      }
-
-      if (mode === 'voiceover') {
-        current.voiceover.text +=
-          (current.voiceover.text && !current.voiceover.text.endsWith('\n') ? ' ' : '') +
-          trimmed;
-      }
-    }
-
-    flush();
-    return {segments};
-  }, []);
-
   const fetchAll = useCallback(async () => {
     try {
       const [scriptRes, timingsRes] = await Promise.all([
@@ -655,9 +491,9 @@ export const StoryboardRouter: React.FC<StoryboardRouterProps> = ({
         fetch(staticFile(timingsFile)),
       ]);
       const scriptText = await scriptRes.text();
-      const scriptJson = scriptFile.toLowerCase().endsWith('.md')
-        ? parseScriptMd(scriptText)
-        : ((JSON.parse(scriptText) as unknown) as LessonScript);
+      const scriptJson: LessonScript = scriptFile.toLowerCase().endsWith('.md')
+        ? {segments: parseScriptMdShared(scriptText)}
+        : (JSON.parse(scriptText) as LessonScript);
       const timingsJson = (await timingsRes.json()) as SegmentTiming[];
       setScript(scriptJson);
       setTimings(timingsJson);
@@ -665,7 +501,7 @@ export const StoryboardRouter: React.FC<StoryboardRouterProps> = ({
     } catch (err) {
       cancelRender(err);
     }
-  }, [cancelRender, continueRender, handle, parseScriptMd, scriptFile, timingsFile]);
+  }, [cancelRender, continueRender, handle, scriptFile, timingsFile]);
 
   useEffect(() => {
     fetchAll();
