@@ -12,6 +12,7 @@
 # Env
 .env
 .env.*
+!.env.example
 
 # Scratch / local tooling
 .tmp/

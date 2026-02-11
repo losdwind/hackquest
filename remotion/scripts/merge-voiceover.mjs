@@ -20,10 +20,15 @@ const getArg = (flag) => {
 const lessonRoot = getArg('--lesson-root')
   ? path.resolve(getArg('--lesson-root'))
   : defaultLessonRoot;
-
-const segmentsDir = path.join(lessonRoot, 'generated', 'audio', 'segments');
+const defaultSegmentsDir = path.join(lessonRoot, 'generated', 'audio', 'segments');
+const segmentsDir = getArg('--audio-dir')
+  ? path.resolve(getArg('--audio-dir'))
+  : defaultSegmentsDir;
 const defaultSegmentsJson = path.join(lessonRoot, 'generated', 'voiceover-en-segments.json');
-const outputPath = path.join(lessonRoot, 'generated', 'audio', 'voiceover.mp3');
+const defaultOutputPath = path.join(lessonRoot, 'generated', 'audio', 'voiceover.mp3');
+const outputPath = getArg('--out')
+  ? path.resolve(getArg('--out'))
+  : defaultOutputPath;
 const listPath = path.join(segmentsDir, 'concat.txt');
 
 const DEFAULT_GAP_MS = 800;

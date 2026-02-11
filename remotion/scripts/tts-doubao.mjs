@@ -3,12 +3,15 @@ import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import process from 'node:process';
 import {randomUUID} from 'node:crypto';
+import dotenv from 'dotenv';
 
 import {resolveDefaultLessonRoot} from './lib/default-lesson-root.mjs';
 
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(scriptDir, '..', '..');
 const coursesRoot = path.join(repoRoot, 'courses');
+dotenv.config({path: path.join(repoRoot, '.env'), quiet: true});
+dotenv.config({path: path.join(repoRoot, 'remotion', '.env'), quiet: true});
 
 const defaultLessonRoot = await resolveDefaultLessonRoot(coursesRoot);
 
@@ -63,13 +66,30 @@ const uid = String(config.uid ?? process.env.HQ_DOUBAO_UID ?? 'hackquest-user').
 const endpoint = String(
   config.endpoint ?? process.env.HQ_DOUBAO_ENDPOINT ?? 'https://openspeech.bytedance.com/api/v1/tts',
 ).trim();
-const voiceType =
+const configuredVoiceType =
   String(config.voiceType ?? '').trim() ||
   String(process.env.HQ_DOUBAO_VOICE_TYPE ?? '').trim();
+const preferV2Voice = config.preferV2Voice !== false;
+const DOUBAO_V2_VOICE_MAP = {
+  BV700_streaming: 'BV700_V2_streaming',
+  BV701_streaming: 'BV701_V2_streaming',
+  BV001_streaming: 'BV001_V2_streaming',
+};
+let voiceType = configuredVoiceType;
+if (!voiceType) {
+  // Global default: use Doubao 2.0 voice.
+  voiceType = 'BV701_V2_streaming';
+}
+if (preferV2Voice && DOUBAO_V2_VOICE_MAP[voiceType]) {
+  const upgraded = DOUBAO_V2_VOICE_MAP[voiceType];
+  console.warn(`Upgrading Doubao voiceType ${voiceType} -> ${upgraded} (preferV2Voice=true).`);
+  voiceType = upgraded;
+}
 const speedRatio = Number(config.speedRatio ?? 1.0);
 const loudnessRatio = Number(config.loudnessRatio ?? 1.0);
 const encoding = String(config.audioEncoding ?? 'mp3').trim().toLowerCase();
 const explicitLanguage = String(config.explicitLanguage ?? 'en').trim();
+const model = String(config.model ?? 'seed-tts-1.1').trim() || 'seed-tts-1.1';
 const useSsml =
   Boolean(config.useSsml) ||
   String(config.textType ?? '').trim().toLowerCase() === 'ssml';
@@ -198,7 +218,7 @@ const synthesizeOne = async (text) => {
       reqid,
       text: requestText,
       operation: 'query',
-      ...(config.model ? {model: String(config.model)} : {}),
+      model,
       ...(requestTextType ? {text_type: requestTextType} : {}),
       ...(config.silenceDuration ? {silence_duration: Number(config.silenceDuration)} : {}),
       ...(config.withTimestamp ? {with_timestamp: Number(config.withTimestamp)} : {}),

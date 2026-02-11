@@ -1,33 +1,25 @@
 {
-  "provider": "doubao",
-  "appId": "6513178743",
-  "cluster": "volcano_tts",
-  "voiceType": "BV702_streaming",
-  "speedRatio": 0.96,
-  "loudnessRatio": 1.0,
-  "explicitLanguage": "en",
+  "provider": "google",
+  "languageCode": "en-US",
+  "voiceName": "en-US-Chirp3-HD-Umbriel",
+  "speakingRate": 0.98,
+  "pitch": -2,
+  "volumeGainDb": 0,
   "audioEncoding": "MP3",
   "useSsml": true,
   "breaksMs": {
     "comma": 120,
-    "semicolon": 170,
-    "colon": 160,
-    "dash": 180,
-    "sentence": 240,
+    "dash": 170,
+    "sentence": 270,
+    "semicolon": 190,
     "segmentTail": 120
   },
+  "emphasisMode": "none",
   "pronunciations": {
     "DeFi": "dee-fye",
     "MEV": "M E V",
-    "Remotion": "ree-motion",
-    "TypeScript": "type script",
-    "CalloutScene": "callout scene",
-    "BulletCard": "bullet card",
-    "StepsCard": "steps card"
-  },
-  "model": "seed-tts-1.1",
-  "extraParam": {
-    "disable_markdown_filter": true
+    "Aave": "ah-vay",
+    "TVL": "tee-vee-ell"
   },
   "outputDir": "generated/audio/segments"
 }

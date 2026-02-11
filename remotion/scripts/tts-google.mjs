@@ -96,9 +96,32 @@ const outputDir = path.isAbsolute(outputDirRaw)
     ? path.join(repoRoot, outputDirRaw)
     : path.join(lessonRootFromConfig, outputDirRaw);
 
+const toLangPrefix = (lang) => {
+  const raw = String(lang ?? '').trim();
+  if (!raw) return 'en-US';
+  const parts = raw.replace('_', '-').split('-');
+  if (parts.length >= 2) return `${parts[0]}-${parts[1].toUpperCase()}`;
+  return raw;
+};
+
+const CHIRP_DEFAULT_BY_LANGUAGE = {
+  'en-US': 'en-US-Chirp3-HD-Umbriel',
+  'cmn-CN': 'cmn-CN-Chirp3-HD-Umbriel',
+  'zh-CN': 'cmn-CN-Chirp3-HD-Umbriel',
+};
+
+const languageCode = String(config.languageCode ?? 'en-US').trim() || 'en-US';
+const languagePrefix = toLangPrefix(languageCode);
+const defaultChirpVoice =
+  CHIRP_DEFAULT_BY_LANGUAGE[languageCode] ??
+  CHIRP_DEFAULT_BY_LANGUAGE[languagePrefix] ??
+  `${languagePrefix}-Chirp3-HD-Umbriel`;
+const voiceName = String(config.voiceName ?? '').trim() || defaultChirpVoice;
+
 if (!config.voiceName) {
-  console.error('Missing voiceName in config. Run with --list-voices to pick one.');
-  process.exit(1);
+  console.warn(
+    `voiceName is missing in ${configPath}, fallback to ${voiceName} (Chirp3-HD default).`,
+  );
 }
 
 const escapeSsml = (value) =>
@@ -130,7 +153,7 @@ const emphasisLevel = config.emphasisLevel ?? 'moderate';
 const emphasisModeConfig = config.emphasisMode ?? 'tag';
 const emphasisPitch = config.emphasisPitch ?? '+2st';
 const emphasisRate = config.emphasisRate ?? 'medium';
-const isStudioVoice = /studio/i.test(config.voiceName ?? '');
+const isStudioVoice = /studio/i.test(voiceName);
 const emphasisMode =
   isStudioVoice && emphasisModeConfig === 'tag'
     ? 'prosody'
@@ -256,8 +279,8 @@ const makeRequest = (text) => {
   return {
     input,
     voice: {
-      languageCode: config.languageCode,
-      name: config.voiceName,
+      languageCode,
+      name: voiceName,
     },
     audioConfig: {
       audioEncoding: config.audioEncoding ?? 'MP3',
@@ -277,6 +300,12 @@ const isInvalidArgument = (error) => {
     /INVALID_ARGUMENT/i.test(details) ||
     /INVALID_ARGUMENT/i.test(message)
   );
+};
+
+const isPitchUnsupported = (error) => {
+  const details = String(error?.details ?? '');
+  const message = String(error?.message ?? '');
+  return /pitch/i.test(details) || /pitch/i.test(message);
 };
 
 for (const segment of segments) {
@@ -321,15 +350,46 @@ for (const segment of segments) {
   try {
     response = await runSynthesizeWithTimeout(request);
   } catch (error) {
-    if (config.useSsml && isInvalidArgument(error)) {
+    let retried = false;
+    let req = request;
+    const needsPitchFallback =
+      isInvalidArgument(error) &&
+      isPitchUnsupported(error) &&
+      typeof req.audioConfig?.pitch !== 'undefined';
+
+    if (needsPitchFallback) {
+      retried = true;
+      console.warn(
+        `Pitch unsupported for segment ${id}. Retrying without audioConfig.pitch.`,
+      );
+      const nextAudioConfig = {...req.audioConfig};
+      delete nextAudioConfig.pitch;
+      req = {
+        ...req,
+        audioConfig: nextAudioConfig,
+      };
+      try {
+        response = await runSynthesizeWithTimeout(req);
+      } catch (retryError) {
+        error = retryError;
+      }
+    }
+
+    if (!response && config.useSsml && isInvalidArgument(error)) {
+      retried = true;
       console.warn(
         `SSML rejected for segment ${id}. Falling back to plain text synthesis for this request.`,
       );
       response = await runSynthesizeWithTimeout({
-        ...request,
+        ...req,
         input: {text: segment.text},
       });
-    } else {
+    }
+
+    if (!response && !retried) {
+      throw error;
+    }
+    if (!response) {
       throw error;
     }
   }

@@ -34,7 +34,9 @@ const scriptPath =
       return path.join(lessonRoot, 'source', 'script.json');
     }
   })());
-const outPath = path.join(lessonRoot, 'generated', 'voiceover-en-segments.json');
+const outPath = getArg('--out')
+  ? path.resolve(getArg('--out'))
+  : path.join(lessonRoot, 'generated', 'voiceover-en-segments.json');
 
 const raw = await fs.readFile(scriptPath, 'utf8');
 const isMd = scriptPath.toLowerCase().endsWith('.md');

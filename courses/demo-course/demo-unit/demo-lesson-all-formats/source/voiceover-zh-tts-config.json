@@ -1,31 +1,15 @@
 {
-  "provider": "doubao",
-  "appId": "6513178743",
-  "cluster": "volcano_tts",
-  "voiceType": "BV701_V2_streaming",
-  "speedRatio": 0.96,
-  "loudnessRatio": 1.0,
-  "explicitLanguage": "cn",
-  "audioEncoding": "MP3",
-  "emotion": "narrator_immersive",
-  "useSsml": true,
-  "breaksMs": {
-    "comma": 140,
-    "semicolon": 180,
-    "colon": 160,
-    "dash": 180,
-    "sentence": 260,
-    "segmentTail": 140
-  },
-  "pronunciations": {
-    "DeFi": "低发",
-    "MEV": "M E V",
-    "Remotion": "锐 motion",
-    "TypeScript": "Type Script"
-  },
-  "model": "seed-tts-1.1",
-  "extraParam": {
-    "disable_markdown_filter": true
-  },
-  "outputDir": "generated/audio/segments"
+  "provider": "minimax",
+  "model": "speech-2.8-hd",
+  "voiceId": "moss_audio_9c223de9-7ce1-11f0-9b9f-463feaa3106a",
+  "languageBoost": "Chinese",
+  "speed": 0.97,
+  "volume": 1.0,
+  "pitch": 0,
+  "sampleRate": 32000,
+  "bitrate": 128000,
+  "format": "mp3",
+  "channel": 1,
+  "outputFormat": "hex",
+  "outputDir": "generated/audio/segments-zh"
 }

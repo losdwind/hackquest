@@ -25,6 +25,8 @@ const lessonRoot = getArg('--lesson-root')
   : defaultLessonRoot;
 
 const skipTts = hasFlag('--skip-tts');
+const sourceDir = path.join(lessonRoot, 'source');
+const generatedDir = path.join(lessonRoot, 'generated');
 
 const run = (scriptName, extraArgs = []) => {
   const scriptPath = path.join(scriptDir, scriptName);
@@ -55,8 +57,7 @@ const exists = async (p) => {
   }
 };
 
-const resolveTtsOutputDir = async (lessonRootAbs) => {
-  const configPath = path.join(lessonRootAbs, 'source', 'voiceover-en-tts-config.json');
+const resolveTtsOutputDir = async (configPath) => {
   const config = await readJsonIfExists(configPath);
   if (!config) return null;
 
@@ -77,16 +78,64 @@ const resolveTtsOutputDir = async (lessonRootAbs) => {
 const pickTtsScriptName = (ttsConfig) => {
   const provider = String(ttsConfig?.provider ?? 'google').trim().toLowerCase();
   if (provider === 'doubao') return 'tts-doubao.mjs';
+  if (provider === 'minimax') return 'tts-minimax.mjs';
   return 'tts-google.mjs';
 };
 
-const readSegments = async (lessonRootAbs) => {
-  const segmentsPath = path.join(lessonRootAbs, 'generated', 'voiceover-en-segments.json');
+const readSegments = async (segmentsPath) => {
   const segments = await readJsonIfExists(segmentsPath);
   if (!Array.isArray(segments)) return [];
   return segments
     .map((s) => ({id: Number(s.id), text: String(s.text ?? '')}))
     .filter((s) => Number.isFinite(s.id) && s.id > 0 && s.text.trim());
+};
+
+const detectLangFromScriptFilename = (filename) => {
+  if (filename === 'script.md' || filename === 'script.json') return 'en';
+  const match = /^script-([a-z0-9-]+)\.(md|json)$/i.exec(filename);
+  return match ? match[1].toLowerCase() : null;
+};
+
+const listScriptVariants = async () => {
+  const entries = await fs.readdir(sourceDir, {withFileTypes: true});
+  const byLang = new Map();
+
+  for (const entry of entries) {
+    if (!entry.isFile()) continue;
+    const lang = detectLangFromScriptFilename(entry.name);
+    if (!lang) continue;
+    const current = byLang.get(lang) ?? {};
+    const abs = path.join(sourceDir, entry.name);
+    if (entry.name.endsWith('.md')) current.md = abs;
+    if (entry.name.endsWith('.json')) current.json = abs;
+    byLang.set(lang, current);
+  }
+
+  const variants = [];
+  for (const [lang, files] of byLang.entries()) {
+    variants.push({
+      lang,
+      scriptPath: files.md ?? files.json,
+      segmentsPath: path.join(generatedDir, `voiceover-${lang}-segments.json`),
+      timingsPath: path.join(generatedDir, `voiceover-${lang}-segment-timings.json`),
+      captionsPath:
+        lang === 'en'
+          ? path.join(generatedDir, 'captions', 'lines.json')
+          : path.join(generatedDir, 'captions', `lines-${lang}.json`),
+      mergedAudioPath:
+        lang === 'en'
+          ? path.join(generatedDir, 'audio', 'voiceover.mp3')
+          : path.join(generatedDir, 'audio', `voiceover-${lang}.mp3`),
+      configPath: path.join(sourceDir, `voiceover-${lang}-tts-config.json`),
+    });
+  }
+
+  variants.sort((a, b) => {
+    if (a.lang === 'en') return -1;
+    if (b.lang === 'en') return 1;
+    return a.lang.localeCompare(b.lang);
+  });
+  return variants;
 };
 
 const ensureIncrementalTtsInputs = async ({lessonRootAbs, segments, tts}) => {
@@ -168,30 +217,102 @@ const ensureAllAudioSegmentsExist = async ({segments, segmentsDir}) => {
   }
 };
 
-// 1) Validate and rebuild segments JSON from script.md / script.json.
-run('validate-script.mjs', ['--lesson-root', lessonRoot]);
-run('build-segments-from-script.mjs', ['--lesson-root', lessonRoot]);
-
-const segments = await readSegments(lessonRoot);
-if (!segments.length) {
-  throw new Error(`No segments found for lesson: ${lessonRoot}`);
+const variants = await listScriptVariants();
+if (!variants.length) {
+  throw new Error(`No script variants found under ${sourceDir}. Expected script.md or script-<lang>.md/json`);
 }
 
-// 2) Incremental TTS (skip unchanged segments).
-const tts = await resolveTtsOutputDir(lessonRoot);
-if (!skipTts && tts) {
-  await ensureIncrementalTtsInputs({lessonRootAbs: lessonRoot, segments, tts});
-  run(pickTtsScriptName(tts.config), ['--lesson-root', lessonRoot]);
+// Validate only canonical English script to preserve existing checks.
+const hasEn = variants.some((v) => v.lang === 'en');
+if (hasEn) {
+  const enTimingsPath = path.join(generatedDir, 'voiceover-en-segment-timings.json');
+  if (await exists(enTimingsPath)) {
+    run('validate-script.mjs', ['--lesson-root', lessonRoot]);
+  } else {
+    console.log(
+      `Skip validate-script: missing ${path.relative(repoRoot, enTimingsPath)} on clean build.`,
+    );
+  }
 }
 
-// 3) Merge voiceover + timings + captions (requires mp3 segments).
-const segmentsDirDefault = path.join(lessonRoot, 'generated', 'audio', 'segments');
-const segmentsDir = tts?.outputDir ?? segmentsDirDefault;
-await ensureAllAudioSegmentsExist({segments, segmentsDir});
+for (const variant of variants) {
+  const segmentsDirDefault =
+    variant.lang === 'en'
+      ? path.join(lessonRoot, 'generated', 'audio', 'segments')
+      : path.join(lessonRoot, 'generated', 'audio', `segments-${variant.lang}`);
 
-run('merge-voiceover.mjs', ['--lesson-root', lessonRoot]);
-run('build-segment-timings.mjs', ['--lesson-root', lessonRoot]);
-run('build-line-captions.mjs', ['--lesson-root', lessonRoot]);
+  // 1) Build language-specific segments from matching script source.
+  run('build-segments-from-script.mjs', [
+    '--lesson-root',
+    lessonRoot,
+    '--script',
+    variant.scriptPath,
+    '--out',
+    variant.segmentsPath,
+  ]);
+
+  const segments = await readSegments(variant.segmentsPath);
+  if (!segments.length) {
+    throw new Error(`No segments found for lang=${variant.lang}: ${variant.segmentsPath}`);
+  }
+
+  // 2) TTS per language (if config exists).
+  const tts = await resolveTtsOutputDir(variant.configPath);
+  if (!tts && !skipTts) {
+    throw new Error(
+      `Missing TTS config for lang=${variant.lang}: ${variant.configPath}. ` +
+        'Add this file or run with --skip-tts only when audio already exists.',
+    );
+  }
+  if (!skipTts && tts) {
+    await ensureIncrementalTtsInputs({lessonRootAbs: lessonRoot, segments, tts});
+    run(pickTtsScriptName(tts.config), [
+      '--lesson-root',
+      lessonRoot,
+      '--config',
+      tts.configPath,
+      '--segments',
+      variant.segmentsPath,
+    ]);
+  }
+
+  // 3) Merge voiceover + timings + captions for each language.
+  const segmentsDir = tts?.outputDir ?? segmentsDirDefault;
+  await ensureAllAudioSegmentsExist({segments, segmentsDir});
+  run('merge-voiceover.mjs', [
+    '--lesson-root',
+    lessonRoot,
+    '--segments',
+    variant.segmentsPath,
+    '--audio-dir',
+    segmentsDir,
+    '--out',
+    variant.mergedAudioPath,
+  ]);
+  run('build-segment-timings.mjs', [
+    '--lesson-root',
+    lessonRoot,
+    '--segments',
+    variant.segmentsPath,
+    '--segments-dir',
+    segmentsDir,
+    '--output',
+    variant.timingsPath,
+  ]);
+  run('build-line-captions.mjs', [
+    '--lesson-root',
+    lessonRoot,
+    '--segments',
+    variant.segmentsPath,
+    '--audio-dir',
+    segmentsDir,
+    '--out',
+    variant.captionsPath,
+  ]);
+}
+
 run('build-lesson-manifest.mjs');
 
-console.log('Lesson build complete. Manifest refreshed.');
+console.log(
+  `Lesson build complete for ${variants.length} variant(s): ${variants.map((v) => v.lang).join(', ')}. Manifest refreshed.`,
+);

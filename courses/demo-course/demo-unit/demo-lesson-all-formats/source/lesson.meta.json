@@ -33,9 +33,9 @@
   "sections": [
   ],
   "assets": {
-    "audioMerged": "generated/audio/voiceover-en.mp3",
+    "audioMerged": "generated/audio/voiceover.mp3",
     "segmentTimings": "generated/voiceover-en-segment-timings.json",
-    "captionsLines": "generated/captions/lines-en.json",
+    "captionsLines": "generated/captions/lines.json",
     "audioSegmentsDir": "generated/audio/segments"
   },
   "transitions": {
