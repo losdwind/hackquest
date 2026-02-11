@@ -1,10 +1,10 @@
 {
   "schema_version": "1.0.0",
-  "id": "demo-lesson-all-formats",
+  "id": "demo-lesson-all-formats-zh",
   "courseId": "demo-course",
   "unitId": "demo-unit",
   "lessonId": "demo-lesson-all-formats",
-  "title": "Demo Lesson: All Formats",
+  "title": "Demo Lesson: All Formats (ZH)",
   "unitLabel": "Demo Unit · Component Coverage",
   "courseLabel": "Demo Course · HackQuest Video System",
   "fps": 30,
@@ -17,30 +17,32 @@
     "enabled": true,
     "durationFrames": 90,
     "lessonLabel": "Demo Lesson",
-    "lessonTitle": "All Formats",
+    "lessonTitle": "All Formats (ZH)",
     "heroFile": "cover/hero.svg"
   },
   "outro": {
     "enabled": true,
     "durationFrames": 90,
     "lessonLabel": "Demo Lesson",
-    "lessonTitle": "All Formats",
-    "titleLines": ["Lesson Complete", "All Formats"],
+    "lessonTitle": "All Formats (ZH)",
+    "titleLines": [
+      "Lesson Complete",
+      "All Formats (ZH)"
+    ],
     "nextLessonLabel": "Next",
     "nextLessonTitle": "Component Optimization Sprint",
     "heroFile": "cover/hero.svg"
   },
-  "sections": [
-  ],
+  "sections": [],
   "assets": {
-    "audioMerged": "generated/audio/voiceover-en.mp3",
-    "segmentTimings": "generated/voiceover-en-segment-timings.json",
-    "captionsLines": "generated/captions/lines-en.json",
+    "audioMerged": "generated/audio/voiceover-zh.mp3",
+    "segmentTimings": "generated/voiceover-zh-segment-timings.json",
+    "captionsLines": "generated/captions/lines-zh.json",
     "audioSegmentsDir": "generated/audio/segments"
   },
   "transitions": {
     "enabled": true,
     "durationFrames": 30
   },
-  "scriptFile": "source/script.md"
+  "scriptFile": "source/script-zh.md"
 }

@@ -2,28 +2,26 @@
   "provider": "doubao",
   "appId": "6513178743",
   "cluster": "volcano_tts",
-  "voiceType": "BV702_streaming",
+  "voiceType": "BV701_V2_streaming",
   "speedRatio": 0.96,
   "loudnessRatio": 1.0,
-  "explicitLanguage": "en",
+  "explicitLanguage": "cn",
   "audioEncoding": "MP3",
+  "emotion": "narrator_immersive",
   "useSsml": true,
   "breaksMs": {
-    "comma": 120,
-    "semicolon": 170,
+    "comma": 140,
+    "semicolon": 180,
     "colon": 160,
     "dash": 180,
-    "sentence": 240,
-    "segmentTail": 120
+    "sentence": 260,
+    "segmentTail": 140
   },
   "pronunciations": {
-    "DeFi": "dee-fye",
+    "DeFi": "低发",
     "MEV": "M E V",
-    "Remotion": "ree-motion",
-    "TypeScript": "type script",
-    "CalloutScene": "callout scene",
-    "BulletCard": "bullet card",
-    "StepsCard": "steps card"
+    "Remotion": "锐 motion",
+    "TypeScript": "Type Script"
   },
   "model": "seed-tts-1.1",
   "extraParam": {

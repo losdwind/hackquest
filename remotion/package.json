@@ -4,8 +4,8 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "start": "bun scripts/sync-public-dir.mjs && remotion studio src/index.tsx --public-dir .hq-public",
-    "render": "bun scripts/sync-public-dir.mjs && remotion render --public-dir .hq-public",
+    "start": "bun scripts/build-lesson-manifest.mjs && bun scripts/sync-public-dir.mjs && remotion studio src/index.tsx --public-dir .hq-public",
+    "render": "bun scripts/build-lesson-manifest.mjs && bun scripts/sync-public-dir.mjs && remotion render --public-dir .hq-public",
     "upgrade": "remotion upgrade",
     "lessons:manifest": "bun scripts/build-lesson-manifest.mjs",
     "lesson:segments": "bun scripts/build-segments-from-script.mjs",
@@ -19,6 +19,7 @@
     "captions": "bun scripts/build-line-captions.mjs",
     "segments": "bun scripts/build-segments-from-script.mjs",
     "tts:google": "bun scripts/tts-google.mjs",
+    "tts:doubao": "bun scripts/tts-doubao.mjs",
     "merge:voiceover": "bun scripts/merge-voiceover.mjs",
     "segments:timings": "bun scripts/build-segment-timings.mjs",
     "courses:kebab": "bun scripts/rename-courses-kebab.mjs"

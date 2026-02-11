@@ -10,6 +10,7 @@ const coursesRoot = path.join(repoRoot, 'courses');
 const outFile = path.join(repoRoot, 'remotion', 'src', 'lesson-manifest.ts');
 
 const toPosix = (p) => p.split(path.sep).join('/');
+const isLessonMetaFileName = (name) => /^lesson\.meta(\.[a-z0-9-]+)?\.json$/i.test(name);
 
 const walk = async (dir) => {
   const entries = await fs.readdir(dir, {withFileTypes: true});
@@ -20,7 +21,7 @@ const walk = async (dir) => {
       results.push(...(await walk(full)));
       continue;
     }
-    if (entry.isFile() && entry.name === 'lesson.meta.json') {
+    if (entry.isFile() && isLessonMetaFileName(entry.name)) {
       results.push(full);
     }
   }

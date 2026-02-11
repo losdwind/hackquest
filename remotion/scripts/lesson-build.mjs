@@ -74,6 +74,12 @@ const resolveTtsOutputDir = async (lessonRootAbs) => {
   return {configPath, config, outputDir};
 };
 
+const pickTtsScriptName = (ttsConfig) => {
+  const provider = String(ttsConfig?.provider ?? 'google').trim().toLowerCase();
+  if (provider === 'doubao') return 'tts-doubao.mjs';
+  return 'tts-google.mjs';
+};
+
 const readSegments = async (lessonRootAbs) => {
   const segmentsPath = path.join(lessonRootAbs, 'generated', 'voiceover-en-segments.json');
   const segments = await readJsonIfExists(segmentsPath);
@@ -87,24 +93,8 @@ const ensureIncrementalTtsInputs = async ({lessonRootAbs, segments, tts}) => {
   const segmentsDir = tts.outputDir;
   await fs.mkdir(segmentsDir, {recursive: true});
 
-  // Only hash the fields that can affect audio output (not outputDir).
-  const ttsFingerprint = {
-    languageCode: tts.config.languageCode,
-    voiceName: tts.config.voiceName,
-    speakingRate: tts.config.speakingRate,
-    pitch: tts.config.pitch,
-    volumeGainDb: tts.config.volumeGainDb,
-    audioEncoding: tts.config.audioEncoding,
-    useSsml: tts.config.useSsml,
-    breaksMs: tts.config.breaksMs,
-    emphasisLevel: tts.config.emphasisLevel,
-    emphasisMode: tts.config.emphasisMode,
-    emphasisPitch: tts.config.emphasisPitch,
-    emphasisRate: tts.config.emphasisRate,
-    emphasisWords: tts.config.emphasisWords,
-    pronunciations: tts.config.pronunciations,
-    prosodyRules: tts.config.prosodyRules,
-  };
+  // Hash all synthesis-impacting fields and ignore output directory only.
+  const {outputDir: _outputDir, ...ttsFingerprint} = tts.config ?? {};
   const configHash = sha256(JSON.stringify(ttsFingerprint));
 
   const manifestPath = path.join(segmentsDir, '.tts-manifest.json');
@@ -191,7 +181,7 @@ if (!segments.length) {
 const tts = await resolveTtsOutputDir(lessonRoot);
 if (!skipTts && tts) {
   await ensureIncrementalTtsInputs({lessonRootAbs: lessonRoot, segments, tts});
-  run('tts-google.mjs', ['--lesson-root', lessonRoot]);
+  run(pickTtsScriptName(tts.config), ['--lesson-root', lessonRoot]);
 }
 
 // 3) Merge voiceover + timings + captions (requires mp3 segments).
@@ -202,6 +192,6 @@ await ensureAllAudioSegmentsExist({segments, segmentsDir});
 run('merge-voiceover.mjs', ['--lesson-root', lessonRoot]);
 run('build-segment-timings.mjs', ['--lesson-root', lessonRoot]);
 run('build-line-captions.mjs', ['--lesson-root', lessonRoot]);
+run('build-lesson-manifest.mjs');
 
-console.log('Lesson build complete.');
-
+console.log('Lesson build complete. Manifest refreshed.');

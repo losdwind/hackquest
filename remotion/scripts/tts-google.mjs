@@ -213,9 +213,10 @@ const applyProsody = (text, rawSentence) => {
 };
 
 const toSsml = (text) => {
-  const {comma, dash, sentence, semicolon} = config.breaksMs ?? {};
+  const {comma, dash, sentence, semicolon, segmentTail} = config.breaksMs ?? {};
   const sentences = text.split(/(?<=[.!?])\s+/).filter(Boolean);
   const sentenceBreak = sentence ? `<break time="${sentence}ms"/>` : '';
+  const tailBreak = segmentTail ? `<break time="${segmentTail}ms"/>` : '';
 
   const processed = sentences.map((sentenceText) => {
     const rawSentence = sentenceText.trim();
@@ -238,7 +239,8 @@ const toSsml = (text) => {
   });
 
   const joiner = sentenceBreak ? ` ${sentenceBreak} ` : ' ';
-  return `<speak>${processed.join(joiner)}</speak>`;
+  const body = processed.join(joiner);
+  return `<speak>${body}${tailBreak ? ` ${tailBreak}` : ''}</speak>`;
 };
 
 const segmentsRaw = await fs.readFile(segmentsPath, 'utf8');
@@ -266,6 +268,17 @@ const makeRequest = (text) => {
   };
 };
 
+const isInvalidArgument = (error) => {
+  const code = Number(error?.code);
+  const details = String(error?.details ?? '');
+  const message = String(error?.message ?? '');
+  return (
+    code === 3 ||
+    /INVALID_ARGUMENT/i.test(details) ||
+    /INVALID_ARGUMENT/i.test(message)
+  );
+};
+
 for (const segment of segments) {
   const id = String(segment.id).padStart(3, '0');
   const filePath = path.join(outputDir, `${id}.mp3`);
@@ -286,20 +299,40 @@ for (const segment of segments) {
 
   const request = makeRequest(segment.text);
   console.log(`Generate ${id}...`);
-  const synthPromise = client.synthesizeSpeech(request);
-  const [response] = await Promise.race([
-    synthPromise,
-    new Promise((_, reject) => {
-      setTimeout(() => {
-        reject(
-          new Error(
-            `synthesizeSpeech timeout after ${timeoutMs}ms (segment ${id}). ` +
-              `Try again, or pass --timeout-ms to increase.`,
-          ),
-        );
-      }, timeoutMs);
-    }),
-  ]);
+  const runSynthesizeWithTimeout = async (req) => {
+    const synthPromise = client.synthesizeSpeech(req);
+    const [resp] = await Promise.race([
+      synthPromise,
+      new Promise((_, reject) => {
+        setTimeout(() => {
+          reject(
+            new Error(
+              `synthesizeSpeech timeout after ${timeoutMs}ms (segment ${id}). ` +
+                `Try again, or pass --timeout-ms to increase.`,
+            ),
+          );
+        }, timeoutMs);
+      }),
+    ]);
+    return resp;
+  };
+
+  let response;
+  try {
+    response = await runSynthesizeWithTimeout(request);
+  } catch (error) {
+    if (config.useSsml && isInvalidArgument(error)) {
+      console.warn(
+        `SSML rejected for segment ${id}. Falling back to plain text synthesis for this request.`,
+      );
+      response = await runSynthesizeWithTimeout({
+        ...request,
+        input: {text: segment.text},
+      });
+    } else {
+      throw error;
+    }
+  }
   if (!response.audioContent) {
     throw new Error(`No audioContent for segment ${id}`);
   }

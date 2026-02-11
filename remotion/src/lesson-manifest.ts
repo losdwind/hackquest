@@ -25,6 +25,14 @@ export const lessonManifest: LessonManifestEntry[] = [
     "fps": 30,
     "width": 1920,
     "height": 1080,
-    "durationInFrames": 3476
+    "durationInFrames": 3970
+  },
+  {
+    "id": "demo-lesson-all-formats-zh",
+    "metaFile": "demo-course/demo-unit/demo-lesson-all-formats/source/lesson.meta.zh.json",
+    "fps": 30,
+    "width": 1920,
+    "height": 1080,
+    "durationInFrames": 3970
   }
 ];
