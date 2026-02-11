@@ -12,8 +12,8 @@ Component: BulletCard
     "subtitle": "Advanced DeFi engineering. Production-grade patterns.",
     "bullets": [
       {"text": "Build a complete stablecoin system from scratch", "tone": "accent", "icon": "1"},
-      {"text": "Fuzzing + invariant testing as first-class tools", "tone": "default", "icon": "2"},
-      {"text": "Liquidation mechanics and risk parameters", "tone": "default", "icon": "3"},
+      {"text": "Fuzzing + invariant testing as first-class tools"},
+      {"text": "Liquidation mechanics and risk parameters"},
       {"text": "Oracles and trust boundaries in real systems", "tone": "muted", "icon": "4"}
     ],
     "note": "Assume blockchain fundamentals. Keep statements precise."
@@ -25,19 +25,19 @@ Component: BulletCard
 Voiceover:
 You will master advanced testing techniques including fuzzing and invariant testing. These skills separate average Solidity developers from truly advanced ones. By the end, you will understand system mechanics at a deep level: collateralization ratios, liquidation engines, risk parameters, and oracle integrations.
 
-Component: StepsCard
+Component: BulletCard
 ```json
 {
   "props": {
     "title": "Skills You Will Master",
     "subtitle": "Advanced testing discipline plus deep system mechanics.",
-    "steps": [
-      {"title": "Fuzzing", "detail": "Foundry fuzz tests and failure minimization"},
-      {"title": "Invariant Testing", "detail": "Protocol-level properties that must always hold"},
-      {"title": "Risk Parameters", "detail": "Collateral ratios, thresholds, and circuit breakers"},
-      {"title": "Oracles", "detail": "Price feeds, staleness handling, and integration edges"}
+    "bullets": [
+      {"text": "Fuzzing: Foundry fuzz tests and failure minimization", "tone": "accent", "icon": "F"},
+      {"text": "Invariant testing: protocol-level properties that must always hold", "icon": "I"},
+      {"text": "Risk parameters: collateral ratios, thresholds, and circuit breakers", "icon": "R"},
+      {"text": "Oracles: price feeds, staleness handling, and integration edges", "tone": "muted", "icon": "O"}
     ],
-    "activeStep": 2
+    "note": "These are core engineering competencies, not sequential steps."
   }
 }
 ```
@@ -119,20 +119,19 @@ Component: TableCard
 Voiceover:
 Uniswap is the general-purpose decentralized exchange. It allows swapping any ERC20 tokens using an automated market maker model. If you understand these five protocols, you can navigate the rest of DeFi with confidence. They form the foundation of the ecosystem.
 
-Component: StepsCard
+Component: TableCard
 ```json
 {
   "props": {
     "title": "The Foundation Five",
-    "subtitle": "If you understand these, the rest of DeFi is navigable.",
-    "steps": [
-      {"title": "Lido", "detail": "Liquid staking (ETH → stETH)"},
-      {"title": "MakerDAO", "detail": "CDP stablecoin (DAI)"},
-      {"title": "Aave", "detail": "Lending and borrowing markets"},
-      {"title": "Curve", "detail": "Stablecoin-focused swaps"},
-      {"title": "Uniswap", "detail": "General-purpose AMM DEX"}
-    ],
-    "activeStep": 5
+    "columns": ["Protocol", "Core Function", "Mental Model"],
+    "rows": [
+      ["Lido", "Liquid staking", "ETH in, stETH out (stay liquid)"],
+      ["MakerDAO", "CDP stablecoin", "Collateralized debt mints DAI"],
+      ["Aave", "Lending markets", "On-chain credit market"],
+      ["Curve", "Stable swaps", "Low-slippage swaps for like-priced assets"],
+      ["Uniswap", "General-purpose DEX", "AMM for broad token pairs"]
+    ]
   }
 }
 ```
@@ -193,19 +192,19 @@ Component: CompareCard
 Voiceover:
 Where does the interest come from? Borrowers pay interest to access liquidity without selling their assets. That interest flows to suppliers. This creates an efficient market for capital. Rates adjust automatically based on supply and demand. No central bank sets the rates.
 
-Component: StepsCard
+Component: BulletCard
 ```json
 {
   "props": {
     "title": "Where Yield Comes From",
     "subtitle": "Interest is a price for liquidity, not a marketing promise.",
-    "steps": [
-      {"title": "Borrowers", "detail": "Pay interest to borrow liquidity without selling assets"},
-      {"title": "Suppliers", "detail": "Earn the borrower-paid interest as yield"},
-      {"title": "Market Rates", "detail": "Rates adjust algorithmically with supply and demand"},
-      {"title": "No Central Setter", "detail": "The rate curve is code plus market pressure"}
+    "bullets": [
+      {"text": "Borrowers pay interest to access liquidity without selling assets", "tone": "accent", "icon": "B"},
+      {"text": "Suppliers earn that borrower-paid interest as yield", "icon": "S"},
+      {"text": "Rates adjust algorithmically with supply and demand", "icon": "R"},
+      {"text": "The rate curve is code plus market pressure, not central policy", "tone": "muted", "icon": "C"}
     ],
-    "activeStep": 3
+    "note": "Yield here is market-priced liquidity, not discretionary rate setting."
   }
 }
 ```
@@ -258,8 +257,8 @@ Component: BulletCard
     "subtitle": "Cost scaling and transaction ordering are part of the environment.",
     "bullets": [
       {"text": "Layer 2s (Arbitrum, Optimism) cut fees 10-100x in practice", "tone": "accent", "icon": "L2"},
-      {"text": "MEV is profit from transaction ordering within a block", "tone": "default", "icon": "MEV"},
-      {"text": "Validators and searchers can capture MEV by reordering", "tone": "default", "icon": "O"},
+      {"text": "MEV is profit from transaction ordering within a block", "icon": "MEV"},
+      {"text": "Validators and searchers can capture MEV by reordering", "icon": "O"},
       {"text": "Flashbots is one approach to make extraction more transparent", "tone": "muted", "icon": "F"}
     ]
   }
@@ -278,8 +277,8 @@ Component: BulletCard
     "subtitle": "Build a decentralized stablecoin system inspired by MakerDAO and DAI.",
     "bullets": [
       {"text": "Collateral deposits and valuation", "tone": "accent", "icon": "1"},
-      {"text": "Stablecoin minting and burning", "tone": "default", "icon": "2"},
-      {"text": "Redemptions and accounting", "tone": "default", "icon": "3"},
+      {"text": "Stablecoin minting and burning"},
+      {"text": "Redemptions and accounting"},
       {"text": "Liquidation engine and risk parameters", "tone": "muted", "icon": "4"}
     ]
   }
@@ -290,19 +289,18 @@ Component: BulletCard
 Voiceover:
 This includes collateral deposits, stablecoin minting, redemption mechanisms, and liquidation engines. You will understand every component deeply. Let me give you a quick tour of the codebase. The repository is organized as a standard Foundry project.
 
-Component: StepsCard
+Component: TableCard
 ```json
 {
   "props": {
     "title": "Project Scope",
-    "subtitle": "A standard Foundry layout, with mechanics you can reason about.",
-    "steps": [
-      {"title": "Deposits", "detail": "Collateral enters the system with explicit accounting"},
-      {"title": "Mint / Burn", "detail": "Stablecoin issuance is constrained by risk parameters"},
-      {"title": "Redeem", "detail": "Users unwind positions and recover collateral"},
-      {"title": "Liquidate", "detail": "Enforce solvency when positions cross thresholds"}
-    ],
-    "activeStep": 4
+    "columns": ["Module", "What It Covers", "Why It Matters"],
+    "rows": [
+      ["Deposits", "Collateral entry and accounting", "Defines system liabilities and safety boundaries"],
+      ["Mint / Burn", "Stablecoin issuance and destruction", "Controls supply against collateral constraints"],
+      ["Redeem", "Position unwind and collateral return", "Enables exit and keeps accounting consistent"],
+      ["Liquidate", "Threshold-triggered risk resolution", "Enforces solvency under adverse price moves"]
+    ]
   }
 }
 ```
@@ -356,7 +354,7 @@ Voiceover:
 At the highest level, a stablecoin is a crypto asset with relatively stable purchasing power. That is the essential property. You will hear that stablecoins are pegged to dollars or other assets. This describes implementation, not purpose. The purpose is stability.
 
 Component: DefinitionCard
-```json
+```json 
 {
   "props": {
     "term": "Stablecoin",

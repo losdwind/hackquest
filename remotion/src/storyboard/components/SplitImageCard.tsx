@@ -100,17 +100,35 @@ export const SplitImageCard: React.FC<
           {note ? (
             <div
               style={{
-                marginTop: 16,
+                marginTop: 20,
                 padding: '16px 18px',
-                borderRadius: 18,
-                backgroundColor: colors.panelSoft,
-                fontFamily: fonts.body,
-                fontSize: 24,
-                color: colors.muted,
-                lineHeight: 1.3,
+                borderRadius: 16,
+                backgroundColor: colors.accentSoft,
+                border: `1px solid ${colors.borderSoft}`,
               }}
             >
-              {note}
+              <div
+                style={{
+                  fontFamily: fonts.brand,
+                  fontSize: 14,
+                  letterSpacing: '0.1em',
+                  textTransform: 'uppercase',
+                  color: colors.muted,
+                  marginBottom: 8,
+                }}
+              >
+                Note
+              </div>
+              <div
+                style={{
+                  fontFamily: fonts.body,
+                  fontSize: 24,
+                  color: colors.text,
+                  lineHeight: 1.35,
+                }}
+              >
+                {note}
+              </div>
             </div>
           ) : null}
         </CardShell>

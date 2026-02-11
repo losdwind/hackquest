@@ -1,4 +1,5 @@
 import {AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig} from 'remotion';
+import {HiArrowDownCircle} from 'react-icons/hi2';
 import {z} from 'zod';
 
 import type {LessonBlockContext} from '../../lesson-config';
@@ -49,63 +50,90 @@ export const StepsCard: React.FC<
           <div style={{display: 'flex', flexDirection: 'column', gap: 18}}>
             {steps.map((s, idx) => {
               const isActive = idx === activeIndex;
+              const isAfterActive = activeIndex >= 0 && idx > activeIndex;
+              const hasNext = idx < steps.length - 1;
               return (
-                <div
-                  key={`${idx}-${s.title}`}
-                  style={{
-                    display: 'grid',
-                    gridTemplateColumns: '60px 1fr',
-                    gap: 20,
-                    alignItems: 'start',
-                    padding: '18px 18px',
-                    borderRadius: 20,
-                    backgroundColor: isActive ? colors.accentSoft : colors.panelSoft,
-                  }}
-                >
+                <div key={`${idx}-${s.title}`} style={{position: 'relative'}}>
                   <div
                     style={{
-                      width: 60,
-                      height: 60,
-                      borderRadius: 18,
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      backgroundColor: isActive ? colors.accent : colors.panelSoft,
-                      fontFamily: fonts.brand,
-                      fontSize: 20,
-                      fontWeight: 900,
-                      color: colors.text,
+                      display: 'grid',
+                      gridTemplateColumns: '60px 1fr',
+                      gap: 20,
+                      alignItems: 'start',
+                      padding: '18px 18px',
+                      borderRadius: 20,
+                      backgroundColor: isActive ? colors.accentSoft : colors.panelSoft,
+                      border: `2px solid ${isActive ? colors.accent : colors.borderSoft}`,
+                      boxShadow: isActive ? '0 12px 36px rgba(0,0,0,0.14)' : 'none',
+                      opacity: isAfterActive ? 0.78 : 1,
                     }}
                   >
-                    {idx + 1}
-                  </div>
-                  <div>
                     <div
                       style={{
-                        fontFamily: fonts.display,
-                        fontSize: 34,
-                        fontWeight: 800,
+                        width: 60,
+                        height: 60,
+                        borderRadius: 18,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        backgroundColor: isActive ? colors.accent : colors.background,
+                        border: `1px solid ${isActive ? colors.accent : colors.borderSoft}`,
+                        fontFamily: fonts.brand,
+                        fontSize: 20,
+                        fontWeight: 900,
                         color: colors.text,
-                        lineHeight: 1.15,
-                        marginBottom: s.detail ? 6 : 0,
                       }}
                     >
-                      {s.title}
+                      {idx + 1}
                     </div>
-                    {s.detail ? (
+                    <div>
                       <div
                         style={{
-                          fontFamily: fonts.body,
-                          fontSize: 26,
-                          lineHeight: 1.3,
-                          color: colors.muted,
-                          maxWidth: 980,
+                          fontFamily: fonts.display,
+                          fontSize: 34,
+                          fontWeight: 800,
+                          color: colors.text,
+                          lineHeight: 1.15,
+                          marginBottom: s.detail ? 6 : 0,
                         }}
                       >
-                        {s.detail}
+                        {s.title}
                       </div>
-                    ) : null}
+                      {s.detail ? (
+                        <div
+                          style={{
+                            fontFamily: fonts.body,
+                            fontSize: 26,
+                            lineHeight: 1.3,
+                            color: colors.muted,
+                            maxWidth: 980,
+                          }}
+                        >
+                          {s.detail}
+                        </div>
+                      ) : null}
+                    </div>
                   </div>
+                  {hasNext ? (
+                    <div
+                      style={{
+                        position: 'absolute',
+                        right: -116,
+                        top: '50%',
+                        transform: 'translateY(-50%)',
+                        width: 92,
+                        height: 92,
+                        borderRadius: 999,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        color: colors.accent,
+                        pointerEvents: 'none',
+                      }}
+                    >
+                      <HiArrowDownCircle size={90} />
+                    </div>
+                  ) : null}
                 </div>
               );
             })}

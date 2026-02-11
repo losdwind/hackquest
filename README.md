@@ -255,3 +255,151 @@ Asset Kind: `video`
 |---|---|---|
 | `title` | `string` | no |
 | `body` | `string` | no |
+
+## 8) 讲师速查：组件参数模板（可直接复制）
+
+说明：
+- 在 `source/script.md` 里，`Component: Xxx` 后必须紧跟 `json` block，且使用 `{"props": {...}}` 信封格式。
+- `eyebrow` 在多数卡片组件里可选；不需要时可以省略。
+- `Asset Ref` 与组件分工：带 `assetKind: video/image` 的组件通常要配 `Asset Ref`。
+
+### BulletCard（并列要点）
+
+```json
+{
+  "props": {
+    "eyebrow": "Optional",
+    "title": "Card Title",
+    "subtitle": "Optional subtitle",
+    "badge": "Optional badge",
+    "bullets": [
+      {"text": "Point A", "tone": "accent", "icon": "A"},
+      {"text": "Point B"},
+      {"text": "Point C", "tone": "muted"}
+    ],
+    "note": "Optional bottom note"
+  }
+}
+```
+
+`tone` 可选值：`accent | default | muted`
+
+### TableCard（结构化信息/模块地图）
+
+```json
+{
+  "props": {
+    "eyebrow": "Optional",
+    "title": "Table Title",
+    "columns": ["Col 1", "Col 2", "Col 3"],
+    "rows": [
+      ["R1C1", "R1C2", "R1C3"],
+      ["R2C1", "R2C2", "R2C3"]
+    ]
+  }
+}
+```
+
+### StepsCard（严格步骤流程，顺序不可乱）
+
+```json
+{
+  "props": {
+    "eyebrow": "Optional",
+    "title": "Process Title",
+    "subtitle": "Optional subtitle",
+    "steps": [
+      {"title": "Step 1", "detail": "Optional detail"},
+      {"title": "Step 2", "detail": "Optional detail"},
+      {"title": "Step 3"}
+    ],
+    "activeStep": 2
+  }
+}
+```
+
+### CompareCard（双栏对比）
+
+```json
+{
+  "props": {
+    "eyebrow": "Optional",
+    "title": "Comparison Title",
+    "left": {
+      "label": "Left Label",
+      "bullets": ["A", "B", "C"]
+    },
+    "right": {
+      "label": "Right Label",
+      "bullets": ["X", "Y", "Z"]
+    },
+    "verdict": "Optional summary line"
+  }
+}
+```
+
+### DefinitionCard（术语定义）
+
+```json
+{
+  "props": {
+    "eyebrow": "Optional",
+    "term": "Stablecoin",
+    "definition": "A crypto asset with relatively stable purchasing power.",
+    "notes": ["Optional note 1", "Optional note 2"]
+  }
+}
+```
+
+### CalloutScene（提醒/过渡）
+
+```json
+{
+  "props": {
+    "eyebrow": "Optional",
+    "title": "Callout Title",
+    "body": "Single core message."
+  }
+}
+```
+
+### DemoOverlay（视频讲解层，需 `Asset Ref`）
+
+```json
+{
+  "props": {
+    "title": "Optional frame title",
+    "badge": "Optional badge",
+    "callouts": [
+      {"type": "rect", "x": 120, "y": 80, "w": 260, "h": 120, "label": "Optional"},
+      {"type": "blur", "x": 480, "y": 220, "w": 180, "h": 90}
+    ]
+  }
+}
+```
+
+### SplitImageCard（图文并排，需 `Asset Ref` 图片）
+
+```json
+{
+  "props": {
+    "eyebrow": "Optional",
+    "title": "Title",
+    "subtitle": "Optional subtitle",
+    "bullets": [
+      {"text": "Point A", "tone": "accent"},
+      {"text": "Point B"}
+    ],
+    "note": "Optional note"
+  }
+}
+```
+
+### 其他可用组件
+
+- `WarningCard`: `title`, `message`, `bullets?`, `eyebrow?`
+- `GlossaryCard`: `title`, `items[]`, `eyebrow?`
+- `CodeExplainCard`: `title`, `code`, `language?`, `highlights?`, `explain?`, `eyebrow?`
+- `CalloutVideoFrame`: `title?`, `subtitle?`, `badge?`, `callouts?`（需视频 `Asset Ref`）
+
+组件选型建议请同时参考：`docs/component-selection-rules.md`。

@@ -54,6 +54,12 @@ Hook (01-05) → Quick Win (06-10) → Hard Fun (11-25) → Exploration (26-35) 
 
 当前仓库实践以单文件 `source/script.md` 为主（由 `remotion/scripts/lib/parse-script-md.mjs` 解析）。
 
+组件选型必须先参考：`docs/component-selection-rules.md`。  
+要求：
+- 先按语义选组件，再写 props，不允许“先选组件再硬凑内容”。
+- `StepsCard` 仅用于严格流程步骤；能力清单、协议清单、模块范围默认不用 `StepsCard`。
+- 若选型与规则表冲突，需在交付说明里给出明确理由。
+
 每个 Segment 的推荐结构如下（字段名区分大小写不严格，但建议保持一致）。
 
 注意：`Voiceover:` 之后会进入旁白文本采集模式。除“字段行”（如 `Scene Type:` / `Asset Ref:`）和 fenced code block 外，不要夹杂额外解释行，否则会被误当成旁白文本。

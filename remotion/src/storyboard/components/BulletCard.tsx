@@ -57,25 +57,8 @@ export const BulletCard: React.FC<
           eyebrow={eyebrow ?? badge}
           title={title}
           subtitle={subtitle}
-          rightSlot={
-            note ? (
-              <div
-                style={{
-                  borderRadius: 22,
-                  backgroundColor: colors.panelSoft,
-                  padding: '22px 22px',
-                  fontFamily: fonts.body,
-                  color: colors.muted,
-                  fontSize: 24,
-                  lineHeight: 1.35,
-                }}
-              >
-                {note}
-              </div>
-            ) : null
-          }
         >
-            <div style={{display: 'flex', flexDirection: 'column', gap: 16}}>
+          <div style={{display: 'flex', flexDirection: 'column', gap: 16}}>
             {bullets.map((b, idx) => (
               <div
                 key={`${idx}-${b.text}`}
@@ -115,6 +98,40 @@ export const BulletCard: React.FC<
               </div>
             ))}
           </div>
+          {note ? (
+            <div
+              style={{
+                marginTop: 20,
+                padding: '16px 18px',
+                borderRadius: 16,
+                backgroundColor: colors.accentSoft,
+                border: `1px solid ${colors.borderSoft}`,
+              }}
+            >
+              <div
+                style={{
+                  fontFamily: fonts.brand,
+                  fontSize: 14,
+                  letterSpacing: '0.1em',
+                  textTransform: 'uppercase',
+                  color: colors.muted,
+                  marginBottom: 8,
+                }}
+              >
+                Note
+              </div>
+              <div
+                style={{
+                  fontFamily: fonts.body,
+                  color: colors.text,
+                  fontSize: 24,
+                  lineHeight: 1.35,
+                }}
+              >
+                {note}
+              </div>
+            </div>
+          ) : null}
         </CardShell>
       </div>
     </AbsoluteFill>
