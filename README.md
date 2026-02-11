@@ -6,6 +6,12 @@
 > `remotion/.hq-public/...` 是 `bun run public:sync` 同步出来的预览目录，改了会被覆盖。
 > 说明：旧版 `remotion/src/courses/*` 已归档到 `docs/archive/remotion-src-courses/`，不再参与运行链路。
 
+## Demo Video
+
+<video src="https://raw.githubusercontent.com/losdwind/hackquest/main/remotion/out/demo-lesson-all-formats-zh.mp4" controls width="960"></video>
+
+备用直链：`https://raw.githubusercontent.com/losdwind/hackquest/main/remotion/out/demo-lesson-all-formats-zh.mp4`
+
 ## 1) 安装与启动预览
 
 ```bash
