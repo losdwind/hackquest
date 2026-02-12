@@ -1,0 +1,25 @@
+{
+  "provider": "minimax",
+  "model": "speech-2.8-hd",
+  "languageBoost": "English",
+  "voiceId": "English_Insightful_Speaker",
+  "speed": 0.98,
+  "volume": 1.0,
+  "pitch": 0,
+  "sampleRate": 32000,
+  "bitrate": 128000,
+  "format": "mp3",
+  "channel": 1,
+  "outputFormat": "hex",
+  "pronunciations": {
+    "DeFi": "dee-fye",
+    "DefiLlama": "dee-fye llama",
+    "Uniswap": "you-nee-swap",
+    "UNI": "you-nee",
+    "MEV": "M E V",
+    "PFDA": "P F D A",
+    "Unichain": "you-nee-chain",
+    "SEC": "S E C"
+  },
+  "outputDir": "generated/audio/segments"
+}
