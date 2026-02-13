@@ -1,10 +1,9 @@
-import {AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig} from 'remotion';
 import {z} from 'zod';
 
 import type {LessonBlockContext} from '../../lesson-config';
 import {colors, fonts} from '../../theme';
 import type {StoryboardInjected} from '../types';
-import {CardShell} from './CardShell';
+import {SceneScaffold} from './SceneScaffold';
 
 export const WarningCardPropsSchema = z
   .object({
@@ -20,64 +19,88 @@ export type WarningCardProps = z.infer<typeof WarningCardPropsSchema>;
 export const WarningCard: React.FC<
   WarningCardProps & {context: LessonBlockContext; hq?: StoryboardInjected}
 > = ({eyebrow, title, message, bullets}) => {
-  const frame = useCurrentFrame();
-  const {fps} = useVideoConfig();
-  const reveal = spring({frame, fps, config: {damping: 200}});
-  const y = interpolate(reveal, [0, 1], [18, 0]);
-  const opacity = interpolate(reveal, [0, 1], [0, 1]);
-
   return (
-    <AbsoluteFill
-      style={{
-        backgroundColor: colors.background,
-        padding: 96,
-        justifyContent: 'center',
-      }}
+    <SceneScaffold
+      background={
+        'radial-gradient(circle at 88% 12%, rgba(255, 232, 102, 0.34), transparent 36%), #ffffff'
+      }
+      eyebrow={eyebrow}
+      title={title}
+      subtitle={message}
+      contentTop={24}
+      titleSize={68}
     >
-      <div style={{transform: `translateY(${y}px)`, opacity}}>
-        <CardShell
-          eyebrow={eyebrow}
-          title={title}
-          subtitle={message}
-          rightSlot={
+      <div
+        style={{
+          height: '100%',
+          display: 'grid',
+          gridTemplateColumns: '1fr 0.44fr',
+          gap: 20,
+          alignItems: 'start',
+        }}
+      >
+        <div style={{display: 'flex', flexDirection: 'column', gap: 12}}>
+          {bullets.map((bullet, idx) => (
             <div
+              key={`${idx}-${bullet}`}
               style={{
-                borderRadius: 22,
-                backgroundColor: colors.accentSoft,
-                padding: '22px 22px',
+                display: 'grid',
+                gridTemplateColumns: '26px 1fr',
+                gap: 10,
+                alignItems: 'start',
+                padding: '14px 16px',
+                borderRadius: 16,
+                backgroundColor: idx % 2 === 0 ? 'rgba(255, 255, 255, 0.82)' : 'rgba(0, 0, 0, 0.05)',
                 fontFamily: fonts.body,
-                fontSize: 24,
-                lineHeight: 1.35,
+                fontSize: 40,
                 color: colors.text,
+                lineHeight: 1.24,
               }}
             >
-              Keep this calm and actionable.
+              <span style={{color: colors.muted}}>–</span>
+              <span>{bullet}</span>
             </div>
-          }
+          ))}
+        </div>
+
+        <div
+          style={{
+            height: '100%',
+            borderRadius: 22,
+            background: 'linear-gradient(180deg, rgba(255, 232, 102, 0.5), rgba(255, 255, 255, 0.72) 44%)',
+            padding: '20px 18px',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+          }}
         >
-          {bullets.length ? (
-            <div style={{display: 'flex', flexDirection: 'column', gap: 16}}>
-              {bullets.map((b, idx) => (
-                <div
-                  key={`${idx}-${b}`}
-                  style={{
-                    display: 'flex',
-                    gap: 12,
-                    alignItems: 'flex-start',
-                    fontFamily: fonts.body,
-                    fontSize: 28,
-                    color: colors.text,
-                    lineHeight: 1.3,
-                  }}
-                >
-                  <span style={{color: colors.muted}}>–</span>
-                  <span>{b}</span>
-                </div>
-              ))}
-            </div>
-          ) : null}
-        </CardShell>
+          <div
+            style={{
+              fontFamily: fonts.brand,
+              fontSize: 20,
+              fontWeight: 900,
+              letterSpacing: '0.14em',
+              textTransform: 'uppercase',
+              color: colors.muted,
+            }}
+          >
+            Risk Lens
+          </div>
+
+          <div
+            style={{
+              fontFamily: fonts.body,
+              fontSize: 38,
+              lineHeight: 1.28,
+              color: colors.text,
+            }}
+          >
+            Keep this calm and actionable.
+            <br />
+            Name the failure mode, then name the guardrail.
+          </div>
+        </div>
       </div>
-    </AbsoluteFill>
+    </SceneScaffold>
   );
 };

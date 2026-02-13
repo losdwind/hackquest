@@ -1,10 +1,9 @@
-import {AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig} from 'remotion';
 import {z} from 'zod';
 
 import type {LessonBlockContext} from '../../lesson-config';
 import {colors, fonts} from '../../theme';
 import type {StoryboardInjected} from '../types';
-import {CardShell} from './CardShell';
+import {SceneScaffold} from './SceneScaffold';
 
 export const GlossaryCardPropsSchema = z
   .object({
@@ -26,68 +25,62 @@ export type GlossaryCardProps = z.infer<typeof GlossaryCardPropsSchema>;
 export const GlossaryCard: React.FC<
   GlossaryCardProps & {context: LessonBlockContext; hq?: StoryboardInjected}
 > = ({eyebrow, title, items}) => {
-  const frame = useCurrentFrame();
-  const {fps} = useVideoConfig();
-  const reveal = spring({frame, fps, config: {damping: 200}});
-  const y = interpolate(reveal, [0, 1], [18, 0]);
-  const opacity = interpolate(reveal, [0, 1], [0, 1]);
-
   return (
-    <AbsoluteFill
-      style={{
-        backgroundColor: colors.background,
-        padding: 96,
-        justifyContent: 'center',
-      }}
+    <SceneScaffold
+      background={
+        'radial-gradient(circle at 88% 14%, rgba(255, 232, 102, 0.25), transparent 34%), #ffffff'
+      }
+      eyebrow={eyebrow}
+      title={title}
+      contentTop={22}
     >
-      <div style={{transform: `translateY(${y}px)`, opacity}}>
-        <CardShell eyebrow={eyebrow} title={title}>
+      <div
+        style={{
+          height: '100%',
+          display: 'grid',
+          gridTemplateColumns: items.length <= 4 ? '1fr 1fr' : '1fr 1fr 1fr',
+          gap: 12,
+          alignContent: 'start',
+        }}
+      >
+        {items.map((item, idx) => (
           <div
+            key={`${idx}-${item.cn}-${item.en}`}
             style={{
-              marginTop: 12,
-              display: 'grid',
-              gridTemplateColumns: '1fr 1fr',
-              gap: 18,
+              minHeight: 130,
+              padding: '18px 18px',
+              borderRadius: 18,
+              backgroundColor: idx % 3 === 0 ? 'rgba(255, 232, 102, 0.35)' : 'rgba(255, 255, 255, 0.78)',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
             }}
           >
-            {items.map((it, idx) => (
-              <div
-                key={`${idx}-${it.cn}-${it.en}`}
-                style={{
-                  padding: '18px 18px',
-                  borderRadius: 20,
-                  backgroundColor: colors.panelSoft,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: 6,
-                }}
-              >
-                <div
-                  style={{
-                    fontFamily: fonts.display,
-                    fontSize: 34,
-                    fontWeight: 900,
-                    color: colors.text,
-                    lineHeight: 1.05,
-                  }}
-                >
-                  {it.cn}
-                </div>
-                <div
-                  style={{
-                    fontFamily: fonts.body,
-                    fontSize: 24,
-                    color: colors.muted,
-                    letterSpacing: '0.02em',
-                  }}
-                >
-                  {it.en}
-                </div>
-              </div>
-            ))}
+            <div
+              style={{
+                fontFamily: fonts.display,
+                fontSize: 52,
+                fontWeight: 900,
+                lineHeight: 1.04,
+                color: colors.text,
+                marginBottom: 6,
+              }}
+            >
+              {item.cn}
+            </div>
+            <div
+              style={{
+                fontFamily: fonts.body,
+                fontSize: 36,
+                color: colors.muted,
+                letterSpacing: '0.02em',
+              }}
+            >
+              {item.en}
+            </div>
           </div>
-        </CardShell>
+        ))}
       </div>
-    </AbsoluteFill>
+    </SceneScaffold>
   );
 };

@@ -1,17 +1,10 @@
-import {
-  AbsoluteFill,
-  Video,
-  interpolate,
-  spring,
-  staticFile,
-  useCurrentFrame,
-  useVideoConfig,
-} from 'remotion';
+import {AbsoluteFill, Video, staticFile} from 'remotion';
 import {z} from 'zod';
 
 import type {LessonBlockContext} from '../../lesson-config';
-import {colors, fonts, tokens} from '../../theme';
+import {colors, fonts} from '../../theme';
 import type {StoryboardInjected} from '../types';
+import {SceneScaffold} from './SceneScaffold';
 
 const CalloutRectSchema = z
   .object({
@@ -48,173 +41,102 @@ export type CalloutVideoFrameProps = z.infer<typeof CalloutVideoFramePropsSchema
 export const CalloutVideoFrame: React.FC<
   CalloutVideoFrameProps & {context: LessonBlockContext; hq?: StoryboardInjected}
 > = ({title, subtitle, badge, callouts, hq}) => {
-  const frame = useCurrentFrame();
-  const {fps} = useVideoConfig();
-  const reveal = spring({frame, fps, config: {damping: 200}});
-  const y = interpolate(reveal, [0, 1], [18, 0]);
-  const opacity = interpolate(reveal, [0, 1], [0, 1]);
-
   const assetRef = hq?.assetRef ?? null;
   const src =
     assetRef && /^https?:\/\//i.test(assetRef) ? assetRef : assetRef ? staticFile(assetRef) : null;
 
   return (
-    <AbsoluteFill style={{backgroundColor: colors.background}}>
-      <div style={{position: 'absolute', inset: 0, padding: 72}}>
-        <div
-          style={{
-            width: '100%',
-            height: '100%',
-            borderRadius: 32,
-            border: 'none',
-            boxShadow: tokens.shadow.card,
-            overflow: 'hidden',
-            backgroundColor: '#0B0B0B',
-            transform: `translateY(${y}px)`,
-            opacity,
-            position: 'relative',
-          }}
-        >
-          {src ? (
-            <Video
-              src={src}
-              style={{width: '100%', height: '100%', objectFit: 'cover'}}
-            />
-          ) : (
-            <AbsoluteFill
-              style={{
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontFamily: fonts.body,
-                color: 'rgba(255,255,255,0.6)',
-                fontSize: 28,
-              }}
-            >
-              Missing video asset
-            </AbsoluteFill>
-          )}
+    <SceneScaffold
+      background={colors.background}
+      eyebrow={badge}
+      title={title}
+      subtitle={subtitle}
+      contentTop={18}
+      titleSize={64}
+    >
+      <div
+        style={{
+          width: '100%',
+          height: '100%',
+          borderRadius: 26,
+          overflow: 'hidden',
+          backgroundColor: '#0B0B0B',
+          position: 'relative',
+        }}
+      >
+        {src ? (
+          <Video src={src} style={{width: '100%', height: '100%', objectFit: 'cover'}} />
+        ) : (
+          <AbsoluteFill
+            style={{
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontFamily: fonts.body,
+              color: 'rgba(255,255,255,0.62)',
+              fontSize: 40,
+            }}
+          >
+            Missing video asset
+          </AbsoluteFill>
+        )}
 
-          {callouts.map((c, idx) => {
-            if (c.type === 'blur') {
-              return (
-                <div
-                  // eslint-disable-next-line react/no-array-index-key
-                  key={idx}
-                  style={{
-                    position: 'absolute',
-                    left: c.x,
-                    top: c.y,
-                    width: c.w,
-                    height: c.h,
-                    borderRadius: 18,
-                    backgroundColor: 'rgba(0,0,0,0.45)',
-                    border: '1px solid rgba(255,255,255,0.15)',
-                  }}
-                />
-              );
-            }
-
+        {callouts.map((callout, idx) => {
+          if (callout.type === 'blur') {
             return (
               <div
                 // eslint-disable-next-line react/no-array-index-key
                 key={idx}
                 style={{
                   position: 'absolute',
-                  left: c.x,
-                  top: c.y,
-                  width: c.w,
-                  height: c.h,
+                  left: callout.x,
+                  top: callout.y,
+                  width: callout.w,
+                  height: callout.h,
                   borderRadius: 18,
-                  border: `2px solid ${colors.accent}`,
+                  backgroundColor: 'rgba(0,0,0,0.45)',
                 }}
-              >
-                {c.label ? (
-                  <div
-                    style={{
-                      position: 'absolute',
-                      left: 12,
-                      top: 12,
-                      padding: '6px 10px',
-                      borderRadius: 999,
-                      backgroundColor: colors.accent,
-                      border: `1px solid ${colors.border}`,
-                      fontFamily: fonts.brand,
-                      fontSize: 14,
-                      fontWeight: 900,
-                      letterSpacing: '0.12em',
-                      textTransform: 'uppercase',
-                      color: colors.text,
-                    }}
-                  >
-                    {c.label}
-                  </div>
-                ) : null}
-              </div>
+              />
             );
-          })}
+          }
 
-          {(title || subtitle || badge) ? (
+          return (
             <div
+              // eslint-disable-next-line react/no-array-index-key
+              key={idx}
               style={{
                 position: 'absolute',
-                left: 30,
-                bottom: 30,
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 8,
-                maxWidth: 860,
+                left: callout.x,
+                top: callout.y,
+                width: callout.w,
+                height: callout.h,
+                borderRadius: 18,
+                border: `2px solid ${colors.accent}`,
               }}
             >
-              {badge ? (
+              {callout.label ? (
                 <div
                   style={{
-                    alignSelf: 'flex-start',
+                    position: 'absolute',
+                    left: 12,
+                    top: 12,
                     padding: '6px 10px',
                     borderRadius: 999,
-                    backgroundColor: 'rgba(255,255,255,0.92)',
-                    border: '1px solid rgba(255,255,255,0.18)',
+                    backgroundColor: colors.accent,
                     fontFamily: fonts.brand,
-                    fontSize: 14,
+                    fontSize: 20,
                     fontWeight: 900,
-                    letterSpacing: '0.14em',
+                    letterSpacing: '0.12em',
                     textTransform: 'uppercase',
                     color: colors.text,
                   }}
                 >
-                  {badge}
-                </div>
-              ) : null}
-              {title ? (
-                <div
-                  style={{
-                    fontFamily: fonts.display,
-                    fontSize: 44,
-                    fontWeight: 900,
-                    lineHeight: 1.05,
-                    color: '#FFFFFF',
-                    textShadow: '0 10px 28px rgba(0,0,0,0.45)',
-                  }}
-                >
-                  {title}
-                </div>
-              ) : null}
-              {subtitle ? (
-                <div
-                  style={{
-                    fontFamily: fonts.body,
-                    fontSize: 24,
-                    color: 'rgba(255,255,255,0.78)',
-                    lineHeight: 1.3,
-                    textShadow: '0 10px 28px rgba(0,0,0,0.45)',
-                  }}
-                >
-                  {subtitle}
+                  {callout.label}
                 </div>
               ) : null}
             </div>
-          ) : null}
-        </div>
+          );
+        })}
       </div>
-    </AbsoluteFill>
+    </SceneScaffold>
   );
 };

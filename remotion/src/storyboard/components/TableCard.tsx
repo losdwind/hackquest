@@ -1,10 +1,9 @@
-import {AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig} from 'remotion';
 import {z} from 'zod';
 
 import type {LessonBlockContext} from '../../lesson-config';
 import {colors, fonts} from '../../theme';
 import type {StoryboardInjected} from '../types';
-import {CardShell} from './CardShell';
+import {SceneScaffold} from './SceneScaffold';
 
 export const TableCardPropsSchema = z
   .object({
@@ -31,105 +30,94 @@ export type TableCardProps = z.infer<typeof TableCardPropsSchema>;
 export const TableCard: React.FC<
   TableCardProps & {context: LessonBlockContext; hq?: StoryboardInjected}
 > = ({eyebrow, title, columns, rows}) => {
-  const frame = useCurrentFrame();
-  const {fps} = useVideoConfig();
-  const reveal = spring({frame, fps, config: {damping: 200}});
-  const y = interpolate(reveal, [0, 1], [18, 0]);
-  const opacity = interpolate(reveal, [0, 1], [0, 1]);
-
   const isNumericLike = (value: string) => {
-    const t = String(value ?? '').trim();
-    if (!t) return false;
-    return /^[\d,._%$()+\-]+$/.test(t);
+    const text = String(value ?? '').trim();
+    if (!text) return false;
+    return /^[\d,._%$()+\-]+$/.test(text);
   };
 
   return (
-    <AbsoluteFill
-      style={{
-        backgroundColor: colors.background,
-        padding: 96,
-        justifyContent: 'center',
-      }}
+    <SceneScaffold
+      background={
+        'linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(255, 232, 102, 0.2) 100%)'
+      }
+      eyebrow={eyebrow}
+      title={title}
+      contentTop={24}
+      titleSize={68}
     >
-      <div style={{transform: `translateY(${y}px)`, opacity}}>
-        <CardShell eyebrow={eyebrow} title={title}>
-          <div
-            style={{
-              marginTop: 16,
-              borderRadius: 24,
-              overflow: 'hidden',
-              backgroundColor: colors.background,
-              border: `2px solid ${colors.borderSoft}`,
-              boxShadow: '0 24px 60px rgba(0,0,0,0.10)',
-            }}
-          >
+      <div
+        style={{
+          alignSelf: 'start',
+          width: '100%',
+          maxHeight: '100%',
+          borderRadius: 24,
+          overflow: 'hidden',
+          backgroundColor: 'rgba(255, 255, 255, 0.9)',
+        }}
+      >
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: `repeat(${columns.length}, minmax(0, 1fr))`,
+            gap: 0,
+            padding: '16px 20px',
+            backgroundColor: 'rgba(255, 232, 102, 0.48)',
+            fontFamily: fonts.brand,
+            fontSize: 28,
+            fontWeight: 900,
+            letterSpacing: '0.1em',
+            textTransform: 'uppercase',
+            color: colors.text,
+          }}
+        >
+          {columns.map((column) => (
+            <div key={column} style={{paddingRight: 14, minWidth: 0}}>
+              {column}
+            </div>
+          ))}
+        </div>
+
+        <div style={{display: 'flex', flexDirection: 'column'}}>
+          {rows.map((row, rowIdx) => (
             <div
+              key={rowIdx}
               style={{
                 display: 'grid',
                 gridTemplateColumns: `repeat(${columns.length}, minmax(0, 1fr))`,
                 gap: 0,
-                padding: '18px 22px',
-                backgroundColor: colors.accentSoft,
-                fontFamily: fonts.brand,
-                fontSize: 17,
-                fontWeight: 900,
-                letterSpacing: '0.10em',
-                textTransform: 'uppercase',
+                padding: '16px 20px',
+                fontFamily: fonts.body,
+                fontSize: 36,
+                lineHeight: 1.26,
                 color: colors.text,
-                borderBottom: `2px solid ${colors.borderSoft}`,
+                backgroundColor: rowIdx % 2 === 0 ? 'rgba(255, 255, 255, 0.9)' : 'rgba(0, 0, 0, 0.035)',
+                alignItems: 'start',
               }}
             >
-              {columns.map((c) => (
-                <div key={c} style={{paddingRight: 14, minWidth: 0}}>
-                  {c}
-                </div>
-              ))}
+              {row.map((cell, cellIdx) => {
+                const numeric = isNumericLike(cell);
+                return (
+                  <div
+                    key={cellIdx}
+                    style={{
+                      paddingRight: 14,
+                      minWidth: 0,
+                      textAlign: numeric ? 'right' : 'left',
+                      fontFamily: numeric ? fonts.brand : fonts.body,
+                      fontWeight: cellIdx === 0 ? 700 : numeric ? 800 : 500,
+                      letterSpacing: numeric ? '0.02em' : undefined,
+                      wordBreak: 'break-word',
+                    }}
+                  >
+                    {cell}
+                  </div>
+                );
+              })}
             </div>
-            <div style={{display: 'flex', flexDirection: 'column'}}>
-              {rows.map((r, rowIdx) => (
-                <div
-                  key={rowIdx}
-                  style={{
-                    display: 'grid',
-                    gridTemplateColumns: `repeat(${columns.length}, minmax(0, 1fr))`,
-                    gap: 0,
-                    padding: '18px 22px',
-                    fontFamily: fonts.body,
-                    fontSize: 25,
-                    lineHeight: 1.4,
-                    color: colors.text,
-                    backgroundColor:
-                      rowIdx % 2 === 0 ? colors.background : 'rgba(0, 0, 0, 0.03)',
-                    borderBottom:
-                      rowIdx === rows.length - 1 ? 'none' : `1px solid ${colors.borderSoft}`,
-                    alignItems: 'start',
-                  }}
-                >
-                  {r.map((cell, cellIdx) => {
-                    const numeric = isNumericLike(cell);
-                    return (
-                      <div
-                        key={cellIdx}
-                        style={{
-                          paddingRight: 14,
-                          minWidth: 0,
-                          textAlign: numeric ? 'right' : 'left',
-                          fontFamily: numeric ? fonts.brand : fonts.body,
-                          fontWeight: cellIdx === 0 ? 700 : numeric ? 800 : 500,
-                          letterSpacing: numeric ? '0.02em' : undefined,
-                          wordBreak: 'break-word',
-                        }}
-                      >
-                        {cell}
-                      </div>
-                    );
-                  })}
-                </div>
-              ))}
-            </div>
-          </div>
-        </CardShell>
+          ))}
+        </div>
       </div>
-    </AbsoluteFill>
+    </SceneScaffold>
   );
 };

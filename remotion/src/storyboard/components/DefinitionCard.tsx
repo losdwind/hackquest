@@ -1,10 +1,9 @@
-import {AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig} from 'remotion';
 import {z} from 'zod';
 
 import type {LessonBlockContext} from '../../lesson-config';
 import {colors, fonts} from '../../theme';
 import type {StoryboardInjected} from '../types';
-import {CardShell} from './CardShell';
+import {SceneScaffold} from './SceneScaffold';
 
 export const DefinitionCardPropsSchema = z
   .object({
@@ -20,45 +19,68 @@ export type DefinitionCardProps = z.infer<typeof DefinitionCardPropsSchema>;
 export const DefinitionCard: React.FC<
   DefinitionCardProps & {context: LessonBlockContext; hq?: StoryboardInjected}
 > = ({eyebrow, term, definition, notes}) => {
-  const frame = useCurrentFrame();
-  const {fps} = useVideoConfig();
-  const reveal = spring({frame, fps, config: {damping: 200}});
-  const y = interpolate(reveal, [0, 1], [18, 0]);
-  const opacity = interpolate(reveal, [0, 1], [0, 1]);
-
   return (
-    <AbsoluteFill
-      style={{
-        backgroundColor: colors.background,
-        padding: 96,
-        justifyContent: 'center',
-      }}
+    <SceneScaffold
+      background={
+        'linear-gradient(178deg, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 58%, rgba(255, 232, 102, 0.18) 100%)'
+      }
+      eyebrow={eyebrow}
+      title={term}
+      subtitle={definition}
+      contentTop={22}
+      titleSize={88}
     >
-      <div style={{transform: `translateY(${y}px)`, opacity}}>
-        <CardShell eyebrow={eyebrow} title={term} subtitle={definition}>
-          {notes.length ? (
-            <div style={{marginTop: 14, display: 'flex', flexDirection: 'column', gap: 16}}>
-              {notes.map((n, idx) => (
-                <div
-                  key={`${idx}-${n}`}
-                  style={{
-                    display: 'flex',
-                    gap: 12,
-                    alignItems: 'flex-start',
-                    fontFamily: fonts.body,
-                    fontSize: 28,
-                    color: colors.text,
-                    lineHeight: 1.3,
-                  }}
-                >
-                  <span style={{color: colors.muted}}>–</span>
-                  <span>{n}</span>
-                </div>
-              ))}
+      {notes.length ? (
+        <div
+          style={{
+            height: '100%',
+            display: 'grid',
+            gridTemplateColumns: notes.length > 3 ? '1fr 1fr' : '1fr',
+            gap: 14,
+            alignContent: 'start',
+          }}
+        >
+          {notes.map((note, idx) => (
+            <div
+              key={`${idx}-${note}`}
+              style={{
+                padding: '16px 18px',
+                borderRadius: 18,
+                backgroundColor: idx % 2 === 0 ? 'rgba(255, 255, 255, 0.82)' : 'rgba(255, 232, 102, 0.35)',
+                display: 'grid',
+                gridTemplateColumns: '24px 1fr',
+                gap: 10,
+                alignItems: 'start',
+                fontFamily: fonts.body,
+                fontSize: 40,
+                lineHeight: 1.24,
+                color: colors.text,
+              }}
+            >
+              <span style={{color: colors.muted}}>•</span>
+              <span>{note}</span>
             </div>
-          ) : null}
-        </CardShell>
-      </div>
-    </AbsoluteFill>
+          ))}
+        </div>
+      ) : (
+        <div
+          style={{
+            height: '100%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'flex-start',
+          }}
+        >
+          <div
+            style={{
+              width: 180,
+              height: 6,
+              borderRadius: 999,
+              backgroundColor: 'rgba(0, 0, 0, 0.18)',
+            }}
+          />
+        </div>
+      )}
+    </SceneScaffold>
   );
 };

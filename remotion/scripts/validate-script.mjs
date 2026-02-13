@@ -104,6 +104,104 @@ const formatZodIssues = (err) => {
     .join('; ');
 };
 
+const pathToString = (parts) =>
+  parts
+    .map((p) => (typeof p === 'number' ? `[${p}]` : String(p)))
+    .join('.');
+
+const countWords = (input) => {
+  const normalized = String(input ?? '')
+    .replace(/[\u3000\t\r\n]+/g, ' ')
+    .trim();
+  if (!normalized) return 0;
+  return normalized.split(/\s+/u).length;
+};
+
+const textLimitsForPath = (parts) => {
+  const key = String(parts[parts.length - 1] ?? '');
+  const parent = String(parts[parts.length - 2] ?? '');
+
+  if (key === 'code') return null;
+
+  if (key === 'title' || key === 'term') {
+    return {maxChars: 54, maxWords: 9, kind: 'title/term'};
+  }
+
+  if (key === 'subtitle' || key === 'definition' || key === 'message' || key === 'body') {
+    return {maxChars: 120, maxWords: 22, kind: 'long text'};
+  }
+
+  if (key === 'text' || key === 'detail' || key === 'note' || key === 'verdict') {
+    return {maxChars: 96, maxWords: 18, kind: 'bullet/detail'};
+  }
+
+  if (key === 'label' || key === 'badge' || key === 'eyebrow' || key === 'cn' || key === 'en') {
+    return {maxChars: 36, maxWords: 6, kind: 'label'};
+  }
+
+  if (parent === 'rows') {
+    return {maxChars: 36, maxWords: 6, kind: 'table cell'};
+  }
+
+  return {maxChars: 96, maxWords: 16, kind: 'text'};
+};
+
+const arrayItemLimits = {
+  bullets: 4,
+  notes: 4,
+  explain: 4,
+  steps: 5,
+  items: 6,
+  rows: 6,
+};
+
+const collectPropsDensityIssues = (props) => {
+  const issues = [];
+
+  const walk = (value, parts = []) => {
+    if (typeof value === 'string') {
+      const limits = textLimitsForPath(parts);
+      if (!limits) return;
+
+      const trimmed = value.trim();
+      if (!trimmed) return;
+
+      if (trimmed.length > limits.maxChars) {
+        issues.push(
+          `${pathToString(parts)} exceeds ${limits.maxChars} chars (${limits.kind}); split into shorter lines`,
+        );
+      }
+
+      if (trimmed.includes(' ') && countWords(trimmed) > limits.maxWords) {
+        issues.push(
+          `${pathToString(parts)} exceeds ${limits.maxWords} words (${limits.kind}); avoid dense long sentences`,
+        );
+      }
+      return;
+    }
+
+    if (Array.isArray(value)) {
+      const key = String(parts[parts.length - 1] ?? '');
+      const maxItems = arrayItemLimits[key];
+      if (maxItems && value.length > maxItems) {
+        issues.push(`${pathToString(parts)} has ${value.length} items (max ${maxItems})`);
+      }
+
+      value.forEach((item, idx) => walk(item, [...parts, idx]));
+      return;
+    }
+
+    if (value && typeof value === 'object') {
+      for (const [k, v] of Object.entries(value)) {
+        walk(v, [...parts, k]);
+      }
+    }
+  };
+
+  walk(props, []);
+  return issues;
+};
+
 const scriptSegments = script.segments ?? [];
 for (const seg of scriptSegments) {
   const id = Number(seg.id);
@@ -136,6 +234,15 @@ for (const seg of scriptSegments) {
     if (!parsed.success) {
       throw new Error(
         `Segment ${id}: Invalid props for "${componentName}": ${formatZodIssues(parsed.error)}`,
+      );
+    }
+
+    const densityIssues = collectPropsDensityIssues(parsed.data);
+    if (densityIssues.length) {
+      throw new Error(
+        `Segment ${id}: Props too dense for "${componentName}": ${densityIssues
+          .slice(0, 8)
+          .join('; ')}`,
       );
     }
 

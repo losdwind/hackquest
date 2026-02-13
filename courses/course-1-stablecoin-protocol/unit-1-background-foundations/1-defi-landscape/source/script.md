@@ -51,7 +51,7 @@ Component: CalloutScene
 {
   "props": {
     "title": "Prerequisites",
-    "body": "Assume blockchain fundamentals and basic Solidity. If anything feels rusty, use the HackQuest pre-lesson reading before proceeding."
+    "body": "Assume blockchain fundamentals and basic Solidity. If you feel rusty, review the HackQuest pre-lesson reading first."
   }
 }
 ```

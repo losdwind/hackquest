@@ -1,18 +1,10 @@
-import {
-  AbsoluteFill,
-  Img,
-  interpolate,
-  spring,
-  staticFile,
-  useCurrentFrame,
-  useVideoConfig,
-} from 'remotion';
+import {Img, staticFile} from 'remotion';
 import {z} from 'zod';
 
 import type {LessonBlockContext} from '../../lesson-config';
 import {colors, fonts} from '../../theme';
 import type {StoryboardInjected} from '../types';
-import {CardShell} from './CardShell';
+import {SceneScaffold} from './SceneScaffold';
 
 export const SplitImageCardPropsSchema = z
   .object({
@@ -36,81 +28,68 @@ export type SplitImageCardProps = z.infer<typeof SplitImageCardPropsSchema>;
 export const SplitImageCard: React.FC<
   SplitImageCardProps & {context: LessonBlockContext; hq?: StoryboardInjected}
 > = ({eyebrow, title, subtitle, bullets, note, hq}) => {
-  const frame = useCurrentFrame();
-  const {fps} = useVideoConfig();
-  const reveal = spring({frame, fps, config: {damping: 200}});
-  const y = interpolate(reveal, [0, 1], [18, 0]);
-  const opacity = interpolate(reveal, [0, 1], [0, 1]);
-
   const assetRef = hq?.assetRef ?? null;
   const imgSrc =
     assetRef && /^https?:\/\//i.test(assetRef) ? assetRef : assetRef ? staticFile(assetRef) : null;
 
   return (
-    <AbsoluteFill
-      style={{
-        backgroundColor: colors.background,
-        padding: 96,
-        justifyContent: 'center',
-      }}
+    <SceneScaffold
+      background={
+        'linear-gradient(150deg, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 62%, rgba(255, 232, 102, 0.2) 100%)'
+      }
+      eyebrow={eyebrow}
+      title={title}
+      subtitle={subtitle}
+      contentTop={24}
+      titleSize={70}
     >
-      <div style={{transform: `translateY(${y}px)`, opacity}}>
-        <CardShell
-          eyebrow={eyebrow}
-          title={title}
-          subtitle={subtitle}
-          rightSlot={
-            imgSrc ? (
-              <div
-                style={{
-                  borderRadius: 22,
-                  overflow: 'hidden',
-                  backgroundColor: colors.background,
-                }}
-              >
-                <Img
-                  src={imgSrc}
-                  style={{width: '100%', height: '100%', objectFit: 'cover'}}
-                />
-              </div>
-            ) : null
-          }
-        >
-          <div style={{display: 'flex', flexDirection: 'column', gap: 16}}>
-            {bullets.map((b, idx) => (
-              <div
-                key={`${idx}-${b.text}`}
-                style={{
-                  display: 'flex',
-                  gap: 12,
-                  alignItems: 'flex-start',
-                  fontFamily: fonts.body,
-                  fontSize: 28,
-                  color: b.tone === 'muted' ? colors.muted : colors.text,
-                  lineHeight: 1.3,
-                }}
-              >
-                <span style={{color: b.tone === 'accent' ? colors.text : colors.muted}}>
-                  {b.tone === 'accent' ? '•' : '–'}
-                </span>
-                <span>{b.text}</span>
-              </div>
-            ))}
-          </div>
+      <div
+        style={{
+          height: '100%',
+          display: 'grid',
+          gridTemplateColumns: imgSrc ? '1.02fr 0.98fr' : '1fr',
+          gap: 22,
+        }}
+      >
+        <div style={{display: 'flex', flexDirection: 'column', gap: 14, alignSelf: 'start'}}>
+          {bullets.map((bullet, idx) => (
+            <div
+              key={`${idx}-${bullet.text}`}
+              style={{
+                display: 'grid',
+                gridTemplateColumns: '24px 1fr',
+                gap: 10,
+                alignItems: 'start',
+                padding: '13px 16px',
+                borderRadius: 16,
+                backgroundColor:
+                  bullet.tone === 'accent' ? 'rgba(255, 232, 102, 0.34)' : 'rgba(255, 255, 255, 0.78)',
+                fontFamily: fonts.body,
+                fontSize: 40,
+                lineHeight: 1.24,
+                color: bullet.tone === 'muted' ? colors.muted : colors.text,
+              }}
+            >
+              <span style={{color: bullet.tone === 'accent' ? colors.text : colors.muted}}>
+                {bullet.tone === 'accent' ? '•' : '–'}
+              </span>
+              <span>{bullet.text}</span>
+            </div>
+          ))}
+
           {note ? (
             <div
               style={{
-                marginTop: 20,
+                marginTop: 2,
                 padding: '16px 18px',
-                borderRadius: 16,
-                backgroundColor: colors.accentSoft,
-                border: `1px solid ${colors.borderSoft}`,
+                borderRadius: 18,
+                background: 'linear-gradient(180deg, rgba(255, 232, 102, 0.42), rgba(255, 255, 255, 0.72))',
               }}
             >
               <div
                 style={{
                   fontFamily: fonts.brand,
-                  fontSize: 14,
+                  fontSize: 20,
                   letterSpacing: '0.1em',
                   textTransform: 'uppercase',
                   color: colors.muted,
@@ -122,17 +101,41 @@ export const SplitImageCard: React.FC<
               <div
                 style={{
                   fontFamily: fonts.body,
-                  fontSize: 24,
+                  fontSize: 38,
                   color: colors.text,
-                  lineHeight: 1.35,
+                  lineHeight: 1.28,
                 }}
               >
                 {note}
               </div>
             </div>
           ) : null}
-        </CardShell>
+        </div>
+
+        {imgSrc ? (
+          <div
+            style={{
+              borderRadius: 24,
+              overflow: 'hidden',
+              backgroundColor: colors.background,
+              position: 'relative',
+            }}
+          >
+            <Img src={imgSrc} style={{width: '100%', height: '100%', objectFit: 'cover'}} />
+            <div
+              style={{
+                position: 'absolute',
+                left: 0,
+                right: 0,
+                bottom: 0,
+                height: 8,
+                background:
+                  'linear-gradient(90deg, rgba(255, 232, 102, 0.95), rgba(255,255,255,0.45), rgba(255, 232, 102, 0.95))',
+              }}
+            />
+          </div>
+        ) : null}
       </div>
-    </AbsoluteFill>
+    </SceneScaffold>
   );
 };

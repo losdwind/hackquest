@@ -1,11 +1,10 @@
-import {AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig} from 'remotion';
 import {z} from 'zod';
 
 import type {LessonBlockContext} from '../../lesson-config';
-import {colors, fonts, motion, tokens} from '../../theme';
+import {colors, fonts, tokens} from '../../theme';
 import {CodeBlock} from '../../ui/CodeBlock';
 import type {StoryboardInjected} from '../types';
-import {CardShell} from './CardShell';
+import {SceneScaffold} from './SceneScaffold';
 
 export const CodeExplainCardPropsSchema = z
   .object({
@@ -25,57 +24,61 @@ export type CodeExplainCardProps = z.infer<typeof CodeExplainCardPropsSchema>;
 export const CodeExplainCard: React.FC<
   CodeExplainCardProps & {context: LessonBlockContext; hq?: StoryboardInjected}
 > = ({eyebrow, title, language, code, highlights, explain}) => {
-  const frame = useCurrentFrame();
-  const {fps} = useVideoConfig();
-  const reveal = spring({frame, fps, config: motion.spring.standard});
-  const y = interpolate(reveal, [0, 1], [18, 0]);
-  const opacity = interpolate(reveal, [0, 1], [0, 1]);
   const explainTokens = tokens.storyboard.explain;
 
   return (
-    <AbsoluteFill
-      style={{
-        backgroundColor: colors.background,
-        padding: tokens.storyboard.canvasPadding,
-        justifyContent: 'center',
-      }}
+    <SceneScaffold
+      background={
+        'radial-gradient(circle at 82% 12%, rgba(255, 232, 102, 0.28), transparent 36%), #ffffff'
+      }
+      eyebrow={eyebrow}
+      title={title}
+      contentTop={24}
+      titleSize={70}
     >
-      <div style={{transform: `translateY(${y}px)`, opacity}}>
-        <CardShell eyebrow={eyebrow} title={title}>
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: explain.length ? '1.2fr 0.8fr' : '1fr',
-              gap: explainTokens.gap,
-              alignItems: 'start',
-            }}
-          >
-            <CodeBlock code={code} language={language ?? 'snippet'} highlights={highlights} />
+      <div
+        style={{
+          height: '100%',
+          display: 'grid',
+          gridTemplateColumns: explain.length ? '1.24fr 0.76fr' : '1fr',
+          gap: explainTokens.gap,
+          alignItems: 'stretch',
+        }}
+      >
+        <div
+          style={{
+            backgroundColor: 'rgba(255, 255, 255, 0.78)',
+            borderRadius: 22,
+            overflow: 'hidden',
+          }}
+        >
+          <CodeBlock code={code} language={language ?? 'snippet'} highlights={highlights} />
+        </div>
 
-            {explain.length ? (
-              <div style={{display: 'flex', flexDirection: 'column', gap: explainTokens.listGap}}>
-                {explain.map((e, idx) => (
-                  <div
-                    key={`${idx}-${e}`}
-                    style={{
-                      display: 'flex',
-                      gap: 12,
-                      alignItems: 'flex-start',
-                      fontFamily: fonts.body,
-                      fontSize: explainTokens.bodySize,
-                      lineHeight: explainTokens.bodyLineHeight,
-                      color: colors.text,
-                    }}
-                  >
-                    <span style={{color: colors.muted}}>–</span>
-                    <span>{e}</span>
-                  </div>
-                ))}
+        {explain.length ? (
+          <div style={{display: 'flex', flexDirection: 'column', gap: explainTokens.listGap}}>
+            {explain.map((line, idx) => (
+              <div
+                key={`${idx}-${line}`}
+                style={{
+                  padding: '14px 16px',
+                  borderRadius: 16,
+                  backgroundColor: idx % 2 === 0 ? 'rgba(255, 232, 102, 0.34)' : 'rgba(255, 255, 255, 0.74)',
+                  fontFamily: fonts.body,
+                  fontSize: explainTokens.bodySize,
+                  lineHeight: explainTokens.bodyLineHeight,
+                  color: colors.text,
+                }}
+              >
+                <span style={{fontFamily: fonts.brand, marginRight: 8, color: colors.muted}}>
+                  {String(idx + 1).padStart(2, '0')}
+                </span>
+                {line}
               </div>
-            ) : null}
+            ))}
           </div>
-        </CardShell>
+        ) : null}
       </div>
-    </AbsoluteFill>
+    </SceneScaffold>
   );
 };

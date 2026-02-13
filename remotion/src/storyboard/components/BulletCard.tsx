@@ -1,10 +1,9 @@
-import {AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig} from 'remotion';
 import {z} from 'zod';
 
 import type {LessonBlockContext} from '../../lesson-config';
 import {colors, fonts} from '../../theme';
 import type {StoryboardInjected} from '../types';
-import {CardShell} from './CardShell';
+import {SceneScaffold} from './SceneScaffold';
 
 export const BulletToneSchema = z.enum(['accent', 'default', 'muted']);
 
@@ -29,111 +28,121 @@ export const BulletCardPropsSchema = z
 
 export type BulletCardProps = z.infer<typeof BulletCardPropsSchema>;
 
-const toneToColor = (tone?: BulletCardProps['bullets'][number]['tone']) => {
-  if (tone === 'accent') return colors.accent;
-  if (tone === 'muted') return colors.panelSoft;
-  return colors.background;
+const toneToBubble = (tone?: BulletCardProps['bullets'][number]['tone']) => {
+  if (tone === 'accent') return 'rgba(255, 232, 102, 0.72)';
+  if (tone === 'muted') return 'rgba(0, 0, 0, 0.08)';
+  return 'rgba(255, 255, 255, 0.78)';
+};
+
+const toneToText = (tone?: BulletCardProps['bullets'][number]['tone']) => {
+  if (tone === 'muted') return colors.muted;
+  return colors.text;
 };
 
 export const BulletCard: React.FC<
   BulletCardProps & {context: LessonBlockContext; hq?: StoryboardInjected}
 > = ({eyebrow, title, subtitle, badge, bullets, note}) => {
-  const frame = useCurrentFrame();
-  const {fps} = useVideoConfig();
-  const reveal = spring({frame, fps, config: {damping: 200}});
-  const y = interpolate(reveal, [0, 1], [18, 0]);
-  const opacity = interpolate(reveal, [0, 1], [0, 1]);
-
   return (
-    <AbsoluteFill
-      style={{
-        backgroundColor: colors.background,
-        padding: 96,
-        justifyContent: 'center',
-      }}
+    <SceneScaffold
+      background={
+        'radial-gradient(circle at 9% 20%, rgba(255, 232, 102, 0.34), transparent 34%), radial-gradient(circle at 86% 84%, rgba(0, 0, 0, 0.06), transparent 40%), #ffffff'
+      }
+      eyebrow={eyebrow ?? badge}
+      title={title}
+      subtitle={subtitle}
+      contentTop={26}
     >
-      <div style={{transform: `translateY(${y}px)`, opacity}}>
-        <CardShell
-          eyebrow={eyebrow ?? badge}
-          title={title}
-          subtitle={subtitle}
-        >
-          <div style={{display: 'flex', flexDirection: 'column', gap: 16}}>
-            {bullets.map((b, idx) => (
-              <div
-                key={`${idx}-${b.text}`}
-                style={{
-                  display: 'flex',
-                  gap: 14,
-                  alignItems: 'flex-start',
-                }}
-              >
-                <div
-                  style={{
-                    width: 38,
-                    height: 38,
-                    borderRadius: 10,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    backgroundColor: toneToColor(b.tone),
-                    fontFamily: fonts.brand,
-                    fontWeight: 800,
-                    color: colors.text,
-                    flex: '0 0 auto',
-                  }}
-                >
-                  {b.icon ?? String(idx + 1)}
-                </div>
-                <div
-                  style={{
-                    fontFamily: fonts.body,
-                    fontSize: 30,
-                    lineHeight: 1.25,
-                    color: b.tone === 'muted' ? colors.muted : colors.text,
-                  }}
-                >
-                  {b.text}
-                </div>
-              </div>
-            ))}
-          </div>
-          {note ? (
+      <div
+        style={{
+          height: '100%',
+          display: 'grid',
+          gridTemplateColumns: note ? '1fr 0.38fr' : '1fr',
+          gap: 28,
+          alignItems: 'start',
+        }}
+      >
+        <div style={{display: 'flex', flexDirection: 'column', gap: 14}}>
+          {bullets.map((b, idx) => (
             <div
+              key={`${idx}-${b.text}`}
               style={{
-                marginTop: 20,
-                padding: '16px 18px',
-                borderRadius: 16,
-                backgroundColor: colors.accentSoft,
-                border: `1px solid ${colors.borderSoft}`,
+                display: 'grid',
+                gridTemplateColumns: '44px 1fr',
+                gap: 14,
+                alignItems: 'flex-start',
+                padding: '14px 18px',
+                borderRadius: 20,
+                backgroundColor: 'rgba(255, 255, 255, 0.76)',
               }}
             >
               <div
                 style={{
+                  width: 44,
+                  height: 44,
+                  borderRadius: 999,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  backgroundColor: toneToBubble(b.tone),
                   fontFamily: fonts.brand,
-                  fontSize: 14,
-                  letterSpacing: '0.1em',
-                  textTransform: 'uppercase',
-                  color: colors.muted,
-                  marginBottom: 8,
+                  fontWeight: 900,
+                  fontSize: 24,
+                  color: colors.text,
                 }}
               >
-                Note
+                {b.icon ?? String(idx + 1)}
               </div>
               <div
                 style={{
                   fontFamily: fonts.body,
-                  color: colors.text,
-                  fontSize: 24,
-                  lineHeight: 1.35,
+                  fontSize: 44,
+                  lineHeight: 1.22,
+                  color: toneToText(b.tone),
                 }}
               >
-                {note}
+                {b.text}
               </div>
             </div>
-          ) : null}
-        </CardShell>
+          ))}
+        </div>
+
+        {note ? (
+          <div
+            style={{
+              alignSelf: 'start',
+              borderRadius: 24,
+              padding: '18px 18px',
+              background:
+                'linear-gradient(180deg, rgba(255, 232, 102, 0.45), rgba(255, 255, 255, 0.74) 38%)',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 10,
+            }}
+          >
+            <div
+              style={{
+                fontFamily: fonts.brand,
+                fontSize: 20,
+                letterSpacing: '0.12em',
+                textTransform: 'uppercase',
+                color: colors.muted,
+              }}
+            >
+              Note
+            </div>
+            <div
+              style={{
+                fontFamily: fonts.body,
+                color: colors.text,
+                fontSize: 38,
+                lineHeight: 1.3,
+              }}
+            >
+              {note}
+            </div>
+          </div>
+        ) : null}
       </div>
-    </AbsoluteFill>
+    </SceneScaffold>
   );
 };

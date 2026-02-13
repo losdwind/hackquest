@@ -1,9 +1,8 @@
-import {AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig} from 'remotion';
 import {z} from 'zod';
 
 import type {LessonBlockContext} from '../../lesson-config';
 import {colors, fonts} from '../../theme';
-import {CardShell} from './CardShell';
+import {SceneScaffold} from './SceneScaffold';
 
 export const CalloutScenePropsSchema = z
   .object({
@@ -21,36 +20,57 @@ export const CalloutScene: React.FC<{
   body: string;
   context: LessonBlockContext;
 }> = ({eyebrow, title, body, context}) => {
-  const frame = useCurrentFrame();
-  const {fps} = useVideoConfig();
-
-  const reveal = spring({frame, fps, config: {damping: 200}});
-  const y = interpolate(reveal, [0, 1], [24, 0]);
-  const opacity = interpolate(reveal, [0, 1], [0, 1]);
-
   return (
-    <AbsoluteFill
-      style={{
-        backgroundColor: colors.background,
-        padding: 96,
-        justifyContent: 'center',
-      }}
+    <SceneScaffold
+      background={
+        'linear-gradient(140deg, rgba(255, 232, 102, 0.26), rgba(255, 255, 255, 0.96) 32%, rgba(0, 0, 0, 0.04) 100%)'
+      }
+      eyebrow={eyebrow}
+      title={title}
+      contentTop={28}
+      titleSize={74}
     >
-      <div style={{transform: `translateY(${y}px)`, opacity}}>
-        <CardShell eyebrow={eyebrow} title={title}>
-          <div
-            style={{
-              fontFamily: fonts.body,
-              fontSize: 32,
-              lineHeight: 1.38,
-              color: colors.text,
-              maxWidth: 980,
-            }}
-          >
-            {body}
-          </div>
-        </CardShell>
+      <div
+        style={{
+          height: '100%',
+          display: 'grid',
+          gridTemplateColumns: '98px 1fr',
+          gap: 18,
+          alignItems: 'start',
+          paddingTop: 10,
+        }}
+      >
+        <div
+          style={{
+            width: 98,
+            height: 98,
+            borderRadius: 999,
+            backgroundColor: colors.accent,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontFamily: fonts.display,
+            fontSize: 72,
+            fontWeight: 900,
+            color: colors.text,
+            lineHeight: 1,
+          }}
+        >
+          “
+        </div>
+
+        <div
+          style={{
+            fontFamily: fonts.body,
+            fontSize: 48,
+            lineHeight: 1.28,
+            color: colors.text,
+            maxWidth: 1300,
+          }}
+        >
+          {body}
+        </div>
       </div>
-    </AbsoluteFill>
+    </SceneScaffold>
   );
 };
