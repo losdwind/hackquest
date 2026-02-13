@@ -4,9 +4,9 @@
   "courseId": "course-1-stablecoin-protocol",
   "unitId": "unit-1",
   "lessonId": "lesson-1-intro-defi-landscape",
-  "title": "Intro: DeFi Landscape",
+  "title": "Intro: Course Map",
   "unitLabel": "Unit 1 · Background Foundations",
-  "courseLabel": "Stablecoin Protocol Course",
+  "courseLabel": "Course Map",
   "fps": 30,
   "accentColor": "#FFE866",
   "resolution": {
@@ -17,15 +17,15 @@
     "enabled": true,
     "durationFrames": 90,
     "lessonLabel": "Lesson 1",
-    "lessonTitle": "Intro: DeFi Landscape",
+    "lessonTitle": "Intro: Course Map",
     "heroFile": "cover/hero.svg"
   },
   "outro": {
     "enabled": true,
     "durationFrames": 90,
     "lessonLabel": "Lesson 1",
-    "lessonTitle": "Intro: DeFi Landscape",
-    "titleLines": ["Lesson Complete", "Intro: DeFi Landscape"],
+    "lessonTitle": "Intro: Course Map",
+    "titleLines": ["Lesson Complete", "Intro: Course Map"],
     "nextLessonTitle": "Stablecoin Taxonomy",
     "nextLessonLabel": "Lesson 2",
     "heroFile": "cover/hero.svg"

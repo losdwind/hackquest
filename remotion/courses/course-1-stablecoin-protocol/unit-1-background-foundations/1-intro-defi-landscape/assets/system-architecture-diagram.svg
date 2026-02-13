@@ -1,0 +1,44 @@
+<svg width="1920" height="1080" xmlns="http://www.w3.org/2000/svg">
+    <rect width="100%" height="100%" fill="#0D1117"/>
+    
+    <text x="960" y="80" font-family="Arial" font-size="60" fill="#FFFFFF" text-anchor="middle">System Architecture</text>
+
+    <!-- Components -->
+    <!-- User -->
+    <g transform="translate(200, 400)">
+        <rect width="200" height="120" rx="10" fill="#1F6FEB" stroke="#58A6FF" stroke-width="4"/>
+        <text x="100" y="75" font-family="Arial" font-size="40" fill="white" text-anchor="middle">User</text>
+    </g>
+
+    <!-- Engine (Center) -->
+    <g transform="translate(760, 350)">
+        <rect width="400" height="220" rx="10" fill="#238636" stroke="#3FB950" stroke-width="4"/>
+        <text x="200" y="100" font-family="Arial" font-size="50" fill="white" text-anchor="middle">DSCEngine</text>
+        <text x="200" y="160" font-family="Arial" font-size="30" fill="#D2E8D7" text-anchor="middle">Mint / Redeem</text>
+    </g>
+    
+    <!-- Token (Right) -->
+    <g transform="translate(1460, 400)">
+        <circle cx="100" cy="60" r="80" fill="#DA3633" stroke="#F85149" stroke-width="4"/>
+        <text x="100" y="75" font-family="Arial" font-size="40" fill="white" text-anchor="middle">DSC</text>
+    </g>
+
+    <!-- Oracle (Top) -->
+    <g transform="translate(860, 100)">
+        <rect width="200" height="100" rx="10" fill="#9E6A03" stroke="#D29922" stroke-width="4"/>
+        <text x="100" y="65" font-family="Arial" font-size="30" fill="white" text-anchor="middle">Oracle</text>
+    </g>
+    
+    <!-- Liquidator (Bottom) -->
+    <g transform="translate(860, 750)">
+        <rect width="200" height="100" rx="10" fill="#6E7681" stroke="#8B949E" stroke-width="4"/>
+        <text x="100" y="65" font-family="Arial" font-size="30" fill="white" text-anchor="middle">Liquidator</text>
+    </g>
+
+    <!-- Connections -->
+    <line x1="400" y1="460" x2="760" y2="460" stroke="#FFFFFF" stroke-width="4" marker-end="url(#arrow)"/>
+    <line x1="1160" y1="460" x2="1380" y2="460" stroke="#FFFFFF" stroke-width="4"/>
+    <line x1="960" y1="200" x2="960" y2="350" stroke="#D29922" stroke-width="4" stroke-dasharray="10,5"/>
+    <line x1="960" y1="750" x2="960" y2="570" stroke="#8B949E" stroke-width="4" stroke-dasharray="10,5"/>
+
+</svg>
