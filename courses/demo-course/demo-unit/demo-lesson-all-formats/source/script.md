@@ -17,14 +17,14 @@ Component: CalloutScene
 
 ## Segment 02
 Voiceover:
-Use BulletCard for unordered points. It is best for checklists, constraints, and recap when reading order is simple.
+Use Bullet for unordered points. It is best for checklists, constraints, and recap when reading order is simple.
 
-Component: BulletCard
+Component: Bullet
 ```json
 {
   "props": {
     "eyebrow": "Component",
-    "title": "BulletCard",
+    "title": "Bullet",
     "subtitle": "Best for concise, scannable lists.",
     "bullets": [
       {"text": "One idea per bullet", "tone": "accent", "icon": "1"},
@@ -38,14 +38,14 @@ Component: BulletCard
 
 ## Segment 03
 Voiceover:
-Use StepsCard when sequence matters. Active step makes the viewer understand exactly where they are in a process.
+Use Steps when sequence matters. Active step makes the viewer understand exactly where they are in a process.
 
-Component: StepsCard
+Component: Steps
 ```json
 {
   "props": {
     "eyebrow": "Component",
-    "title": "StepsCard",
+    "title": "Steps",
     "subtitle": "Designed for procedural walkthroughs.",
     "steps": [
       {"title": "Declare", "detail": "state the target and constraints"},
@@ -60,14 +60,14 @@ Component: StepsCard
 
 ## Segment 04
 Voiceover:
-Use DefinitionCard for terms that drive decisions. Put exact meaning first, then short implementation notes.
+Use Definition for terms that drive decisions. Put exact meaning first, then short implementation notes.
 
-Component: DefinitionCard
+Component: Definition
 ```json
 {
   "props": {
     "eyebrow": "Component",
-    "term": "DefinitionCard",
+    "term": "Definition",
     "definition": "A term-first component for precise concept framing.",
     "notes": [
       "Keep the definition auditable",
@@ -80,14 +80,14 @@ Component: DefinitionCard
 
 ## Segment 05
 Voiceover:
-Use WarningCard for operational risk. The wording should stay calm and each bullet should be directly actionable.
+Use Warning for operational risk. The wording should stay calm and each bullet should be directly actionable.
 
-Component: WarningCard
+Component: Warning
 ```json
 {
   "props": {
     "eyebrow": "Component",
-    "title": "WarningCard",
+    "title": "Warning",
     "message": "Use for risks that require explicit mitigation.",
     "bullets": [
       "Name the failure mode clearly",
@@ -100,14 +100,14 @@ Component: WarningCard
 
 ## Segment 06
 Voiceover:
-Use CompareCard for structured tradeoffs. Both sides should use the same dimensions, then end with one clear verdict.
+Use Compare for structured tradeoffs. Both sides should use the same dimensions, then end with one clear verdict.
 
-Component: CompareCard
+Component: Compare
 ```json
 {
   "props": {
     "eyebrow": "Component",
-    "title": "CompareCard",
+    "title": "Compare",
     "left": {
       "label": "When To Use",
       "bullets": [
@@ -124,21 +124,21 @@ Component: CompareCard
         "No final decision is needed"
       ]
     },
-    "verdict": "Use CompareCard only when a concrete recommendation is part of the outcome."
+    "verdict": "Use Compare only when a concrete recommendation is part of the outcome."
   }
 }
 ```
 
 ## Segment 07
 Voiceover:
-Use GlossaryCard for bilingual or multi-term alignment. It prevents naming drift between script, UI, and narration.
+Use Glossary for bilingual or multi-term alignment. It prevents naming drift between script, UI, and narration.
 
-Component: GlossaryCard
+Component: Glossary
 ```json
 {
   "props": {
     "eyebrow": "Component",
-    "title": "GlossaryCard",
+    "title": "Glossary",
     "items": [
       {"cn": "分镜", "en": "Storyboard"},
       {"cn": "旁白", "en": "Voiceover"},
@@ -151,17 +151,17 @@ Component: GlossaryCard
 
 ## Segment 08
 Voiceover:
-Use TableCard when fields, units, and examples must stay aligned. Tables are ideal for parameter references and prop contracts.
+Use Table when fields, units, and examples must stay aligned. Tables are ideal for parameter references and prop contracts.
 
-Component: TableCard
+Component: Table
 ```json
 {
   "props": {
     "eyebrow": "Component",
-    "title": "TableCard",
+    "title": "Table",
     "columns": ["Prop", "Purpose", "Type", "Example"],
     "rows": [
-      ["title", "primary heading", "string", "\"TableCard\""],
+      ["title", "primary heading", "string", "\"Table\""],
       ["columns", "header labels", "string[]", "[\"Prop\",\"Type\"]"],
       ["rows", "table body", "string[][]", "[[\"a\",\"b\"]]"],
       ["eyebrow", "context label", "string", "\"Component\""]
@@ -172,15 +172,15 @@ Component: TableCard
 
 ## Segment 09
 Voiceover:
-Use SplitImageCard when text and evidence must appear together. The image should support interpretation, not decoration.
+Use SplitImage when text and evidence must appear together. The image should support interpretation, not decoration.
 
-Component: SplitImageCard
+Component: SplitImage
 Asset Ref: assets/diagram-system-boundary.png
 ```json
 {
   "props": {
     "eyebrow": "Component",
-    "title": "SplitImageCard",
+    "title": "SplitImage",
     "subtitle": "Combines explanatory bullets with a supporting visual.",
     "bullets": [
       {"text": "Left side explains what to read", "tone": "default"},
@@ -194,16 +194,16 @@ Asset Ref: assets/diagram-system-boundary.png
 
 ## Segment 10
 Voiceover:
-Use CodeExplainCard for implementation details. Keep code compact, highlight decision lines, and explain intent beside the snippet.
+Use CodeExplain for implementation details. Keep code compact, highlight decision lines, and explain intent beside the snippet.
 
-Component: CodeExplainCard
+Component: CodeExplain
 ```json
 {
   "props": {
     "eyebrow": "Component",
-    "title": "CodeExplainCard",
+    "title": "CodeExplain",
     "language": "typescript",
-    "code": "function pickComponent(kind: 'list' | 'flow' | 'risk') {\n  if (kind === 'list') return 'BulletCard';\n  if (kind === 'flow') return 'StepsCard';\n  return 'WarningCard';\n}",
+    "code": "function pickComponent(kind: 'list' | 'flow' | 'risk') {\n  if (kind === 'list') return 'Bullet';\n  if (kind === 'flow') return 'Steps';\n  return 'Warning';\n}",
     "highlights": [{"from": 2, "to": 4}],
     "explain": [
       "Branch by information shape, not preference.",
@@ -259,31 +259,37 @@ Voiceover:
 Recap. Choose component by narrative structure first, then tune visual style through props and tokens.
 
 PostGapMs: 1000
-Scene Type: Slide
-Scene Content: Recap
-```markdown
-### Recap
-
-Choose by information shape.
-
-- Unordered points: BulletCard
-- Ordered flow: StepsCard
-- Risk and mitigations: WarningCard
-- Evidence + text: SplitImageCard
+Component: Bullet
+```json
+{
+  "props": {
+    "title": "Recap",
+    "subtitle": "Choose by information shape.",
+    "bullets": [
+      {"text": "Unordered points: Bullet", "tone": "accent", "icon": "1"},
+      {"text": "Ordered flow: Steps", "icon": "2"},
+      {"text": "Risk and mitigations: Warning", "icon": "3"},
+      {"text": "Evidence plus text: SplitImage", "tone": "muted", "icon": "4"}
+    ]
+  }
+}
 ```
 
 ## Segment 14
 Voiceover:
 Next, we can turn this into a reusable authoring handbook with per-component presets and prop templates for faster lesson production.
 
-Scene Type: Slide
-Scene Content: What's Next
-```markdown
-### What's Next
-
-Create reusable presets per component.
-
-- Standard prop templates
-- Copy guidelines by component type
-- Visual QA checklist per scene
+Component: Bullet
+```json
+{
+  "props": {
+    "title": "What's Next",
+    "subtitle": "Create reusable presets per component.",
+    "bullets": [
+      {"text": "Standard prop templates", "tone": "accent", "icon": "1"},
+      {"text": "Copy guidelines by component type", "icon": "2"},
+      {"text": "Visual QA checklist per scene", "icon": "3"}
+    ]
+  }
+}
 ```

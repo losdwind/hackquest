@@ -6,9 +6,9 @@
 
 1. 先判断内容语义，再选组件；不要先选组件再硬凑内容。
 2. 一个 Segment 只表达一个核心意思；组件只服务这个意思。
-3. `StepsCard` 只用于“有顺序依赖、可前后置换会改变意义”的流程。
-4. 列表型信息默认优先 `BulletCard` / `TableCard`，不要滥用 `StepsCard`。
-5. 对比关系用 `CompareCard`，定义关系用 `DefinitionCard`，不要混写。
+3. `Steps` 只用于“有顺序依赖、可前后置换会改变意义”的流程。
+4. 列表型信息默认优先 `Bullet` / `Table`，不要滥用 `Steps`。
+5. 对比关系用 `Compare`，定义关系用 `Definition`，不要混写。
 
 ## 快速决策树
 
@@ -17,18 +17,18 @@
 - 否：进入下一步
 
 2. 是“步骤流程”，并且顺序不能乱吗？
-- 是：`StepsCard`
+- 是：`Steps`
 - 否：进入下一步
 
 3. 是“并列清单”还是“分类汇总”吗？
-- 简短并列要点：`BulletCard`
-- 多维字段（列名明确）：`TableCard`
+- 简短并列要点：`Bullet`
+- 多维字段（列名明确）：`Table`
 
 4. 是“两个对象对比”吗？
-- 是：`CompareCard`
+- 是：`Compare`
 
 5. 是“术语定义 + 解释”吗？
-- 是：`DefinitionCard`
+- 是：`Definition`
 
 6. 是“提醒 / 过渡 /结论”吗？
 - 是：`CalloutScene`
@@ -37,15 +37,15 @@
 
 | 场景语义 | 推荐组件 | 不推荐组件 | 说明 |
 |---|---|---|---|
-| 课程开场、目标清单、能力清单 | `BulletCard` | `StepsCard` | “会学到什么”通常是并列，不是步骤。 |
-| 协议总览、模块地图、字段结构化信息 | `TableCard` | `StepsCard` | 需要列维度时用表格。 |
-| 严格流程（如存款→铸币→清算） | `StepsCard` | `BulletCard` | 顺序依赖强，需递进视觉。 |
-| 两类系统差异（TradFi vs DeFi） | `CompareCard` | `BulletCard` | 对照关系要并排展示。 |
-| 术语精确定义 | `DefinitionCard` | `CalloutScene` | 定义和注释分层清晰。 |
-| 章节过渡、提醒、结论 | `CalloutScene` | `StepsCard` | 强调一句主张，不做结构化堆叠。 |
+| 课程开场、目标清单、能力清单 | `Bullet` | `Steps` | “会学到什么”通常是并列，不是步骤。 |
+| 协议总览、模块地图、字段结构化信息 | `Table` | `Steps` | 需要列维度时用表格。 |
+| 严格流程（如存款→铸币→清算） | `Steps` | `Bullet` | 顺序依赖强，需递进视觉。 |
+| 两类系统差异（TradFi vs DeFi） | `Compare` | `Bullet` | 对照关系要并排展示。 |
+| 术语精确定义 | `Definition` | `CalloutScene` | 定义和注释分层清晰。 |
+| 章节过渡、提醒、结论 | `CalloutScene` | `Steps` | 强调一句主张，不做结构化堆叠。 |
 | 实操界面讲解、网站演示 | `DemoOverlay` + `Scene Type: Video` | 纯文字卡片 | 以视频为主，卡片只作补充。 |
 
-## `StepsCard` 使用红线
+## `Steps` 使用红线
 
 仅在满足全部条件时使用：
 
@@ -53,7 +53,7 @@
 2. 调换步骤顺序会导致逻辑错误。
 3. 旁白有“先/再/然后/最后”等流程词。
 
-出现以下任一情况，禁止用 `StepsCard`：
+出现以下任一情况，禁止用 `Steps`：
 
 1. “能力项/知识点/协议清单”等并列枚举。
 2. “模块范围”或“系统组成”的静态拆解。
@@ -61,9 +61,9 @@
 
 ## 同一课一致性规则
 
-1. 同类信息跨 Segment 使用同类组件（例如协议总览都用 `TableCard`）。
-2. 同一术语首次出现用 `DefinitionCard`，后续复用不重复定义卡。
-3. 一课内 `StepsCard` 数量控制在必要范围，避免“全是流程卡”。
+1. 同类信息跨 Segment 使用同类组件（例如协议总览都用 `Table`）。
+2. 同一术语首次出现用 `Definition`，后续复用不重复定义卡。
+3. 一课内 `Steps` 数量控制在必要范围，避免“全是流程卡”。
 
 ## 维护建议
 

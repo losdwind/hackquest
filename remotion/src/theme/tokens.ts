@@ -43,12 +43,12 @@ export const tokens = {
       borderRadius: 20,
       headerPadY: 18,
       headerPadX: 20,
-      headerFontSize: 22,
+      headerFontSize: 24,
       bodyPadY: 20,
       linePadY: 6,
       linePadX: 20,
       lineNumberColWidth: 88,
-      lineNumberFontSize: 24,
+      lineNumberFontSize: 26,
       codeFontSize: 26,
     },
     slide: {
@@ -69,7 +69,7 @@ export const tokens = {
     explain: {
       gap: 24,
       listGap: 16,
-      bodySize: 38,
+      bodySize: 40,
       bodyLineHeight: 1.3,
     },
     chart: {

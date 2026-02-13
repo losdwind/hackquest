@@ -7,17 +7,17 @@
 
 | 语义类型 | 推荐组件 | Lesson 1 示例 |
 |---|---|---|
-| 并列要点 / 能力清单 | `BulletCard` | Segment `01` / `14` |
-| 字段化信息 / 协议结构 | `TableCard` | Segment `06` / `17` |
-| 双侧权衡 / 对比关系 | `CompareCard` | Segment `11` / `22` |
-| 术语定义 | `DefinitionCard` | Segment `21` |
+| 并列要点 / 能力清单 | `Bullet` | Segment `01` / `14` |
+| 字段化信息 / 协议结构 | `Table` | Segment `06` / `17` |
+| 双侧权衡 / 对比关系 | `Compare` | Segment `11` / `22` |
+| 术语定义 | `Definition` | Segment `21` |
 | 章节过渡 / 提醒 | `CalloutScene` | Segment `03` / `20` |
 | 演示视频标注 | `DemoOverlay` + `Scene Type: Video` | Segment `09` / `18` |
 | 纯视频镜头（无卡片） | `Scene Type: Video` | Segment `04` |
 
 ## 精选案例
 
-### 1) `BulletCard`（并列清单，不制造流程感）
+### 1) `Bullet`（并列清单，不制造流程感）
 
 代表段落：Segment `01`（开场目标） + Segment `14`（测试网 vs 主网）
 
@@ -32,7 +32,7 @@
 
 ---
 
-### 2) `TableCard`（结构化信息，多维对齐）
+### 2) `Table`（结构化信息，多维对齐）
 
 代表段落：Segment `06`（Top protocols） + Segment `17`（Project scope）
 
@@ -45,7 +45,7 @@
 
 ---
 
-### 3) `CompareCard`（明确左右对照）
+### 3) `Compare`（明确左右对照）
 
 代表段落：Segment `11`（TradFi vs DeFi） + Segment `22`（Volatile vs Stablecoin）
 
@@ -59,7 +59,7 @@
 
 ---
 
-### 4) `DefinitionCard`（术语边界）
+### 4) `Definition`（术语边界）
 
 代表段落：Segment `21`
 
@@ -111,6 +111,6 @@
 
 ## 统一规范（给设计师和脚本作者）
 
-- `StepsCard` 仅用于严格流程步骤，Lesson 1 本身没有使用。
+- `Steps` 仅用于严格流程步骤，Lesson 1 本身没有使用。
 - 组件先按语义选，再做视觉变化；不要反过来。
 - 同一语义在同一课里保持组件一致，减少认知切换。

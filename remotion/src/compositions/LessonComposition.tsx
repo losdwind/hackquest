@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useMemo, useState} from 'react';
+import {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {
   AbsoluteFill,
   Sequence,
@@ -6,6 +6,7 @@ import {
   staticFile,
   useCurrentFrame,
   useDelayRender,
+  useRemotionEnvironment,
   useVideoConfig,
 } from 'remotion';
 import {Audio} from '@remotion/media';
@@ -99,23 +100,51 @@ export const LessonComposition: React.FC<LessonCompositionProps> = ({
   outroDurationFrames,
 }) => {
   const [meta, setMeta] = useState<LessonMeta | null>(null);
+  const lastMetaTextRef = useRef<string | null>(null);
   const {delayRender, continueRender, cancelRender} = useDelayRender();
+  const {isStudio} = useRemotionEnvironment();
   const [handle] = useState(() => delayRender());
 
-  const fetchMeta = useCallback(async () => {
-    try {
-      const response = await fetch(staticFile(metaFile));
-      const data = (await response.json()) as LessonMeta;
+  const fetchMeta = useCallback(
+    async (opts?: {cacheBust?: boolean}) => {
+      const cacheBust = opts?.cacheBust ?? false;
+      const src = staticFile(metaFile);
+      const url = cacheBust ? `${src}${src.includes('?') ? '&' : '?'}_ts=${Date.now()}` : src;
+      const response = await fetch(url);
+      const text = await response.text();
+      if (text === lastMetaTextRef.current) {
+        return;
+      }
+      const data = JSON.parse(text) as LessonMeta;
+      lastMetaTextRef.current = text;
       setMeta(data);
-      continueRender(handle);
-    } catch (err) {
-      cancelRender(err);
-    }
-  }, [cancelRender, continueRender, handle, metaFile]);
+    },
+    [metaFile],
+  );
 
   useEffect(() => {
-    fetchMeta();
-  }, [fetchMeta]);
+    let cancelled = false;
+    fetchMeta()
+      .then(() => {
+        if (!cancelled) continueRender(handle);
+      })
+      .catch((err) => {
+        if (!cancelled) cancelRender(err);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [cancelRender, continueRender, fetchMeta, handle]);
+
+  useEffect(() => {
+    if (!isStudio) return;
+    const timer = window.setInterval(() => {
+      void fetchMeta({cacheBust: true}).catch((err) => {
+        console.warn('[LessonComposition] Failed to refresh lesson.meta.json', err);
+      });
+    }, 1000);
+    return () => window.clearInterval(timer);
+  }, [fetchMeta, isStudio]);
 
   if (!meta) return null;
 

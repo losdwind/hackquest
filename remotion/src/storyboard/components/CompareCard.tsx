@@ -35,13 +35,18 @@ const Side: React.FC<{label: string; bullets: string[]; align: 'left' | 'right'}
     >
       <div
         style={{
+          display: 'inline-flex',
+          alignItems: 'center',
+          padding: '8px 14px',
+          borderRadius: 8,
+          backgroundColor: isLeft ? 'rgba(255, 232, 102, 0.42)' : 'rgba(0, 0, 0, 0.08)',
           fontFamily: fonts.brand,
-          fontSize: 20,
+          fontSize: 24,
           fontWeight: 800,
           letterSpacing: '0.14em',
           textTransform: 'uppercase',
           color: colors.muted,
-          marginBottom: 8,
+          marginBottom: 12,
         }}
       >
         {isLeft ? 'Option A' : 'Option B'}
@@ -49,35 +54,63 @@ const Side: React.FC<{label: string; bullets: string[]; align: 'left' | 'right'}
 
       <div
         style={{
+          display: 'block',
+          width: 'fit-content',
+          padding: '8px 14px',
+          borderRadius: 8,
+          backgroundColor: 'rgba(255, 255, 255, 0.8)',
           fontFamily: fonts.display,
           fontSize: 56,
           fontWeight: 900,
           lineHeight: 1.06,
           letterSpacing: '-0.01em',
           color: colors.text,
-          marginBottom: 14,
+          marginBottom: 16,
         }}
       >
         {label}
       </div>
 
-      <div style={{display: 'flex', flexDirection: 'column', gap: 12}}>
+      <div style={{display: 'flex', flexDirection: 'column', gap: 14}}>
         {bullets.map((bullet, idx) => (
           <div
             key={`${idx}-${bullet}`}
             style={{
               display: 'grid',
-              gridTemplateColumns: '34px 1fr',
-              gap: 8,
+              gridTemplateColumns: '44px 1fr',
+              gap: 14,
               alignItems: 'start',
-              fontFamily: fonts.body,
-              fontSize: 40,
-              lineHeight: 1.3,
-              color: colors.text,
+              padding: '14px 16px',
+              borderRadius: 14,
+              backgroundColor: 'rgba(255, 255, 255, 0.74)',
             }}
           >
-            <span style={{fontFamily: fonts.brand, color: colors.muted}}>{String(idx + 1).padStart(2, '0')}</span>
-            <span>{bullet}</span>
+            <span
+              style={{
+                width: 44,
+                height: 44,
+                borderRadius: 999,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontFamily: fonts.brand,
+                fontSize: 30,
+                color: colors.muted,
+                backgroundColor: isLeft ? 'rgba(255, 232, 102, 0.34)' : 'rgba(0, 0, 0, 0.08)',
+              }}
+            >
+              {String(idx + 1)}
+            </span>
+            <span
+              style={{
+                fontFamily: fonts.body,
+                fontSize: 40,
+                lineHeight: 1.22,
+                color: colors.text,
+              }}
+            >
+              {bullet}
+            </span>
           </div>
         ))}
       </div>
@@ -143,7 +176,7 @@ export const CompareCard: React.FC<
                 justifyContent: 'center',
                 fontFamily: fonts.brand,
                 fontWeight: 900,
-                fontSize: 30,
+                fontSize: 36,
                 letterSpacing: '0.08em',
                 color: colors.text,
               }}

@@ -86,7 +86,7 @@ export const BulletCard: React.FC<
                   backgroundColor: toneToBubble(b.tone),
                   fontFamily: fonts.brand,
                   fontWeight: 900,
-                  fontSize: 24,
+                  fontSize: 30,
                   color: colors.text,
                 }}
               >
@@ -122,7 +122,7 @@ export const BulletCard: React.FC<
             <div
               style={{
                 fontFamily: fonts.brand,
-                fontSize: 20,
+                fontSize: 24,
                 letterSpacing: '0.12em',
                 textTransform: 'uppercase',
                 color: colors.muted,

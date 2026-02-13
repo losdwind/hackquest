@@ -47,19 +47,19 @@ export const StepsCard: React.FC<
           const hasNext = idx < steps.length - 1;
 
           return (
-            <div key={`${idx}-${step.title}`} style={{display: 'grid', gridTemplateColumns: '74px 1fr', gap: 14}}>
+            <div key={`${idx}-${step.title}`} style={{display: 'grid', gridTemplateColumns: '88px 1fr', gap: 14}}>
               <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
                 <div
                   style={{
-                    width: 60,
-                    height: 60,
+                    width: 72,
+                    height: 72,
                     borderRadius: 999,
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                     backgroundColor: isActive ? colors.accent : 'rgba(0, 0, 0, 0.1)',
                     fontFamily: fonts.brand,
-                    fontSize: 28,
+                    fontSize: 36,
                     fontWeight: 900,
                     color: colors.text,
                   }}

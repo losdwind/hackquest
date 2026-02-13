@@ -4,7 +4,7 @@
 Voiceover:
 Unlike the Web2 world, even if a Web3 protocol has a large user base, its token holders may not necessarily enjoy the dividends brought by the growth of protocol users.
 
-Component: CompareCard
+Component: Compare
 ```json
 {
   "props": {
@@ -62,7 +62,7 @@ Component: CalloutScene
 Voiceover:
 According to DefiLlama data on February 4, 2026, in the past year, the total fees paid by traders on the Uniswap platform were as high as 813 million US dollars.
 
-Component: TableCard
+Component: Table
 ```json
 {
   "props": {
@@ -79,7 +79,7 @@ Component: TableCard
 Voiceover:
 However, looking down the capital flow, we will find that the value truly captured by the protocol is only 22.86 million US dollars, which is less than 3% of the total fees.
 
-Component: CompareCard
+Component: Compare
 ```json
 {
   "props": {
@@ -123,7 +123,7 @@ Component: CalloutScene
 Voiceover:
 The answer is obviously no. If Uniswap were to directly distribute this money to token holders, in legal logic, it would be infinitely close to a security.
 
-Component: WarningCard
+Component: Warning
 ```json
 {
   "props": {
@@ -142,7 +142,7 @@ Component: WarningCard
 Voiceover:
 In the United States, trading securities on any unregistered securities trading platform is illegal.
 
-Component: WarningCard
+Component: Warning
 ```json
 {
   "props": {
@@ -175,7 +175,7 @@ Component: CalloutScene
 Voiceover:
 The reality is that for a project of Uniswap's scale, its core development team, major user groups, and deepest liquidity centers are all tightly connected to the global mainstream financial regulatory system.
 
-Component: BulletCard
+Component: Bullet
 ```json
 {
   "props": {
@@ -194,7 +194,7 @@ Component: BulletCard
 Voiceover:
 Simple regulatory arbitrage or switching the registration location cannot truly remove the threat from institutions like the SEC, which possesses long-arm jurisdiction.
 
-Component: WarningCard
+Component: Warning
 ```json
 {
   "props": {
@@ -213,7 +213,7 @@ Component: WarningCard
 Voiceover:
 Therefore, this disconnection in value transmission is often not a technical barrier, but a compromise to legal regulation.
 
-Component: DefinitionCard
+Component: Definition
 ```json
 {
   "props": {
@@ -260,7 +260,7 @@ Component: CalloutScene
 Voiceover:
 Observing the price trend chart, it can be seen that since the beginning of 2025, despite Uniswap's strong business data, the price of UNI has continued to decline steadily, currently maintaining at around 4 US dollars.
 
-Component: TableCard
+Component: Table
 ```json
 {
   "props": {
@@ -277,7 +277,7 @@ Component: TableCard
 Voiceover:
 This illustrates that if a token only possesses governance functions and cannot share in the benefits of protocol growth, then its premium will continue to shrink.
 
-Component: DefinitionCard
+Component: Definition
 ```json
 {
   "props": {
@@ -324,7 +324,7 @@ Component: CalloutScene
 Voiceover:
 The core of this proposal lies in enabling the Fee Switch and coordinating the incentive mechanisms of the entire ecosystem, attempting to redirect the protocol's value back to the token under the premise of compliance.
 
-Component: BulletCard
+Component: Bullet
 ```json
 {
   "props": {
@@ -343,7 +343,7 @@ Component: BulletCard
 Voiceover:
 Simply put, this new model achieves value return through the following key steps.
 
-Component: StepsCard
+Component: Steps
 ```json
 {
   "props": {
@@ -378,7 +378,7 @@ Component: CalloutScene
 Voiceover:
 This plays a role in deflation in an economic sense, rather than just the distribution of funds.
 
-Component: DefinitionCard
+Component: Definition
 ```json
 {
   "props": {
@@ -397,7 +397,7 @@ Component: DefinitionCard
 Voiceover:
 The same logic is also applied to Unichain's sequencer fees, and these revenues will also flow into the same burn mechanism.
 
-Component: BulletCard
+Component: Bullet
 ```json
 {
   "props": {
@@ -429,7 +429,7 @@ Component: CalloutScene
 Voiceover:
 This mechanism aims to increase returns for Liquidity Providers and allows the protocol itself to internalize and capture the maximal extractable value that was previously lost.
 
-Component: BulletCard
+Component: Bullet
 ```json
 {
   "props": {
@@ -475,7 +475,7 @@ Component: CalloutScene
 Voiceover:
 This number is roughly equivalent to the amount of tokens that should have been burned if the fee switch had been enabled from the start.
 
-Component: TableCard
+Component: Table
 ```json
 {
   "props": {
@@ -492,7 +492,7 @@ Component: TableCard
 Voiceover:
 Finally, to ensure the alignment of interests, Uniswap Labs commits to focusing on driving the development and growth of the protocol, including closing the interface fees, wallet fees, and API fees originally collected by Labs.
 
-Component: BulletCard
+Component: Bullet
 ```json
 {
   "props": {
@@ -511,7 +511,7 @@ Component: BulletCard
 Voiceover:
 This means that Labs' revenue will no longer come from tolls, but will rely entirely on increasing token value through the success of the protocol.
 
-Component: CompareCard
+Component: Compare
 ```json
 {
   "props": {

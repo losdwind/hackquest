@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useMemo, useState} from 'react';
+import {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import type {ComponentType} from 'react';
 import type {ZodTypeAny} from 'zod';
 import {
@@ -7,6 +7,7 @@ import {
   staticFile,
   useCurrentFrame,
   useDelayRender,
+  useRemotionEnvironment,
   useVideoConfig,
   Video,
 } from 'remotion';
@@ -45,6 +46,18 @@ type StoryboardRouterProps = {
   startAtFrame?: number;
   useTransitions?: boolean;
   transitionDurationInFrames?: number;
+};
+
+const legacyCardNameMap: Record<string, string> = {
+  BulletCard: 'Bullet',
+  StepsCard: 'Steps',
+  DefinitionCard: 'Definition',
+  WarningCard: 'Warning',
+  CompareCard: 'Compare',
+  GlossaryCard: 'Glossary',
+  TableCard: 'Table',
+  SplitImageCard: 'SplitImage',
+  CodeExplainCard: 'CodeExplain',
 };
 
 type SlideTable = {
@@ -474,14 +487,25 @@ export const StoryboardRouter: React.FC<StoryboardRouterProps> = ({
 }) => {
   const [scriptSegments, setScriptSegments] = useState<LessonScriptSegment[] | null>(null);
   const [timings, setTimings] = useState<SegmentTiming[] | null>(null);
+  const lastPayloadRef = useRef<{scriptText: string; timingsText: string} | null>(null);
   const {delayRender, continueRender, cancelRender} = useDelayRender();
+  const {isStudio} = useRemotionEnvironment();
   const [handle] = useState(() => delayRender());
 
-  const fetchAll = useCallback(async () => {
-    try {
+  const fetchAll = useCallback(
+    async (opts?: {cacheBust?: boolean}) => {
+      const cacheBust = opts?.cacheBust ?? false;
+      const scriptSrc = staticFile(scriptFile);
+      const timingsSrc = staticFile(timingsFile);
+      const scriptUrl = cacheBust
+        ? `${scriptSrc}${scriptSrc.includes('?') ? '&' : '?'}_ts=${Date.now()}`
+        : scriptSrc;
+      const timingsUrl = cacheBust
+        ? `${timingsSrc}${timingsSrc.includes('?') ? '&' : '?'}_ts=${Date.now()}`
+        : timingsSrc;
       const [scriptRes, timingsRes] = await Promise.all([
-        fetch(staticFile(scriptFile)),
-        fetch(staticFile(timingsFile)),
+        fetch(scriptUrl),
+        fetch(timingsUrl),
       ]);
       if (!scriptFile.toLowerCase().endsWith('.md')) {
         throw new Error(
@@ -489,19 +513,43 @@ export const StoryboardRouter: React.FC<StoryboardRouterProps> = ({
         );
       }
       const scriptText = await scriptRes.text();
+      const timingsText = await timingsRes.text();
+      const prev = lastPayloadRef.current;
+      if (prev && prev.scriptText === scriptText && prev.timingsText === timingsText) {
+        return;
+      }
       const parsedSegments = parseScriptMdShared(scriptText);
-      const timingsJson = (await timingsRes.json()) as SegmentTiming[];
+      const timingsJson = JSON.parse(timingsText) as SegmentTiming[];
+      lastPayloadRef.current = {scriptText, timingsText};
       setScriptSegments(parsedSegments);
       setTimings(timingsJson);
-      continueRender(handle);
-    } catch (err) {
-      cancelRender(err);
-    }
-  }, [cancelRender, continueRender, handle, scriptFile, timingsFile]);
+    },
+    [scriptFile, timingsFile],
+  );
 
   useEffect(() => {
-    fetchAll();
-  }, [fetchAll]);
+    let cancelled = false;
+    fetchAll()
+      .then(() => {
+        if (!cancelled) continueRender(handle);
+      })
+      .catch((err) => {
+        if (!cancelled) cancelRender(err);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [cancelRender, continueRender, fetchAll, handle]);
+
+  useEffect(() => {
+    if (!isStudio) return;
+    const timer = window.setInterval(() => {
+      void fetchAll({cacheBust: true}).catch((err) => {
+        console.warn('[StoryboardRouter] Failed to refresh script/timings', err);
+      });
+    }, 1000);
+    return () => window.clearInterval(timer);
+  }, [fetchAll, isStudio]);
 
   const resolved = useMemo(() => {
     if (!scriptSegments || !timings) return [];
@@ -566,6 +614,12 @@ export const StoryboardRouter: React.FC<StoryboardRouterProps> = ({
       : null;
     const segComponentName = segVisual.component;
     const segCustomComponent = segComponentName ? components?.[segComponentName] : null;
+    const segMigratedName = segComponentName ? legacyCardNameMap[segComponentName] : null;
+    if (segMigratedName) {
+      throw new Error(
+        `Segment ${seg.id}: Component "${segComponentName}" is deprecated. Use "${segMigratedName}" instead.`,
+      );
+    }
     if (segComponentName && !segCustomComponent) {
       throw new Error(
         `Segment ${seg.id}: Unknown component "${segComponentName}". Add it to storyboard/registry.ts.`,
@@ -605,6 +659,12 @@ export const StoryboardRouter: React.FC<StoryboardRouterProps> = ({
       (/slide|outline|ppt|deck|card/.test(segSceneType) ||
         Boolean(segVisual.markdown) ||
         Boolean(segVisual.sceneContent));
+
+    if (segShouldRenderSlide) {
+      throw new Error(
+        `Segment ${seg.id}: Slide/markdown scenes are disabled. Use "Component: <Name>" with JSON {"props": {...}}.`,
+      );
+    }
 
     if (segShouldRenderComponent && segCustomComponent) {
       const Component = segCustomComponent;
@@ -672,23 +732,6 @@ export const StoryboardRouter: React.FC<StoryboardRouterProps> = ({
         <AbsoluteFill style={{backgroundColor: colors.background}}>
           <img alt="" src={src} style={{width: '100%', height: '100%', objectFit: 'cover'}} />
         </AbsoluteFill>
-      );
-    }
-
-    if (segShouldRenderSlide) {
-      const slideImageSrc =
-        segResolvedAssetRef && isImageRef(segResolvedAssetRef)
-          ? (/^https?:\/\//i.test(segResolvedAssetRef)
-              ? segResolvedAssetRef
-              : staticFile(segResolvedAssetRef))
-          : null;
-
-      return (
-        <SlideScene
-          markdown={segVisual.markdown}
-          sceneContent={segVisual.sceneContent}
-          imageSrc={slideImageSrc}
-        />
       );
     }
 

@@ -77,7 +77,7 @@ export const WarningCard: React.FC<
           <div
             style={{
               fontFamily: fonts.brand,
-              fontSize: 20,
+              fontSize: 24,
               fontWeight: 900,
               letterSpacing: '0.14em',
               textTransform: 'uppercase',

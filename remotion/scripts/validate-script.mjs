@@ -155,6 +155,18 @@ const arrayItemLimits = {
   rows: 6,
 };
 
+const legacyCardNameMap = {
+  BulletCard: 'Bullet',
+  StepsCard: 'Steps',
+  DefinitionCard: 'Definition',
+  WarningCard: 'Warning',
+  CompareCard: 'Compare',
+  GlossaryCard: 'Glossary',
+  TableCard: 'Table',
+  SplitImageCard: 'SplitImage',
+  CodeExplainCard: 'CodeExplain',
+};
+
 const collectPropsDensityIssues = (props) => {
   const issues = [];
 
@@ -212,6 +224,13 @@ for (const seg of scriptSegments) {
   const json = visual.json;
 
   if (componentName) {
+    const migratedName = legacyCardNameMap[componentName];
+    if (migratedName) {
+      throw new Error(
+        `Segment ${id}: Component "${componentName}" is deprecated. Use "${migratedName}" instead.`,
+      );
+    }
+
     const def = storyboardComponentsRegistry[componentName];
     if (!def) {
       throw new Error(
@@ -261,6 +280,16 @@ for (const seg of scriptSegments) {
       }
     }
     continue;
+  }
+
+  const isSlideLikeScene =
+    /slide|outline|ppt|deck|card/.test(sceneType) ||
+    Boolean(visual.markdown) ||
+    Boolean(visual.sceneContent);
+  if (isSlideLikeScene) {
+    throw new Error(
+      `Segment ${id}: Slide/markdown scenes are disabled. Use "Component: <Name>" with JSON {"props": {...}}.`,
+    );
   }
 
   if (/video/.test(sceneType)) {

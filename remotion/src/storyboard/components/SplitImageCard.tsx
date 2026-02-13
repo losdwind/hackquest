@@ -89,7 +89,7 @@ export const SplitImageCard: React.FC<
               <div
                 style={{
                   fontFamily: fonts.brand,
-                  fontSize: 20,
+                  fontSize: 24,
                   letterSpacing: '0.1em',
                   textTransform: 'uppercase',
                   color: colors.muted,

@@ -21,20 +21,20 @@ export type StoryboardComponentDef = {
 };
 
 export const registry: Record<string, StoryboardComponentDef> = {
-  // Use from script.md as: `Component: BulletCard` with a `{"props": ... }` JSON block.
-  BulletCard: {component: BulletCard, propsSchema: BulletCardPropsSchema},
-  StepsCard: {component: StepsCard, propsSchema: StepsCardPropsSchema},
-  DefinitionCard: {component: DefinitionCard, propsSchema: DefinitionCardPropsSchema},
-  WarningCard: {component: WarningCard, propsSchema: WarningCardPropsSchema},
-  CompareCard: {component: CompareCard, propsSchema: CompareCardPropsSchema},
-  GlossaryCard: {component: GlossaryCard, propsSchema: GlossaryCardPropsSchema},
-  TableCard: {component: TableCard, propsSchema: TableCardPropsSchema},
-  SplitImageCard: {
+  // Use from script.md as: `Component: Bullet` with a `{"props": ... }` JSON block.
+  Bullet: {component: BulletCard, propsSchema: BulletCardPropsSchema},
+  Steps: {component: StepsCard, propsSchema: StepsCardPropsSchema},
+  Definition: {component: DefinitionCard, propsSchema: DefinitionCardPropsSchema},
+  Warning: {component: WarningCard, propsSchema: WarningCardPropsSchema},
+  Compare: {component: CompareCard, propsSchema: CompareCardPropsSchema},
+  Glossary: {component: GlossaryCard, propsSchema: GlossaryCardPropsSchema},
+  Table: {component: TableCard, propsSchema: TableCardPropsSchema},
+  SplitImage: {
     component: SplitImageCard,
     propsSchema: SplitImageCardPropsSchema,
     assetKind: 'image',
   },
-  CodeExplainCard: {component: CodeExplainCard, propsSchema: CodeExplainCardPropsSchema},
+  CodeExplain: {component: CodeExplainCard, propsSchema: CodeExplainCardPropsSchema},
   CalloutVideoFrame: {
     component: CalloutVideoFrame,
     propsSchema: CalloutVideoFramePropsSchema,
@@ -58,4 +58,3 @@ export const componentsMap: Record<string, ComponentType<any>> = Object.fromEntr
 export const schemasMap: Record<string, ZodTypeAny> = Object.fromEntries(
   Object.entries(registry).map(([name, def]) => [name, def.propsSchema]),
 );
-

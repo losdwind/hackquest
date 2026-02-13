@@ -45,7 +45,7 @@ Every storyboard component receives:
   - `markdown`: raw markdown block (if provided)
   - `metaFile`: the lesson meta path used for resolution
 
-Use `hq.assetRef` in components like `SplitImageCard` / `CalloutVideoFrame` so the script can keep `Asset Ref:` in one place.
+Use `hq.assetRef` in components like `SplitImage` / `CalloutVideoFrame` so the script can keep `Asset Ref:` in one place.
 
 ## Failure mode
 

@@ -12,12 +12,12 @@ export type LessonManifestEntry = {
 
 export const lessonManifest: LessonManifestEntry[] = [
   {
-    "id": "defi-landscape",
-    "metaFile": "course-1-stablecoin-protocol/unit-1-background-foundations/1-defi-landscape/source/lesson.meta.json",
+    "id": "intro-defi-landscape",
+    "metaFile": "course-1-stablecoin-protocol/unit-1-background-foundations/1-intro-defi-landscape/source/lesson.meta.json",
     "fps": 30,
     "width": 1920,
     "height": 1080,
-    "durationInFrames": 12941
+    "durationInFrames": 5907
   },
   {
     "id": "l1-protocol-revenue-token-demand-decoupling",

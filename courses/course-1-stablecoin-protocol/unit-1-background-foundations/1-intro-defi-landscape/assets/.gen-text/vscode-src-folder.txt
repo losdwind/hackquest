@@ -1,0 +1,6 @@
+[Codebase Tour: src/]
+
+- DSCEngine.sol core protocol logic
+- DecentralizedStableCoin.sol token
+- Oracle and risk configuration
+- Health-factor safeguards

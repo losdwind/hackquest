@@ -37,7 +37,7 @@ export const SceneScaffold: React.FC<SceneScaffoldProps> = ({
     <AbsoluteFill
       style={{
         background: background ?? colors.background,
-        padding: '96px 120px 72px',
+        padding: '112px 180px 88px',
       }}
     >
       <div
@@ -45,7 +45,7 @@ export const SceneScaffold: React.FC<SceneScaffoldProps> = ({
           transform: `translateY(${y}px)`,
           opacity,
           width: '100%',
-          maxWidth: maxWidth ?? Math.min(1320, tokens.layout.maxContentWidth),
+          maxWidth: maxWidth ?? Math.min(1240, tokens.layout.maxContentWidth),
           margin: '0 auto',
           height: '100%',
           display: 'flex',
@@ -65,7 +65,7 @@ export const SceneScaffold: React.FC<SceneScaffoldProps> = ({
               <div
                 style={{
                   fontFamily: fonts.brand,
-                  fontSize: 20,
+                  fontSize: 24,
                   fontWeight: 800,
                   letterSpacing: '0.14em',
                   textTransform: 'uppercase',
@@ -81,13 +81,13 @@ export const SceneScaffold: React.FC<SceneScaffoldProps> = ({
               <div
                 style={{
                   fontFamily: fonts.display,
-                  fontSize: Math.max(titleSize ?? 72, 88),
+                  fontSize: Math.max(titleSize ?? 72, 92),
                   fontWeight: 900,
                   lineHeight: 1.04,
                   letterSpacing: '-0.015em',
                   color: colors.text,
                   marginBottom: subtitle ? 10 : 0,
-                  maxWidth: 1320,
+                  maxWidth: 980,
                 }}
               >
                 {title}
@@ -98,10 +98,10 @@ export const SceneScaffold: React.FC<SceneScaffoldProps> = ({
               <div
                 style={{
                   fontFamily: fonts.body,
-                  fontSize: 44,
+                  fontSize: 48,
                   lineHeight: 1.34,
                   color: colors.muted,
-                  maxWidth: 1260,
+                  maxWidth: 940,
                 }}
               >
                 {subtitle}
@@ -114,7 +114,7 @@ export const SceneScaffold: React.FC<SceneScaffoldProps> = ({
           style={{
             flex: 1,
             minHeight: 0,
-            marginTop: hasHeader ? Math.max(contentTop, 72) : 0,
+            marginTop: hasHeader ? Math.max(contentTop, 92) : 0,
             ...contentStyle,
           }}
         >
