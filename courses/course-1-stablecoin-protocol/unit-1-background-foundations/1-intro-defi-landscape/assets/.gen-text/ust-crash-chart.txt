@@ -1,6 +1,0 @@
-[UST Crash Timeline]
-
-- May 2022 depeg event
-- LUNA death spiral
-- ~40B market value erased
-- Systemic contagion across DeFi

@@ -1,6 +1,0 @@
-[Stablecoin System Architecture]
-
-- User deposits ETH/BTC collateral
-- Engine mints DSC under risk limits
-- Oracles update prices continuously
-- Liquidators remove unhealthy debt

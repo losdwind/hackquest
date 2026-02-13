@@ -2,22 +2,43 @@
 
 ## Segment 01
 Voiceover:
-May 2022. The Terra ecosystem collapses. Forty billion dollars of value evaporates in days. Savings are wiped out. Ideally, stablecoins should be boring. But when they fail, they fail catastrophically.
+Stablecoins are no longer a niche crypto primitive. They are becoming programmable settlement rails for trading, payments, remittance, and treasury operations. As traditional finance connects to public blockchains, demand for engineers who truly understand stablecoin systems is rising fast.
 
-Scene Type: Video
-Component: DemoOverlay
-Asset Ref: assets/ai/ust-crash-chart-ai-styled.mp4
+Component: Bullet
 ```json
 {
   "props": {
-    "title": "The UST Crash"
+    "title": "Why Stablecoins Matter Now",
+    "bullets": [
+      {"text": "Programmable dollars for 24/7 settlement"},
+      {"text": "Bridge between on-chain markets and off-chain finance"},
+      {"text": "Core base layer for lending, DEXs, and payments"}
+    ]
   }
 }
 ```
 
 ## Segment 02
 Voiceover:
-Meanwhile, MakerDAO and DAI survived the same market crash perfectly. Why? Because the architecture matters. In this course, we do not build toy projects. We build a production-grade, over-collateralized stablecoin system designed to survive market chaos.
+Studying stablecoins deeply upgrades more than your Solidity skills. You must reason about collateral quality, liquidity, solvency, liquidation dynamics, oracle reliability, and stress scenarios. If you can design this system well, you can reason about much larger parts of modern finance.
+
+Component: Bullet
+```json
+{
+  "props": {
+    "title": "Why This Knowledge Compounds",
+    "bullets": [
+      {"text": "You model solvency, not just smart contract behavior"},
+      {"text": "You connect token mechanics with real financial risk"},
+      {"text": "You gain a framework that transfers to TradFi x DeFi integration"}
+    ]
+  }
+}
+```
+
+## Segment 03
+Voiceover:
+History already showed us that not all stablecoin designs are equal. Some collapse under reflexive pressure. Others survive because risk is explicitly engineered. In this course, we do not build toy projects. We build a production-grade, over-collateralized system inspired by MakerDAO and designed for volatile markets.
 
 Component: Compare
 ```json
@@ -26,32 +47,13 @@ Component: Compare
     "title": "Architecture Matters",
     "left": {
       "label": "Fragile Design",
-      "bullets": ["Endogenous collateral", "Algorithm-dependent peg", "Death spiral risk"]
+      "bullets": ["Endogenous collateral", "Algorithm-dependent peg", "Reflexive death spiral risk"]
     },
     "right": {
       "label": "Robust Design",
-      "bullets": ["Exogenous collateral (ETH/BTC)", "Over-collateralized", "Incentivized liquidation"]
+      "bullets": ["Exogenous collateral (ETH/BTC)", "Over-collateralized debt", "Deterministic liquidation incentives"]
     },
-    "verdict": "We build for survival, not just for sunny days."
-  }
-}
-```
-
-## Segment 03
-Voiceover:
-Welcome to the HackQuest Stablecoin Protocol course. This is the flagship engineering module in our curriculum. We assume you know Solidity basics. Here, we focus on engineering rigor: fuzzing, invariant testing, and risk parameters.
-
-Component: Bullet
-```json
-{
-  "props": {
-    "title": "Engineering Standards",
-    "bullets": [
-      {"text": "Fuzzing: Finding edge cases before hackers do"},
-      {"text": "Invariant Testing: Proving system properties always hold"},
-      {"text": "Risk Management: Designing for solvency"},
-      {"text": "Production Tooling: Slither, Foundry, and auditing mindset", "tone": "muted"}
-    ]
+    "verdict": "We build for stress conditions, not just for bull markets."
   }
 }
 ```
@@ -97,20 +99,21 @@ Component: Table
 
 ## Segment 06
 Voiceover:
-Let us look at the ecosystem. DeFi is a stack of money legos. At the base, we have stablecoins like DAI and USDC. Above them, lending protocols like Aave and exchanges like Uniswap. If the stablecoin layer breaks, everything above it crumbles.
+Before we dive into contracts, place stablecoins in the broader system. DeFi is a stack of money legos. At the base, we have stablecoins like DAI and USDC. Above them, lending protocols like Aave and exchanges like Uniswap. If the stablecoin layer breaks, everything above it crumbles.
 
 Scene Type: Slide
-Component: Bullet
+Component: SplitImage
+Asset Ref: assets/diagrams/segment-06-defi-stack.png
 ```json
 {
   "props": {
+    "eyebrow": "System View",
     "title": "The DeFi Stack",
-    "subtitle": "Stablecoins are the foundation.",
+    "subtitle": "Stablecoins are the base monetary layer.",
     "bullets": [
-      {"text": "Application Layer: Yield aggregators, dashboards", "tone": "muted"},
-      {"text": "Protocol Layer: Aave, Uniswap, Curve", "tone": "default"},
-      {"text": "Base Layer: Stablecoins (DAI, USDC)", "tone": "accent", "icon": "★"},
-      {"text": "Network Layer: Ethereum, L2s", "tone": "muted"}
+      {"text": "Application layer depends on protocol liquidity", "tone": "muted"},
+      {"text": "Protocol layer depends on stable pricing and settlement", "tone": "default"},
+      {"text": "Stablecoin integrity anchors the entire stack", "tone": "accent"}
     ]
   }
 }
@@ -118,11 +121,11 @@ Component: Bullet
 
 ## Segment 07
 Voiceover:
-We will build a system inspired by MakerDAO. It is not just one contract; it is a system of interacting components. The user deposits collateral to mint our stablecoin. Liquidators watch the system to remove bad debt. Oracles provide truth about asset prices.
+Before opening the repo, map the runtime system first. The user deposits collateral and mints DSC. Oracles publish prices. If a position falls below threshold, liquidators close risk and the Stability Pool absorbs residual bad debt. Keep this picture in mind; next we map each box to concrete files.
 
 Scene Type: Slide
 Component: DemoOverlay
-Asset Ref: assets/ai/system-architecture-diagram-ai-styled.mp4
+Asset Ref: assets/diagrams/segment-07-system-architecture.mp4
 ```json
 {
   "props": {
@@ -133,7 +136,7 @@ Asset Ref: assets/ai/system-architecture-diagram-ai-styled.mp4
 
 ## Segment 08
 Voiceover:
-Let us examine the codebase you will work on. In the source folder, `DSCEngine.sol` is the heart of the system. It handles all logic: depositing collateral, minting DSC, and checking health factors.
+Now map that architecture to code. Start in the source folder: `DSCEngine.sol` is the heart of the system. It coordinates deposit, mint, burn, redeem, and health-factor checks. Think of it as the protocol's risk engine and state coordinator.
 
 Scene Type: Video
 Component: DemoOverlay
@@ -148,7 +151,7 @@ Asset Ref: assets/ai/vscode-src-folder-ai-styled.mp4
 
 ## Segment 09
 Voiceover:
-`DecentralizedStableCoin.sol` is the token itself — an ERC20 owned by the engine. We also have `OracleManager.sol` for price feed resilience and `StabilityPool.sol` to absorb bad debt during market crashes.
+Then look at the supporting modules. `DecentralizedStableCoin.sol` is the ERC20 token controlled by the engine. `OracleManager.sol` wraps price-feed safety logic. `StabilityPool.sol` handles stress events by socializing and absorbing bad debt.
 
 Scene Type: Video
 Component: DemoOverlay
@@ -163,7 +166,7 @@ Asset Ref: assets/ai/vscode-contracts-tour-ai-styled.mp4
 
 ## Segment 10
 Voiceover:
-But code is nothing without verification. In the `test` folder, you see standard unit tests, but also `fuzz` and `invariant` suites. We will teach you how to write properties like "The protocol must never hold less collateral than the total debt supply."
+Once module boundaries are clear, the next question is trust: how do we prove the system remains solvent under chaos? That is why the `test` folder is split into unit tests, plus `fuzz` and `invariant` suites. We will encode properties like: protocol collateral value must always cover total debt supply.
 
 Scene Type: Video
 Component: DemoOverlay

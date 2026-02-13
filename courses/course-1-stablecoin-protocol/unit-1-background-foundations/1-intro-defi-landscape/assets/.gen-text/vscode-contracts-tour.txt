@@ -1,6 +1,0 @@
-[Contracts Overview]
-
-- Token contract + ownership model
-- OracleManager fallback feeds
-- StabilityPool bad-debt absorption
-- Clear module boundaries
