@@ -2,17 +2,17 @@
 
 ## Segment 01
 Voiceover:
-Stablecoins are no longer a niche crypto primitive. They are becoming programmable settlement rails for trading, payments, remittance, and treasury operations. As traditional finance connects to public blockchains, demand for engineers who truly understand stablecoin systems is rising fast.
+Stablecoins are no longer a niche crypto primitive. They are becoming programmable money rails for trading, payments, remittance, and treasury operations. And if the agentic economy is real, agents will need money that settles 24/7, is machine-friendly, and plugs into liquidity without permission. Stablecoins fit that role, which is why this stack is becoming core infrastructure.
 
 Component: Bullet
 ```json
 {
   "props": {
-    "title": "Why Stablecoins Matter Now",
+    "title": "Stablecoins Power the Agentic Economy",
     "bullets": [
-      {"text": "Programmable dollars for 24/7 settlement"},
-      {"text": "Bridge between on-chain markets and off-chain finance"},
-      {"text": "Core base layer for lending, DEXs, and payments"}
+      {"text": "24/7 settlement for trading, payments, and remittance", "tone": "accent"},
+      {"text": "Machine-friendly money for the agentic economy"},
+      {"text": "Permissionless access to liquidity and treasury"}
     ]
   }
 }
@@ -20,17 +20,20 @@ Component: Bullet
 
 ## Segment 02
 Voiceover:
-Studying stablecoins deeply upgrades more than your Solidity skills. You must reason about collateral quality, liquidity, solvency, liquidation dynamics, oracle reliability, and stress scenarios. If you can design this system well, you can reason about much larger parts of modern finance.
+Before we build, zoom out and see where stablecoins sit in DeFi. DeFi is a stack. Applications sit on top of protocols, and protocols depend on stable settlement and collateral underneath. If the stablecoin layer loses integrity, protocols wobble, and apps turn into liquidation dashboards. We are building that base layer.
 
-Component: Bullet
+Component: SplitImage
+Asset Ref: assets/diagrams/segment-06-defi-stack.png
 ```json
 {
   "props": {
-    "title": "Why This Knowledge Compounds",
+    "eyebrow": "System View",
+    "title": "The DeFi Stack",
+    "subtitle": "Stablecoins are the base monetary layer.",
     "bullets": [
-      {"text": "You model solvency, not just smart contract behavior"},
-      {"text": "You connect token mechanics with real financial risk"},
-      {"text": "You gain a framework that transfers to TradFi x DeFi integration"}
+      {"text": "Apps: demand + UX", "tone": "muted"},
+      {"text": "Protocols: liquidity + pricing", "tone": "muted"},
+      {"text": "Stablecoins: settlement + collateral", "tone": "accent"}
     ]
   }
 }
@@ -60,38 +63,41 @@ Component: Compare
 
 ## Segment 04
 Voiceover:
-Here is your roadmap. We start with foundations in Unit one. In Units two and three, we build the core engine and the token. Unit four covers the liquidation system—the brakes that keep the car safe.
+By the end of this course, you will deploy an auditable, production-grade, over-collateralized stablecoin protocol. You will build a full CDP engine, a liquidation system with incentives, Chainlink oracle integration with safety guards, and production-level fuzz and invariant tests. This is not a tutorial walkthrough. It is the protocol you ship.
 
-Component: Table
+Component: HeroStatement
 ```json
 {
   "props": {
-    "title": "Course Roadmap: Phase 1",
-    "columns": ["Unit", "Focus", "Goal"],
-    "rows": [
-      ["Unit 1", "Foundations", "Taxonomy & Oracle Risks"],
-      ["Unit 2", "Architecture", "Token & System Design"],
-      ["Unit 3", "Core Engine", "Minting & Redeeming Logic"],
-      ["Unit 4", "Liquidation", "Solvency Protection System"]
-    ]
+    "eyebrow": "What You Will Build",
+    "statement": "A Production-Grade Stablecoin Protocol",
+    "deliverables": [
+      {"text": "Full CDP engine: deposit, mint, redeem, burn"},
+      {"text": "Liquidation system with 10% reward incentives"},
+      {"text": "Chainlink oracle + stale-price safety guards"},
+      {"text": "Fuzz + invariant test suites (Foundry)"},
+      {"text": "Multi-network deployment scripts"},
+      {"text": "Stability pool backstop for extreme markets"}
+    ],
+    "note": "Requires Solidity, ERC20 basics, and foundational DeFi knowledge."
   }
 }
 ```
 
 ## Segment 05
 Voiceover:
-Then we go advanced. Unit five introduces economics and the Stability Pool. Unit six is pure testing warfare: fuzzing and invariants. Finally, Unit seven covers deployment and monitoring.
+Studying stablecoins upgrades more than your Solidity skills. The real work is reasoning about solvency and collateral under stress: what happens when liquidity disappears, when prices gap, and when oracles lie or go stale. You also need incentives that force risk to unwind, not accumulate. If you can design and verify that, you gain a framework that transfers to a lot of finance.
 
-Component: Table
+Component: Bullet
 ```json
 {
   "props": {
-    "title": "Course Roadmap: Phase 2",
-    "columns": ["Unit", "Focus", "Goal"],
-    "rows": [
-      ["Unit 5", "Economics", "Fees & Stability Pool"],
-      ["Unit 6", "Testing Warfare", "Fuzzing & Invariants"],
-      ["Unit 7", "Production", "Deployment & Scripts"]
+    "title": "Why This Knowledge Compounds",
+    "bullets": [
+      {"text": "Solvency modeling under stress conditions"},
+      {"text": "Collateral management + liquidity dynamics"},
+      {"text": "Liquidation incentive design"},
+      {"text": "Oracle failure modes + risk engineering"}
     ]
   }
 }
@@ -99,110 +105,101 @@ Component: Table
 
 ## Segment 06
 Voiceover:
-Before we dive into contracts, place stablecoins in the broader system. DeFi is a stack of money legos. At the base, we have stablecoins like DAI and USDC. Above them, lending protocols like Aave and exchanges like Uniswap. If the stablecoin layer breaks, everything above it crumbles.
+Here is your roadmap. In Phase 1, you build the mental model in Unit 1, then design the architecture in Unit 2, implement the core engine in Unit 3, and add liquidation in Unit 4, which is where solvency becomes enforceable. Phase 2 goes from correct to resilient: economics and the Stability Pool in Unit 5, testing warfare with fuzzing and invariants in Unit 6, and production deployment and monitoring in Unit 7.
 
-Scene Type: Slide
-Component: SplitImage
-Asset Ref: assets/diagrams/segment-06-defi-stack.png
+Component: Roadmap
 ```json
 {
   "props": {
-    "eyebrow": "System View",
-    "title": "The DeFi Stack",
-    "subtitle": "Stablecoins are the base monetary layer.",
-    "bullets": [
-      {"text": "Application layer depends on protocol liquidity", "tone": "muted"},
-      {"text": "Protocol layer depends on stable pricing and settlement", "tone": "default"},
-      {"text": "Stablecoin integrity anchors the entire stack", "tone": "accent"}
-    ]
+    "eyebrow": "Your Journey",
+    "title": "Course Roadmap",
+    "subtitle": "From mental model to production deployment.",
+    "phases": [
+      {"label": "Unit 1", "title": "Foundations", "detail": "Taxonomy, oracles, risk models"},
+      {"label": "Unit 2", "title": "Architecture", "detail": "Token + system design"},
+      {"label": "Unit 3", "title": "Core Engine", "detail": "Deposit, mint, redeem, burn"},
+      {"label": "Unit 4", "title": "Liquidation", "detail": "Solvency enforcement"},
+      {"label": "Unit 5", "title": "Economics", "detail": "Fees + stability pool"},
+      {"label": "Unit 6", "title": "Testing", "detail": "Fuzz + invariant suites"},
+      {"label": "Unit 7", "title": "Production", "detail": "Deploy + monitor + audit"}
+    ],
+    "activePhase": 1
   }
 }
 ```
 
 ## Segment 07
 Voiceover:
-Before opening the repo, map the runtime system first. The user deposits collateral and mints DSC. Oracles publish prices. If a position falls below threshold, liquidators close risk and the Stability Pool absorbs residual bad debt. Keep this picture in mind; next we map each box to concrete files.
+Now a quick preview of the runtime system. A user deposits collateral and mints DSC. Oracles feed prices into the engine. If a position drops below the health factor threshold, liquidators step in, seize collateral at a bonus, and burn the debt. If the collateral is not enough, the Stability Pool absorbs the residual bad debt. Every box in this diagram maps to a contract you will write.
 
-Scene Type: Slide
-Component: DemoOverlay
-Asset Ref: assets/diagrams/segment-07-system-architecture.mp4
+Component: ArchitectureDiagram
 ```json
 {
   "props": {
-    "title": "System Architecture"
+    "eyebrow": "Runtime View",
+    "title": "System Architecture",
+    "subtitle": "How collateral, debt, oracles, and liquidation interact.",
+    "nodes": [
+      {"id": "user",        "label": "User",                   "x": 0,   "y": 0,   "tone": "muted",   "width": 160, "height": 58},
+      {"id": "collateral",  "label": "Collateral (wETH/wBTC)", "x": 320, "y": 0,   "tone": "default", "width": 260, "height": 58},
+      {"id": "dsc",         "label": "DSC Token",              "x": 640, "y": 0,   "tone": "default", "width": 180, "height": 58},
+      {"id": "engine",      "label": "DSCEngine",              "x": 320, "y": 138, "tone": "accent",  "icon": "core", "width": 220, "height": 62},
+      {"id": "oracle",      "label": "Chainlink Oracle",       "x": 640, "y": 138, "tone": "muted",   "icon": "feed", "width": 230, "height": 58},
+      {"id": "liquidator",  "label": "Liquidator",             "x": 0,   "y": 276, "tone": "danger",  "icon": "risk", "width": 180, "height": 58},
+      {"id": "pool",        "label": "Stability Pool",         "x": 320, "y": 276, "tone": "accent",  "icon": "backstop", "width": 220, "height": 58},
+      {"id": "health",      "label": "Health Factor",          "x": 640, "y": 276, "tone": "muted",   "width": 200, "height": 58}
+    ],
+    "edges": [
+      {"from": "user",       "to": "collateral",  "label": "deposit"},
+      {"from": "collateral", "to": "engine",       "label": "lock"},
+      {"from": "engine",     "to": "dsc",          "label": "mint"},
+      {"from": "oracle",     "to": "engine",       "label": "price feed"},
+      {"from": "engine",     "to": "health",       "label": "compute"},
+      {"from": "health",     "to": "liquidator",   "label": "< 1.0", "dashed": true},
+      {"from": "liquidator", "to": "engine",       "label": "liquidate"},
+      {"from": "engine",     "to": "pool",         "label": "bad debt"}
+    ],
+    "note": "Every box maps to a contract or module you will build across Units 2–5."
   }
 }
 ```
 
 ## Segment 08
 Voiceover:
-Now map that architecture to code. Start in the source folder: `DSCEngine.sol` is the heart of the system. It coordinates deposit, mint, burn, redeem, and health-factor checks. Think of it as the protocol's risk engine and state coordinator.
+Let's recap what we established. Stablecoins are the settlement layer of DeFi, and fragile designs fail under stress. So we chose exogenous collateral, over-collateralization, and deterministic liquidation. You will ship a real protocol with a CDP engine, oracle safety, and fuzz-tested invariants across seven units. This course demands an engineering mindset: we do not just ask does it work, we ask how can we break it.
 
-Scene Type: Video
-Component: DemoOverlay
-Asset Ref: assets/ai/vscode-src-folder-ai-styled.mp4
+Component: Bullet
 ```json
 {
   "props": {
-    "title": "Core Logic: DSCEngine.sol"
+    "eyebrow": "Recap",
+    "title": "What We Established",
+    "bullets": [
+      {"text": "Stablecoins = DeFi settlement layer", "tone": "accent"},
+      {"text": "Exogenous collateral + over-collateralization = robust"},
+      {"text": "You ship a real protocol, not a tutorial"},
+      {"text": "Engineering mindset: 'How can I break it?'", "tone": "accent"}
+    ]
   }
 }
 ```
 
 ## Segment 09
 Voiceover:
-Then look at the supporting modules. `DecentralizedStableCoin.sol` is the ERC20 token controlled by the engine. `OracleManager.sol` wraps price-feed safety logic. `StabilityPool.sol` handles stress events by socializing and absorbing bad debt.
+In the next lesson, we dissect the stablecoin design space. We will classify protocols along two axes: collateral origin, which is exogenous versus endogenous, and stability mechanism, which is algorithmic versus governance-backed. That framework is how we justify every design choice in this course. See you there.
 
-Scene Type: Video
-Component: DemoOverlay
-Asset Ref: assets/ai/vscode-contracts-tour-ai-styled.mp4
+Component: Bullet
 ```json
 {
   "props": {
-    "title": "System Components"
-  }
-}
-```
-
-## Segment 10
-Voiceover:
-Once module boundaries are clear, the next question is trust: how do we prove the system remains solvent under chaos? That is why the `test` folder is split into unit tests, plus `fuzz` and `invariant` suites. We will encode properties like: protocol collateral value must always cover total debt supply.
-
-Scene Type: Video
-Component: DemoOverlay
-Asset Ref: assets/ai/vscode-test-folder-ai-styled.mp4
-```json
-{
-  "props": {
-    "title": "Advanced Testing Suite"
-  }
-}
-```
-
-## Segment 11
-Voiceover:
-This course is challenging. It requires an engineering mindset. We don't just ask "does it work?", we ask "how can we break it?". If you are ready to upgrade your skills from developer to protocol engineer, let's begin.
-
-Component: CalloutScene
-```json
-{
-  "props": {
-    "title": "Engineering Mindset",
-    "body": "Don't just ask 'Does it work?'. Ask 'How can I break it?'."
-  }
-}
-```
-
-## Segment 12
-Voiceover:
-In the next lesson, we will dissect the stablecoin landscape. We will classify them by their collateral and stability mechanisms to understand exactly why we chose our specific architecture. See you there.
-
-Component: CalloutScene
-```json
-{
-  "props": {
-    "title": "Next: Taxonomy",
-    "body": "Understanding the design space: Collateral types and Stability mechanisms."
+    "eyebrow": "Up Next",
+    "title": "Stablecoin Taxonomy",
+    "bullets": [
+      {"text": "Collateral origin: exogenous vs endogenous"},
+      {"text": "Stability mechanism: algorithmic vs governance-backed"},
+      {"text": "Why some survive and others collapse"}
+    ],
+    "note": "Lesson 2 of 6 in Unit 1"
   }
 }
 ```

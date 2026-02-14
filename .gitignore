@@ -17,6 +17,7 @@
 # Scratch / local tooling
 .tmp/
 .claude/
+.codex/
 
 # Node / build
 **/node_modules/

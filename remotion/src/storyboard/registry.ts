@@ -12,6 +12,9 @@ import {SplitImageCard, SplitImageCardPropsSchema} from './components/SplitImage
 import {CodeExplainCard, CodeExplainCardPropsSchema} from './components/CodeExplainCard';
 import {CalloutVideoFrame, CalloutVideoFramePropsSchema} from './components/CalloutVideoFrame';
 import {CalloutScene, CalloutScenePropsSchema} from './components/CalloutScene';
+import {HeroStatementCard, HeroStatementCardPropsSchema} from './components/HeroStatementCard';
+import {RoadmapCard, RoadmapCardPropsSchema} from './components/RoadmapCard';
+import {ArchitectureDiagramCard, ArchitectureDiagramCardPropsSchema} from './components/ArchitectureDiagramCard';
 import {DemoOverlay, DemoOverlayPropsSchema} from '../templates/DemoOverlay';
 
 export type StoryboardComponentDef = {
@@ -48,6 +51,18 @@ export const registry: Record<string, StoryboardComponentDef> = {
   CalloutScene: {
     component: CalloutScene,
     propsSchema: CalloutScenePropsSchema,
+  },
+  HeroStatement: {
+    component: HeroStatementCard,
+    propsSchema: HeroStatementCardPropsSchema,
+  },
+  Roadmap: {
+    component: RoadmapCard,
+    propsSchema: RoadmapCardPropsSchema,
+  },
+  ArchitectureDiagram: {
+    component: ArchitectureDiagramCard,
+    propsSchema: ArchitectureDiagramCardPropsSchema,
   },
 };
 
