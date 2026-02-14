@@ -3,6 +3,7 @@ import type {ComponentType} from 'react';
 import type {ZodTypeAny} from 'zod';
 import {
   AbsoluteFill,
+  Sequence,
   spring,
   staticFile,
   useCurrentFrame,
@@ -708,7 +709,16 @@ export const StoryboardRouter: React.FC<StoryboardRouterProps> = ({
 
   if (!useTransitions) {
     if (!active) return null;
-    return renderSegment(active);
+    const activeFromFrames = Math.max(0, Math.round((active.startMs / 1000) * fps));
+    const activeDurationFrames =
+      baseDurationFramesById.get(active.id) ??
+      Math.max(1, Math.round((active.durationMs / 1000) * fps));
+
+    return (
+      <Sequence from={activeFromFrames} durationInFrames={activeDurationFrames}>
+        {renderSegment(active)}
+      </Sequence>
+    );
   }
 
   const firstStartFrames = Math.max(0, Math.round((resolved[0].startMs / 1000) * fps));
