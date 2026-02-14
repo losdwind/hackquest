@@ -32,6 +32,14 @@
   },
   "sections": [
   ],
+  "overlays": {
+    "captions": {
+      "enabled": false
+    },
+    "header": {
+      "enabled": false
+    }
+  },
   "assets": {
     "audioMerged": "generated/audio/voiceover.mp3",
     "segmentTimings": "generated/voiceover-en-segment-timings.json",

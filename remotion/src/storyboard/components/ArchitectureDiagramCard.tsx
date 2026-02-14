@@ -45,30 +45,30 @@ export type ArchitectureDiagramCardProps = z.infer<typeof ArchitectureDiagramCar
 type NodeDef = z.infer<typeof NodeSchema>;
 
 /* ------------------------------------------------------------------ */
-/*  Economist-style palette — restrained, print-quality               */
+/*  Economist-style palette — derived from theme tokens                */
 /* ------------------------------------------------------------------ */
 
-const STROKE = 'rgba(0, 0, 0, 0.55)';
-const STROKE_LIGHT = 'rgba(0, 0, 0, 0.18)';
-const LABEL_BG = 'rgba(255, 255, 255, 0.92)';
+const STROKE = `rgba(0, 0, 0, 0.55)`;
+const STROKE_LIGHT = colors.borderSoft;
+const LABEL_BG = colors.panelSoft;
 const NODE_SHADOW = 'drop-shadow(0 1px 3px rgba(0,0,0,0.08))';
 
 const toneFill = (tone?: string) => {
-  if (tone === 'accent') return '#FFF4CC';      // warm cream
-  if (tone === 'danger') return '#FDE8E8';      // soft blush
-  if (tone === 'muted') return '#F5F5F5';       // cool grey
-  return '#FFFFFF';
+  if (tone === 'accent') return colors.accentSoft;
+  if (tone === 'danger') return '#FDE8E8';
+  if (tone === 'muted') return '#F5F5F5';
+  return colors.panel;
 };
 
 const toneStroke = (tone?: string) => {
-  if (tone === 'accent') return '#D4A800';      // dark gold
-  if (tone === 'danger') return '#C0392B';      // Economist red
-  if (tone === 'muted') return 'rgba(0,0,0,0.2)';
+  if (tone === 'accent') return colors.accent;
+  if (tone === 'danger') return '#C0392B';
+  if (tone === 'muted') return colors.borderSoft;
   return 'rgba(0,0,0,0.28)';
 };
 
 const toneAccentBar = (tone?: string) => {
-  if (tone === 'accent') return '#D4A800';
+  if (tone === 'accent') return colors.accent;
   if (tone === 'danger') return '#C0392B';
   return 'transparent';
 };
@@ -384,7 +384,7 @@ export const ArchitectureDiagramCard: React.FC<
                   rx={r}
                   ry={r}
                   fill={toneFill(effectiveTone)}
-                  stroke={isSpotlit ? '#D4A800' : toneStroke(effectiveTone)}
+                  stroke={isSpotlit ? colors.accent : toneStroke(effectiveTone)}
                   strokeWidth={isSpotlit ? 2 : 1}
                 />
 
@@ -398,7 +398,7 @@ export const ArchitectureDiagramCard: React.FC<
                     rx={r + 2}
                     ry={r + 2}
                     fill="none"
-                    stroke="rgba(255, 232, 102, 0.5)"
+                    stroke={colors.accentSoft}
                     strokeWidth={2}
                   />
                 ) : null}

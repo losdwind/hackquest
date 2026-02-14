@@ -31,15 +31,30 @@ export const BulletCardPropsSchema = z
 
 export type BulletCardProps = z.infer<typeof BulletCardPropsSchema>;
 
-const toneToBubble = (tone?: BulletCardProps['bullets'][number]['tone']) => {
-  if (tone === 'accent') return 'rgba(255, 232, 102, 0.72)';
-  if (tone === 'muted') return 'rgba(0, 0, 0, 0.08)';
-  return 'rgba(255, 255, 255, 0.78)';
+const toneToBubble = (_tone?: BulletCardProps['bullets'][number]['tone']) => {
+  return 'rgba(255, 232, 102, 0.72)';
 };
 
 const toneToText = (tone?: BulletCardProps['bullets'][number]['tone']) => {
   if (tone === 'muted') return colors.muted;
   return colors.bodyText;
+};
+
+const toneToRow = (tone?: BulletCardProps['bullets'][number]['tone']) => {
+  if (tone === 'accent')
+    return {
+      background:
+        'linear-gradient(135deg, rgba(255, 232, 102, 0.38), rgba(255, 232, 102, 0.12) 80%)',
+      border: '2px solid rgba(255, 210, 0, 0.48)',
+      fontWeight: 700 as const,
+      color: colors.text,
+    };
+  return {
+    background: 'rgba(255, 255, 255, 0.76)',
+    border: '2px solid transparent',
+    fontWeight: 400 as const,
+    color: toneToText(tone),
+  };
 };
 
 /** Stagger delay per bullet item in frames */
@@ -77,6 +92,8 @@ export const BulletCard: React.FC<
             const y = interpolate(prog, [0, 1], [24, 0]);
             const opacity = interpolate(prog, [0, 1], [0, 1]);
 
+            const row = toneToRow(b.tone);
+
             return (
               <div
                 key={`${idx}-${b.text}`}
@@ -87,7 +104,8 @@ export const BulletCard: React.FC<
                   alignItems: 'flex-start',
                   padding: '14px 18px',
                   borderRadius: 20,
-                  backgroundColor: 'rgba(255, 255, 255, 0.76)',
+                  background: row.background,
+                  border: row.border,
                   transform: `translateY(${y}px)`,
                   opacity,
                 }}
@@ -112,10 +130,10 @@ export const BulletCard: React.FC<
                 <div
                   style={{
                     fontFamily: fonts.body,
-                    fontWeight: 400,
+                    fontWeight: row.fontWeight,
                     fontSize: 36,
                     lineHeight: 1.34,
-                    color: toneToText(b.tone),
+                    color: row.color,
                   }}
                 >
                   {b.text}

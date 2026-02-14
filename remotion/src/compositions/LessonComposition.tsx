@@ -72,6 +72,14 @@ type LessonMeta = {
     enabled?: boolean;
     durationFrames?: number;
   };
+  overlays?: {
+    captions?: {
+      enabled?: boolean;
+    };
+    header?: {
+      enabled?: boolean;
+    };
+  };
 };
 
 export type LessonCompositionProps = {
@@ -293,6 +301,8 @@ const LessonContent: React.FC<{
 }) => {
   const {fps, durationInFrames} = useVideoConfig();
   const frame = useCurrentFrame();
+  const showHeaderOverlay = meta.overlays?.header?.enabled ?? true;
+  const showCaptionsOverlay = meta.overlays?.captions?.enabled ?? true;
 
   const voiceoverFadeFrames = Math.max(1, voiceoverFadeSec * fps);
 
@@ -346,14 +356,16 @@ const LessonContent: React.FC<{
         />
       ) : null}
 
-      <HeaderOverlay
-        unitLabel={meta.unitLabel}
-        lessonTitle={meta.title}
-        courseLabel={meta.courseLabel}
-        lessonLabel={meta.cover?.lessonLabel}
-      />
+      {showHeaderOverlay ? (
+        <HeaderOverlay
+          unitLabel={meta.unitLabel}
+          lessonTitle={meta.title}
+          courseLabel={meta.courseLabel}
+          lessonLabel={meta.cover?.lessonLabel}
+        />
+      ) : null}
 
-      <CaptionsOverlay captionsFile={captionsFile} />
+      {showCaptionsOverlay ? <CaptionsOverlay captionsFile={captionsFile} /> : null}
 
       <ProgressBarOverlay progress={progress} accentColor={accentColor} />
     </AbsoluteFill>

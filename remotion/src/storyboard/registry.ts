@@ -15,6 +15,7 @@ import {CalloutScene, CalloutScenePropsSchema} from './components/CalloutScene';
 import {HeroStatementCard, HeroStatementCardPropsSchema} from './components/HeroStatementCard';
 import {RoadmapCard, RoadmapCardPropsSchema} from './components/RoadmapCard';
 import {ArchitectureDiagramCard, ArchitectureDiagramCardPropsSchema} from './components/ArchitectureDiagramCard';
+import {QuadrantMapCard, QuadrantMapCardPropsSchema} from './components/QuadrantMapCard';
 import {DemoOverlay, DemoOverlayPropsSchema} from '../templates/DemoOverlay';
 
 export type StoryboardComponentDef = {
@@ -63,6 +64,10 @@ export const registry: Record<string, StoryboardComponentDef> = {
   ArchitectureDiagram: {
     component: ArchitectureDiagramCard,
     propsSchema: ArchitectureDiagramCardPropsSchema,
+  },
+  QuadrantMap: {
+    component: QuadrantMapCard,
+    propsSchema: QuadrantMapCardPropsSchema,
   },
 };
 

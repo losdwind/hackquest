@@ -31,6 +31,7 @@
     "@remotion/layout-utils": "4.0.417",
     "@remotion/media": "^4.0.0",
     "@remotion/transitions": "4.0.417",
+    "@web3icons/react": "^4.1.17",
     "dotenv": "^17.2.4",
     "react": "18.2.0",
     "react-dom": "18.2.0",
