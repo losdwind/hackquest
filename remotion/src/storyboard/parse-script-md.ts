@@ -8,6 +8,8 @@ export type LessonScriptSegment = {
     sceneType?: string;
     sceneContent?: string;
     assetRef?: string | null;
+    assetRef2?: string | null;
+    playbackRate?: number;
     component?: string;
     markdown?: string;
     json?: Record<string, unknown>;
@@ -135,6 +137,25 @@ export const parseScriptMd = (markdown: string): LessonScriptSegment[] => {
     if (assetValue) {
       current.visual = current.visual ?? {};
       current.visual.assetRef = normalizeAssetRef(assetValue);
+      continue;
+    }
+
+    const assetValue2 =
+      getFieldValue(trimmed, 'Asset Ref 2') ?? getFieldValue(trimmed, 'Asset 2');
+    if (assetValue2) {
+      current.visual = current.visual ?? {};
+      current.visual.assetRef2 = normalizeAssetRef(assetValue2);
+      continue;
+    }
+
+    const rateValue =
+      getFieldValue(trimmed, 'Playback Rate') ?? getFieldValue(trimmed, 'Speed');
+    if (rateValue) {
+      const num = Number(rateValue);
+      if (Number.isFinite(num) && num > 0) {
+        current.visual = current.visual ?? {};
+        current.visual.playbackRate = num;
+      }
       continue;
     }
 

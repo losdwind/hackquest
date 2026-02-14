@@ -3,6 +3,7 @@ import type {ComponentType} from 'react';
 import type {ZodTypeAny} from 'zod';
 import {
   AbsoluteFill,
+  Sequence,
   spring,
   staticFile,
   useCurrentFrame,
@@ -569,7 +570,6 @@ export const StoryboardRouter: React.FC<StoryboardRouterProps> = ({
     >;
   }, [scriptSegments, timings]);
 
-  const globalFrame = useCurrentFrame();
   const {fps} = useVideoConfig();
   // Align with the Remotion docs TransitionSeries model:
   // Sequence durations are extended by transition length to preserve overall timeline length.
@@ -589,28 +589,16 @@ export const StoryboardRouter: React.FC<StoryboardRouterProps> = ({
     return map;
   }, [fps, resolved]);
 
-  const frame = Math.max(0, globalFrame - startAtFrame);
-  const timeMs = (frame / fps) * 1000;
-  const active = useMemo(() => {
-    if (!resolved.length) return null;
-    // Gaps between segments (postGapMs) are real time ranges with no segment audio.
-    // During those gaps, we should keep showing the previous segment, not jump
-    // to the last segment (which feels like a random teleport in Studio).
-    let prev = resolved[0];
-    for (const seg of resolved) {
-      if (timeMs < seg.startMs) return prev;
-      if (timeMs >= seg.startMs && timeMs < seg.startMs + seg.durationMs) return seg;
-      prev = seg;
-    }
-    return resolved[resolved.length - 1];
-  }, [resolved, timeMs]);
-
   const renderSegment = (seg: LessonScriptSegment & {startMs: number; durationMs: number}) => {
     const segVisual = seg.visual ?? {};
     const segSceneType = segVisual.sceneType?.toLowerCase() ?? '';
     const segAssetRef = segVisual.assetRef ?? null;
     const segResolvedAssetRef = segAssetRef
       ? resolveLessonPublicPath(metaFile, segAssetRef) ?? segAssetRef
+      : null;
+    const segAssetRef2 = segVisual.assetRef2 ?? null;
+    const segResolvedAssetRef2 = segAssetRef2
+      ? resolveLessonPublicPath(metaFile, segAssetRef2) ?? segAssetRef2
       : null;
     const segComponentName = segVisual.component;
     const segCustomComponent = segComponentName ? components?.[segComponentName] : null;
@@ -677,6 +665,8 @@ export const StoryboardRouter: React.FC<StoryboardRouterProps> = ({
       };
       const injected: StoryboardInjected = {
         assetRef: segResolvedAssetRef,
+        assetRef2: segResolvedAssetRef2,
+        playbackRate: segVisual.playbackRate,
         sceneType: segSceneType,
         sceneContent: segVisual.sceneContent,
         markdown: segVisual.markdown,
@@ -717,9 +707,10 @@ export const StoryboardRouter: React.FC<StoryboardRouterProps> = ({
       const src = /^https?:\/\//i.test(segResolvedAssetRef)
         ? segResolvedAssetRef
         : staticFile(segResolvedAssetRef);
+      const rate = segVisual.playbackRate ?? 1;
       return (
         <AbsoluteFill style={{backgroundColor: colors.background}}>
-          <Video src={src} style={{width: '100%', height: '100%', objectFit: 'cover'}} />
+          <Video src={src} playbackRate={rate} style={{width: '100%', height: '100%', objectFit: 'cover'}} />
         </AbsoluteFill>
       );
     }
@@ -750,8 +741,28 @@ export const StoryboardRouter: React.FC<StoryboardRouterProps> = ({
   if (!resolved.length) return null;
 
   if (!useTransitions) {
-    if (!active) return null;
-    return renderSegment(active);
+    const segmentSequences = resolved.map((seg) => {
+      const fromFrames = Math.max(
+        0,
+        Math.round((seg.startMs / 1000) * fps) + Math.max(0, startAtFrame),
+      );
+      const durationFrames =
+        baseDurationFramesById.get(seg.id) ??
+        Math.max(1, Math.round((seg.durationMs / 1000) * fps));
+
+      return (
+        <Sequence
+          key={`seg-${seg.id}`}
+          from={fromFrames}
+          durationInFrames={Math.max(1, durationFrames)}
+          name={`Segment ${seg.id}`}
+        >
+          {renderSegment(seg)}
+        </Sequence>
+      );
+    });
+
+    return <>{segmentSequences}</>;
   }
 
   const firstStartFrames = Math.max(0, Math.round((resolved[0].startMs / 1000) * fps));

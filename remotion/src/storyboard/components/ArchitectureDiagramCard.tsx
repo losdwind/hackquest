@@ -18,6 +18,8 @@ const NodeSchema = z.object({
   icon: z.string().optional(),
   width: z.number().optional(),
   height: z.number().optional(),
+  /** When this node should be spotlighted (seconds). */
+  accentAt: z.number().nonnegative().optional(),
 });
 
 const EdgeSchema = z.object({
@@ -156,6 +158,19 @@ export const ArchitectureDiagramCard: React.FC<
   const frame = useCurrentFrame();
   const {fps} = useVideoConfig();
   const nodeMap = new Map(nodes.map((n) => [n.id, n]));
+
+  // --- Spotlight: find which node is currently "active" based on accentAt ---
+  const hasAnyAccentAt = nodes.some((n) => n.accentAt != null);
+  let activeNodeId: string | null = null;
+  if (hasAnyAccentAt) {
+    for (let i = nodes.length - 1; i >= 0; i--) {
+      const n = nodes[i];
+      if (n.accentAt != null && frame >= Math.round(n.accentAt * fps)) {
+        activeNodeId = n.id;
+        break;
+      }
+    }
+  }
 
   const headerReveal = spring({frame, fps, config: motion.spring.standard});
   const headerY = interpolate(headerReveal, [0, 1], [12, 0]);
@@ -338,14 +353,27 @@ export const ArchitectureDiagramCard: React.FC<
             const nx = node.x - w / 2;
             const ny = node.y - h / 2;
             const yOff = interpolate(reveal, [0, 1], [10, 0]);
-            const r = 6; // subtle radius — Economist cards are barely rounded
-            const accentBar = toneAccentBar(node.tone);
+            const r = 6;
+
+            // Spotlight logic: override tone when this node is active
+            const isSpotlit = hasAnyAccentAt && activeNodeId === node.id;
+            const isDimmed = hasAnyAccentAt && activeNodeId != null && activeNodeId !== node.id;
+            const effectiveTone = isSpotlit ? 'accent' : node.tone;
+            const accentBar = toneAccentBar(effectiveTone);
+
+            // Smooth scale-up for spotlit node
+            const spotlightProg = isSpotlit
+              ? spring({frame: frame - Math.round((node.accentAt ?? 0) * fps), fps, config: motion.spring.standard})
+              : 0;
+            const scale = interpolate(typeof spotlightProg === 'number' ? spotlightProg : 0, [0, 1], [1, 1.06]);
+            const nodeOpacity = isDimmed ? 0.45 : 1;
 
             return (
               <g
                 key={node.id}
-                transform={`translate(0, ${yOff})`}
-                opacity={reveal}
+                transform={`translate(0, ${yOff}) scale(${scale})`}
+                style={{transformOrigin: `${node.x}px ${node.y}px`}}
+                opacity={reveal * nodeOpacity}
               >
                 {/* Card body */}
                 <rect
@@ -355,10 +383,25 @@ export const ArchitectureDiagramCard: React.FC<
                   height={h}
                   rx={r}
                   ry={r}
-                  fill={toneFill(node.tone)}
-                  stroke={toneStroke(node.tone)}
-                  strokeWidth={1}
+                  fill={toneFill(effectiveTone)}
+                  stroke={isSpotlit ? '#D4A800' : toneStroke(effectiveTone)}
+                  strokeWidth={isSpotlit ? 2 : 1}
                 />
+
+                {/* Glow ring for spotlit node */}
+                {isSpotlit ? (
+                  <rect
+                    x={nx - 3}
+                    y={ny - 3}
+                    width={w + 6}
+                    height={h + 6}
+                    rx={r + 2}
+                    ry={r + 2}
+                    fill="none"
+                    stroke="rgba(255, 232, 102, 0.5)"
+                    strokeWidth={2}
+                  />
+                ) : null}
 
                 {/* Left accent bar (accent / danger tones only) */}
                 {accentBar !== 'transparent' ? (
@@ -371,6 +414,7 @@ export const ArchitectureDiagramCard: React.FC<
                     fill={accentBar}
                   />
                 ) : null}
+
 
                 {/* Label — clean typography, no emoji */}
                 <text

@@ -33,9 +33,27 @@ const STAGGER_FRAMES = 10;
 export const RoadmapCard: React.FC<
   RoadmapCardProps & {context: LessonBlockContext; hq?: StoryboardInjected}
 > = ({eyebrow, title, subtitle, phases, activePhase, context}) => {
-  const activeIdx = activePhase ? activePhase - 1 : -1;
   const frame = useCurrentFrame();
   const {fps} = useVideoConfig();
+
+  // When activePhase is explicitly set, use it. Otherwise auto-track:
+  // the "active" phase is the most recently appeared one.
+  let activeIdx: number;
+  if (activePhase != null) {
+    activeIdx = activePhase - 1;
+  } else {
+    activeIdx = -1;
+    for (let i = phases.length - 1; i >= 0; i--) {
+      const delay =
+        phases[i].appearAt != null
+          ? Math.round(phases[i].appearAt! * fps)
+          : i * STAGGER_FRAMES;
+      if (frame >= delay) {
+        activeIdx = i;
+        break;
+      }
+    }
+  }
 
   return (
     <SceneScaffold

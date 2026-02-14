@@ -221,6 +221,7 @@ for (const seg of scriptSegments) {
   const sceneType = String(visual.sceneType ?? '').toLowerCase();
   const componentName = visual.component ? String(visual.component).trim() : '';
   const assetRef = visual.assetRef ?? null;
+  const assetRef2 = visual.assetRef2 ?? null;
   const json = visual.json;
 
   if (componentName) {
@@ -276,6 +277,11 @@ for (const seg of scriptSegments) {
       if (!assetRef || !isImageRef(assetRef)) {
         throw new Error(
           `Segment ${id}: Component "${componentName}" requires Asset Ref to be an image file (png/jpg/webp/gif/svg). Got: ${String(assetRef)}`,
+        );
+      }
+      if (assetRef2 && !isImageRef(assetRef2)) {
+        throw new Error(
+          `Segment ${id}: Asset Ref 2 must be an image file (png/jpg/webp/gif/svg). Got: ${String(assetRef2)}`,
         );
       }
     }

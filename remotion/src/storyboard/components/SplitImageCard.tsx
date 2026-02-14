@@ -9,7 +9,7 @@ import {SceneScaffold} from './SceneScaffold';
 export const SplitImageCardPropsSchema = z
   .object({
     eyebrow: z.string().optional(),
-    title: z.string(),
+    title: z.string().optional(),
     subtitle: z.string().optional(),
     bullets: z
       .array(
@@ -29,8 +29,12 @@ export const SplitImageCard: React.FC<
   SplitImageCardProps & {context: LessonBlockContext; hq?: StoryboardInjected}
 > = ({eyebrow, title, subtitle, bullets, note, hq}) => {
   const assetRef = hq?.assetRef ?? null;
+  const assetRef2 = hq?.assetRef2 ?? null;
   const imgSrc =
     assetRef && /^https?:\/\//i.test(assetRef) ? assetRef : assetRef ? staticFile(assetRef) : null;
+  const imgSrc2 =
+    assetRef2 && /^https?:\/\//i.test(assetRef2) ? assetRef2 : assetRef2 ? staticFile(assetRef2) : null;
+  const hasDualImages = Boolean(imgSrc && imgSrc2);
 
   return (
     <SceneScaffold
@@ -41,13 +45,15 @@ export const SplitImageCard: React.FC<
       title={title}
       subtitle={subtitle}
       contentTop={24}
-      titleSize={70}
+      titleSize={hasDualImages ? 62 : 70}
     >
       <div
         style={{
           height: '100%',
           display: 'grid',
-          gridTemplateColumns: imgSrc ? '1.02fr 0.98fr' : '1fr',
+          gridTemplateColumns: imgSrc
+            ? '1.02fr 0.98fr'
+            : '1fr',
           gap: 22,
         }}
       >
@@ -114,7 +120,42 @@ export const SplitImageCard: React.FC<
           ) : null}
         </div>
 
-        {imgSrc ? (
+        {hasDualImages ? (
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 14,
+              height: '100%',
+            }}
+          >
+            {[imgSrc, imgSrc2].map((src, idx) => (
+              <div
+                key={idx}
+                style={{
+                  flex: 1,
+                  borderRadius: 20,
+                  overflow: 'hidden',
+                  backgroundColor: colors.background,
+                  position: 'relative',
+                }}
+              >
+                <Img src={src!} style={{width: '100%', height: '100%', objectFit: 'contain'}} />
+                <div
+                  style={{
+                    position: 'absolute',
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    height: 6,
+                    background:
+                      'linear-gradient(90deg, rgba(255, 232, 102, 0.95), rgba(255,255,255,0.45), rgba(255, 232, 102, 0.95))',
+                  }}
+                />
+              </div>
+            ))}
+          </div>
+        ) : imgSrc ? (
           <div
             style={{
               borderRadius: 24,
