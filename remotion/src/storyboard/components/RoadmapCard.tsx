@@ -1,7 +1,8 @@
+import {interpolate, spring, useCurrentFrame, useVideoConfig} from 'remotion';
 import {z} from 'zod';
 
 import type {LessonBlockContext} from '../../lesson-config';
-import {colors, fonts} from '../../theme';
+import {colors, fonts, motion} from '../../theme';
 import type {StoryboardInjected} from '../types';
 import {SceneScaffold} from './SceneScaffold';
 
@@ -16,6 +17,7 @@ export const RoadmapCardPropsSchema = z
           label: z.string(),
           title: z.string(),
           detail: z.string().optional(),
+          appearAt: z.number().nonnegative().optional(),
         }),
       )
       .min(1),
@@ -25,10 +27,15 @@ export const RoadmapCardPropsSchema = z
 
 export type RoadmapCardProps = z.infer<typeof RoadmapCardPropsSchema>;
 
+/** Stagger delay per phase in frames */
+const STAGGER_FRAMES = 10;
+
 export const RoadmapCard: React.FC<
   RoadmapCardProps & {context: LessonBlockContext; hq?: StoryboardInjected}
-> = ({eyebrow, title, subtitle, phases, activePhase}) => {
+> = ({eyebrow, title, subtitle, phases, activePhase, context}) => {
   const activeIdx = activePhase ? activePhase - 1 : -1;
+  const frame = useCurrentFrame();
+  const {fps} = useVideoConfig();
 
   return (
     <SceneScaffold
@@ -55,6 +62,11 @@ export const RoadmapCard: React.FC<
           const isFuture = activeIdx >= 0 && idx > activeIdx;
           const isLast = idx === phases.length - 1;
 
+          const delay = phase.appearAt != null ? Math.round(phase.appearAt * fps) : idx * STAGGER_FRAMES;
+          const prog = spring({frame: Math.max(0, frame - delay), fps, config: motion.spring.standard});
+          const y = interpolate(prog, [0, 1], [30, 0]);
+          const itemOpacity = interpolate(prog, [0, 1], [0, 1]);
+
           return (
             <div
               key={`${idx}-${phase.label}`}
@@ -64,6 +76,8 @@ export const RoadmapCard: React.FC<
                 flexDirection: 'column',
                 alignItems: 'center',
                 position: 'relative',
+                transform: `translateY(${y}px)`,
+                opacity: itemOpacity,
               }}
             >
               {/* Progress line */}
@@ -195,9 +209,10 @@ export const RoadmapCard: React.FC<
                     <div
                       style={{
                         fontFamily: fonts.body,
-                        fontSize: 30,
-                        lineHeight: 1.24,
-                        color: colors.muted,
+                        fontWeight: 400,
+                        fontSize: 28,
+                        lineHeight: 1.34,
+                        color: colors.bodyText,
                         marginTop: 2,
                       }}
                     >

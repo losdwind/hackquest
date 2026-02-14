@@ -59,10 +59,10 @@ export const GlossaryCard: React.FC<
             <div
               style={{
                 fontFamily: fonts.display,
-                fontSize: 52,
-                fontWeight: 900,
-                lineHeight: 1.04,
-                color: colors.text,
+                fontSize: 38,
+                fontWeight: 700,
+                lineHeight: 1.1,
+                color: colors.label,
                 marginBottom: 6,
               }}
             >
@@ -71,8 +71,9 @@ export const GlossaryCard: React.FC<
             <div
               style={{
                 fontFamily: fonts.body,
-                fontSize: 36,
-                color: colors.muted,
+                fontWeight: 400,
+                fontSize: 28,
+                color: colors.bodyText,
                 letterSpacing: '0.02em',
               }}
             >

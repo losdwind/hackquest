@@ -1,8 +1,9 @@
 import {HiArrowDownCircle} from 'react-icons/hi2';
+import {interpolate, spring, useCurrentFrame, useVideoConfig} from 'remotion';
 import {z} from 'zod';
 
 import type {LessonBlockContext} from '../../lesson-config';
-import {colors, fonts} from '../../theme';
+import {colors, fonts, motion} from '../../theme';
 import type {StoryboardInjected} from '../types';
 import {SceneScaffold} from './SceneScaffold';
 
@@ -16,6 +17,7 @@ export const StepsCardPropsSchema = z
         z.object({
           title: z.string(),
           detail: z.string().optional(),
+          appearAt: z.number().nonnegative().optional(),
         }),
       )
       .min(1),
@@ -25,10 +27,15 @@ export const StepsCardPropsSchema = z
 
 export type StepsCardProps = z.infer<typeof StepsCardPropsSchema>;
 
+/** Stagger delay per step in frames */
+const STAGGER_FRAMES = 10;
+
 export const StepsCard: React.FC<
   StepsCardProps & {context: LessonBlockContext; hq?: StoryboardInjected}
-> = ({eyebrow, title, subtitle, steps, activeStep}) => {
+> = ({eyebrow, title, subtitle, steps, activeStep, context}) => {
   const activeIndex = activeStep ? Math.max(1, activeStep) - 1 : -1;
+  const frame = useCurrentFrame();
+  const {fps} = useVideoConfig();
 
   return (
     <SceneScaffold
@@ -46,9 +53,22 @@ export const StepsCard: React.FC<
           const isAfterActive = activeIndex >= 0 && idx > activeIndex;
           const hasNext = idx < steps.length - 1;
 
+          const delay = step.appearAt != null ? Math.round(step.appearAt * fps) : idx * STAGGER_FRAMES;
+          const prog = spring({frame: Math.max(0, frame - delay), fps, config: motion.spring.standard});
+          const x = interpolate(prog, [0, 1], [-32, 0]);
+          const opacity = interpolate(prog, [0, 1], [0, 1]);
+
           return (
-            <div key={`${idx}-${step.title}`} style={{display: 'grid', gridTemplateColumns: '88px 1fr', gap: 14}}>
-              <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+            <div
+              key={`${idx}-${step.title}`}
+              style={{
+                display: 'grid',
+                gridTemplateColumns: '88px 1fr',
+                gap: 14,
+                transform: `translateX(${x}px)`,
+                opacity,
+              }}
+            >              <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
                 <div
                   style={{
                     width: 72,
@@ -120,9 +140,10 @@ export const StepsCard: React.FC<
                   <div
                     style={{
                       fontFamily: fonts.body,
-                      fontSize: 38,
-                      lineHeight: 1.26,
-                      color: colors.muted,
+                      fontWeight: 400,
+                      fontSize: 34,
+                      lineHeight: 1.34,
+                      color: colors.bodyText,
                       maxWidth: 1040,
                     }}
                   >

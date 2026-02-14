@@ -52,9 +52,10 @@ export const WarningCard: React.FC<
                 borderRadius: 16,
                 backgroundColor: idx % 2 === 0 ? 'rgba(255, 255, 255, 0.82)' : 'rgba(0, 0, 0, 0.05)',
                 fontFamily: fonts.body,
-                fontSize: 40,
-                color: colors.text,
-                lineHeight: 1.24,
+                fontWeight: 400,
+                fontSize: 34,
+                color: colors.bodyText,
+                lineHeight: 1.34,
               }}
             >
               <span style={{color: colors.muted}}>–</span>
@@ -90,9 +91,10 @@ export const WarningCard: React.FC<
           <div
             style={{
               fontFamily: fonts.body,
-              fontSize: 38,
-              lineHeight: 1.28,
-              color: colors.text,
+              fontWeight: 400,
+              fontSize: 34,
+              lineHeight: 1.34,
+              color: colors.bodyText,
             }}
           >
             Keep this calm and actionable.

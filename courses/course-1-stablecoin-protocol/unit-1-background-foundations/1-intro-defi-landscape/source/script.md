@@ -111,9 +111,7 @@ Component: Roadmap
 ```json
 {
   "props": {
-    "eyebrow": "Your Journey",
     "title": "Course Roadmap",
-    "subtitle": "From mental model to production deployment.",
     "phases": [
       {"label": "Unit 1", "title": "Foundations", "detail": "Taxonomy, oracles, risk models"},
       {"label": "Unit 2", "title": "Architecture", "detail": "Token + system design"},
@@ -136,9 +134,7 @@ Component: ArchitectureDiagram
 ```json
 {
   "props": {
-    "eyebrow": "Runtime View",
     "title": "System Architecture",
-    "subtitle": "How collateral, debt, oracles, and liquidation interact.",
     "nodes": [
       {"id": "user",        "label": "User",                   "x": 0,   "y": 0,   "tone": "muted",   "width": 160, "height": 58},
       {"id": "collateral",  "label": "Collateral (wETH/wBTC)", "x": 320, "y": 0,   "tone": "default", "width": 260, "height": 58},

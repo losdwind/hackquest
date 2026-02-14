@@ -22,7 +22,7 @@ export const SceneScaffold: React.FC<SceneScaffoldProps> = ({
   subtitle,
   titleSize,
   maxWidth,
-  contentTop = 22,
+  contentTop = 20,
   contentStyle,
   children,
 }) => {
@@ -37,7 +37,7 @@ export const SceneScaffold: React.FC<SceneScaffoldProps> = ({
     <AbsoluteFill
       style={{
         background: background ?? colors.background,
-        padding: '112px 180px 88px',
+        padding: '56px 80px 48px',
       }}
     >
       <div
@@ -45,32 +45,32 @@ export const SceneScaffold: React.FC<SceneScaffoldProps> = ({
           transform: `translateY(${y}px)`,
           opacity,
           width: '100%',
-          maxWidth: maxWidth ?? Math.min(1240, tokens.layout.maxContentWidth),
+          maxWidth: maxWidth ?? tokens.layout.maxContentWidth,
           margin: '0 auto',
           height: '100%',
           display: 'flex',
           flexDirection: 'column',
         }}
       >
+        {/* ── Fixed header zone ── */}
         {hasHeader ? (
           <div
             style={{
-              textAlign: 'center',
+              flexShrink: 0,
               display: 'flex',
               flexDirection: 'column',
-              alignItems: 'center',
+              gap: 2,
             }}
           >
             {eyebrow ? (
               <div
                 style={{
                   fontFamily: fonts.brand,
-                  fontSize: 24,
-                  fontWeight: 800,
-                  letterSpacing: '0.14em',
+                  fontSize: 17,
+                  fontWeight: 700,
+                  letterSpacing: '0.16em',
                   textTransform: 'uppercase',
                   color: colors.muted,
-                  marginBottom: 12,
                 }}
               >
                 {eyebrow}
@@ -81,13 +81,11 @@ export const SceneScaffold: React.FC<SceneScaffoldProps> = ({
               <div
                 style={{
                   fontFamily: fonts.display,
-                  fontSize: Math.max(titleSize ?? 72, 92),
-                  fontWeight: 900,
-                  lineHeight: 1.04,
-                  letterSpacing: '-0.015em',
-                  color: colors.text,
-                  marginBottom: subtitle ? 10 : 0,
-                  maxWidth: 980,
+                  fontSize: titleSize ?? 36,
+                  fontWeight: 700,
+                  lineHeight: 1.15,
+                  letterSpacing: '-0.01em',
+                  color: colors.label,
                 }}
               >
                 {title}
@@ -98,10 +96,12 @@ export const SceneScaffold: React.FC<SceneScaffoldProps> = ({
               <div
                 style={{
                   fontFamily: fonts.body,
-                  fontSize: 48,
-                  lineHeight: 1.34,
+                  fontWeight: 300,
+                  fontSize: 24,
+                  lineHeight: 1.3,
                   color: colors.muted,
-                  maxWidth: 940,
+                  maxWidth: 720,
+                  marginTop: 2,
                 }}
               >
                 {subtitle}
@@ -110,15 +110,20 @@ export const SceneScaffold: React.FC<SceneScaffoldProps> = ({
           </div>
         ) : null}
 
+        {/* ── Content zone: vertically centered in remaining space ── */}
         <div
           style={{
             flex: 1,
             minHeight: 0,
-            marginTop: hasHeader ? Math.max(contentTop, 92) : 0,
-            ...contentStyle,
+            marginTop: hasHeader ? contentTop : 0,
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
           }}
         >
-          {children}
+          <div style={{...contentStyle}}>
+            {children}
+          </div>
         </div>
       </div>
     </AbsoluteFill>

@@ -65,9 +65,10 @@ export const SplitImageCard: React.FC<
                 backgroundColor:
                   bullet.tone === 'accent' ? 'rgba(255, 232, 102, 0.34)' : 'rgba(255, 255, 255, 0.78)',
                 fontFamily: fonts.body,
-                fontSize: 40,
-                lineHeight: 1.24,
-                color: bullet.tone === 'muted' ? colors.muted : colors.text,
+                fontWeight: 400,
+                fontSize: 34,
+                lineHeight: 1.34,
+                color: bullet.tone === 'muted' ? colors.muted : colors.bodyText,
               }}
             >
               <span style={{color: bullet.tone === 'accent' ? colors.text : colors.muted}}>
@@ -101,9 +102,10 @@ export const SplitImageCard: React.FC<
               <div
                 style={{
                   fontFamily: fonts.body,
-                  fontSize: 38,
-                  color: colors.text,
-                  lineHeight: 1.28,
+                  fontWeight: 400,
+                  fontSize: 30,
+                  color: colors.bodyText,
+                  lineHeight: 1.36,
                 }}
               >
                 {note}

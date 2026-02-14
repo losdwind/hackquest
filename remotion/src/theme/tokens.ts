@@ -2,7 +2,9 @@ export const tokens = {
   colors: {
     bg: '#FFFFFF',
     text: '#0B0B0B',
-    muted: '#4B4B4B',
+    label: '#555555',
+    bodyText: '#1A1A1A',
+    muted: '#6B6B6B',
     panel: '#FFFFFF',
     panelSoft: 'rgba(255, 255, 255, 0.92)',
     border: '#000000',

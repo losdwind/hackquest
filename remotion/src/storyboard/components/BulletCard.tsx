@@ -1,7 +1,8 @@
+import {interpolate, spring, useCurrentFrame, useVideoConfig} from 'remotion';
 import {z} from 'zod';
 
 import type {LessonBlockContext} from '../../lesson-config';
-import {colors, fonts} from '../../theme';
+import {colors, fonts, motion} from '../../theme';
 import type {StoryboardInjected} from '../types';
 import {SceneScaffold} from './SceneScaffold';
 
@@ -19,10 +20,12 @@ export const BulletCardPropsSchema = z
           text: z.string(),
           tone: BulletToneSchema.optional(),
           icon: z.string().optional(),
+          appearAt: z.number().nonnegative().optional(),
         }),
       )
       .default([]),
     note: z.string().optional(),
+    noteAppearAt: z.number().nonnegative().optional(),
   })
   .strict();
 
@@ -36,12 +39,18 @@ const toneToBubble = (tone?: BulletCardProps['bullets'][number]['tone']) => {
 
 const toneToText = (tone?: BulletCardProps['bullets'][number]['tone']) => {
   if (tone === 'muted') return colors.muted;
-  return colors.text;
+  return colors.bodyText;
 };
+
+/** Stagger delay per bullet item in frames */
+const STAGGER_FRAMES = 8;
 
 export const BulletCard: React.FC<
   BulletCardProps & {context: LessonBlockContext; hq?: StoryboardInjected}
-> = ({eyebrow, title, subtitle, badge, bullets, note}) => {
+> = ({eyebrow, title, subtitle, badge, bullets, note, noteAppearAt, context}) => {
+  const frame = useCurrentFrame();
+  const {fps} = useVideoConfig();
+
   return (
     <SceneScaffold
       background={
@@ -62,86 +71,109 @@ export const BulletCard: React.FC<
         }}
       >
         <div style={{display: 'flex', flexDirection: 'column', gap: 14}}>
-          {bullets.map((b, idx) => (
+          {bullets.map((b, idx) => {
+            const delay = b.appearAt != null ? Math.round(b.appearAt * fps) : idx * STAGGER_FRAMES;
+            const prog = spring({frame: Math.max(0, frame - delay), fps, config: motion.spring.standard});
+            const y = interpolate(prog, [0, 1], [24, 0]);
+            const opacity = interpolate(prog, [0, 1], [0, 1]);
+
+            return (
+              <div
+                key={`${idx}-${b.text}`}
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: '44px 1fr',
+                  gap: 14,
+                  alignItems: 'flex-start',
+                  padding: '14px 18px',
+                  borderRadius: 20,
+                  backgroundColor: 'rgba(255, 255, 255, 0.76)',
+                  transform: `translateY(${y}px)`,
+                  opacity,
+                }}
+              >
+                <div
+                  style={{
+                    width: 44,
+                    height: 44,
+                    borderRadius: 999,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    backgroundColor: toneToBubble(b.tone),
+                    fontFamily: fonts.brand,
+                    fontWeight: 900,
+                    fontSize: 30,
+                    color: colors.text,
+                  }}
+                >
+                  {b.icon ?? String(idx + 1)}
+                </div>
+                <div
+                  style={{
+                    fontFamily: fonts.body,
+                    fontWeight: 400,
+                    fontSize: 36,
+                    lineHeight: 1.34,
+                    color: toneToText(b.tone),
+                  }}
+                >
+                  {b.text}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {note ? (() => {
+          const lastBulletDelay = bullets.length > 0 && bullets[bullets.length - 1].appearAt != null
+            ? Math.round(bullets[bullets.length - 1].appearAt! * fps)
+            : bullets.length * STAGGER_FRAMES;
+          const noteDelay = noteAppearAt != null ? Math.round(noteAppearAt * fps) : lastBulletDelay + STAGGER_FRAMES;
+          const noteProg = spring({frame: Math.max(0, frame - noteDelay), fps, config: motion.spring.standard});
+          const noteY = interpolate(noteProg, [0, 1], [24, 0]);
+          const noteOpacity = interpolate(noteProg, [0, 1], [0, 1]);
+
+          return (
             <div
-              key={`${idx}-${b.text}`}
               style={{
-                display: 'grid',
-                gridTemplateColumns: '44px 1fr',
-                gap: 14,
-                alignItems: 'flex-start',
-                padding: '14px 18px',
-                borderRadius: 20,
-                backgroundColor: 'rgba(255, 255, 255, 0.76)',
+                alignSelf: 'start',
+                borderRadius: 24,
+                padding: '18px 18px',
+                background:
+                  'linear-gradient(180deg, rgba(255, 232, 102, 0.45), rgba(255, 255, 255, 0.74) 38%)',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 10,
+                transform: `translateY(${noteY}px)`,
+                opacity: noteOpacity,
               }}
             >
               <div
                 style={{
-                  width: 44,
-                  height: 44,
-                  borderRadius: 999,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  backgroundColor: toneToBubble(b.tone),
                   fontFamily: fonts.brand,
-                  fontWeight: 900,
-                  fontSize: 30,
-                  color: colors.text,
+                  fontSize: 24,
+                  letterSpacing: '0.12em',
+                  textTransform: 'uppercase',
+                  color: colors.muted,
                 }}
               >
-                {b.icon ?? String(idx + 1)}
+                Note
               </div>
               <div
                 style={{
                   fontFamily: fonts.body,
-                  fontSize: 44,
-                  lineHeight: 1.22,
-                  color: toneToText(b.tone),
+                  fontWeight: 400,
+                  color: colors.bodyText,
+                  fontSize: 32,
+                  lineHeight: 1.36,
                 }}
               >
-                {b.text}
+                {note}
               </div>
             </div>
-          ))}
-        </div>
-
-        {note ? (
-          <div
-            style={{
-              alignSelf: 'start',
-              borderRadius: 24,
-              padding: '18px 18px',
-              background:
-                'linear-gradient(180deg, rgba(255, 232, 102, 0.45), rgba(255, 255, 255, 0.74) 38%)',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: 10,
-            }}
-          >
-            <div
-              style={{
-                fontFamily: fonts.brand,
-                fontSize: 24,
-                letterSpacing: '0.12em',
-                textTransform: 'uppercase',
-                color: colors.muted,
-              }}
-            >
-              Note
-            </div>
-            <div
-              style={{
-                fontFamily: fonts.body,
-                color: colors.text,
-                fontSize: 38,
-                lineHeight: 1.3,
-              }}
-            >
-              {note}
-            </div>
-          </div>
-        ) : null}
+          );
+        })() : null}
       </div>
     </SceneScaffold>
   );

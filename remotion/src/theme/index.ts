@@ -8,6 +8,8 @@ export const colors = {
   panel: tokens.colors.panel,
   panelSoft: tokens.colors.panelSoft,
   text: tokens.colors.text,
+  label: tokens.colors.label,
+  bodyText: tokens.colors.bodyText,
   muted: tokens.colors.muted,
   accent: tokens.colors.accent,
   accentSoft: tokens.colors.accentSoft,

@@ -52,9 +52,10 @@ export const DefinitionCard: React.FC<
                 gap: 10,
                 alignItems: 'start',
                 fontFamily: fonts.body,
-                fontSize: 40,
-                lineHeight: 1.24,
-                color: colors.text,
+                fontWeight: 400,
+                fontSize: 34,
+                lineHeight: 1.34,
+                color: colors.bodyText,
               }}
             >
               <span style={{color: colors.muted}}>•</span>
